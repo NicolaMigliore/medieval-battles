@@ -1,0 +1,8 @@
+{
+    "editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"workbench.colorTheme": "Godot 4",
+	"cSpell.words": [
+		"tscn"
+	],
+}
