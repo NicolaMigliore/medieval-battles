@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdp47wjjs53rf"]
+
+[ext_resource type="Script" uid="uid://dg3xu0q5mjjy1" path="res://UI/character_portrait.gd" id="1_ipo3g"]
+[ext_resource type="Texture2D" uid="uid://dv1yt5cbvykb6" path="res://entities/cultist-minion/cultist-minion-portrait.png" id="2_xq31h"]
+
+[node name="CharacterPortrait" type="Button"]
+offset_right = 105.0
+offset_bottom = 31.0
+theme_override_font_sizes/font_size = 24
+text = "Character"
+icon = ExtResource("2_xq31h")
+script = ExtResource("1_ipo3g")

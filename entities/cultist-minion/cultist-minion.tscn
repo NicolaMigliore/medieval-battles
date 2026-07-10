@@ -1,0 +1,109 @@
+[gd_scene load_steps=8 format=3 uid="uid://batiq487sh2vh"]
+
+[ext_resource type="Script" uid="uid://u2kylk2su75x" path="res://entities/cultist-minion/cultist_minion.gd" id="1_3glrm"]
+[ext_resource type="Texture2D" uid="uid://4wrkss6btij6" path="res://entities/cultist-minion/cultist-minion.png" id="1_tcuu3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3glrm"]
+radius = 0.11230469
+height = 0.3149109
+
+[sub_resource type="Animation" id="Animation_3glrm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_f42ti"]
+resource_name = "front_idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_p4nk0"]
+resource_name = "hit"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2000899),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.9, 1.4, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p4nk0"]
+_data = {
+&"RESET": SubResource("Animation_3glrm"),
+&"front_idle": SubResource("Animation_f42ti"),
+&"hit": SubResource("Animation_p4nk0")
+}
+
+[node name="CultistMinion" type="CharacterBody3D"]
+script = ExtResource("1_3glrm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+shape = SubResource("CapsuleShape3D_3glrm")
+
+[node name="Sprite2D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1600233, 0)
+billboard = 1
+texture_filter = 2
+texture = ExtResource("1_tcuu3")
+hframes = 4
+
+[node name="Animation" type="Node" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
+root_node = NodePath("../../Sprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_p4nk0")
+}

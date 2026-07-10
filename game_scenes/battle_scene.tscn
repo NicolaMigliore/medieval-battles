@@ -1,6 +1,275 @@
-[gd_scene load_steps=2 format=3 uid="uid://bj15rhr1ng8jb"]
+[gd_scene load_steps=7 format=3 uid="uid://bj15rhr1ng8jb"]
 
 [ext_resource type="Script" uid="uid://dunatilrt2rne" path="res://game_scenes/battle_scene.gd" id="1_2vy4q"]
+[ext_resource type="Texture2D" uid="uid://dasp1b2pit54a" path="res://placeholder_texture.png" id="3_rd2ks"]
+[ext_resource type="Script" uid="uid://dphg88qjbs8wa" path="res://game_scenes/battle_manager.gd" id="4_ctw5g"]
+[ext_resource type="Script" uid="uid://dlq0hw4cacpns" path="res://UI/battle_ui.gd" id="5_pavr6"]
+[ext_resource type="Theme" uid="uid://big8r512m2y2r" path="res://themes/battle.tres" id="6_jixf1"]
 
-[node name="BattleScene" type="Node"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rd2ks"]
+albedo_texture = ExtResource("3_rd2ks")
+texture_filter = 4
+
+[node name="BattleScene" type="Node3D"]
 script = ExtResource("1_2vy4q")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-2.7818132e-08, -0.49999994, 0.86602515, 0, 0.86602515, 0.49999994, -1, 1.3909062e-08, -5.3893523e-08, 2.241181, 1.0999004, -6.7092025e-09)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023101807, -0.25115967, 0.3809204)
+use_collision = true
+size = Vector3(10.351135, 0.49768066, 10.261841)
+material = SubResource("StandardMaterial3D_rd2ks")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.93041116, -0.20664781, 0.3027073, 0, 0.8259015, 0.5638144, -0.36651745, -0.5245792, 0.76842797, 3.8580008, 4.58646, 7.5767083)
+
+[node name="BattleManager" type="Node" parent="."]
+script = ExtResource("4_ctw5g")
+
+[node name="AllySlots" type="Node" parent="BattleManager"]
+
+[node name="Slot1" type="Marker3D" parent="BattleManager/AllySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="Slot2" type="Marker3D" parent="BattleManager/AllySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1.2)
+
+[node name="Slot3" type="Marker3D" parent="BattleManager/AllySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1.2)
+
+[node name="Slot4" type="Marker3D" parent="BattleManager/AllySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.4)
+
+[node name="Slot5" type="Marker3D" parent="BattleManager/AllySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.4)
+
+[node name="EnemySlots" type="Node" parent="BattleManager"]
+
+[node name="Slot1" type="Marker3D" parent="BattleManager/EnemySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="Slot2" type="Marker3D" parent="BattleManager/EnemySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1.2)
+
+[node name="Slot3" type="Marker3D" parent="BattleManager/EnemySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1.2)
+
+[node name="Slot4" type="Marker3D" parent="BattleManager/EnemySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.4)
+
+[node name="Slot5" type="Marker3D" parent="BattleManager/EnemySlots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.4)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="BattleUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_pavr6")
+
+[node name="DialogPanel" type="PanelContainer" parent="UI/BattleUI"]
+custom_minimum_size = Vector2(600, 220)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -220.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/BattleUI/DialogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/BattleUI/DialogPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Container" type="Control" parent="UI/BattleUI/DialogPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="AdvanceButton" type="Button" parent="UI/BattleUI/DialogPanel/MarginContainer/Container"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next"
+flat = true
+
+[node name="PickActionPanel" type="Panel" parent="UI/BattleUI"]
+visible = false
+custom_minimum_size = Vector2(600, 220)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/BattleUI/PickActionPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/BattleUI/PickActionPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AttackButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_jixf1")
+text = "ATTACK"
+
+[node name="HealButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_jixf1")
+text = "HEAL
+"
+
+[node name="BlockButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_jixf1")
+text = "BLOCK"
+
+[node name="BoostButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_jixf1")
+text = "BOOST"
+
+[node name="WaitButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_jixf1")
+text = "WAIT"
+
+[node name="TargetInfoPanel" type="Panel" parent="UI/BattleUI"]
+custom_minimum_size = Vector2(200, 500)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -250.0
+offset_bottom = 250.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/BattleUI/TargetInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BattleUI/TargetInfoPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/BattleUI/TargetInfoPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 3
+
+[node name="TitleLabel" type="Label" parent="UI/BattleUI/TargetInfoPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "<character name>"
+horizontal_alignment = 1
+
+[node name="StatsRichTextLabel" type="RichTextLabel" parent="UI/BattleUI/TargetInfoPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="CharacterInitiativePanel" type="PanelContainer" parent="UI/BattleUI"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -45.0
+offset_right = 90.0
+offset_bottom = 45.0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/BattleUI/CharacterInitiativePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RemainingVBox" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VSplitContainer" type="VSplitContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ActedVBox" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="DebugPanel" type="PanelContainer" parent="UI/BattleUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PhaseLabel" type="Label" parent="UI/BattleUI/DebugPanel"]
+layout_mode = 2
+text = "placeholder"

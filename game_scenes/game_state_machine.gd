@@ -8,7 +8,18 @@ var active_scene_name: String = ""
 var active_scene = null
 
 func _ready() -> void:
-	switch_scene("title")
+
+	# Test Battle scene
+	# BattleData.party.append(...)
+	# BattleData.enemies = [
+	# 	{
+	# 		"scene": preload("res://entities/cultist-minion/cultist_minion.tscn"), 
+	# 		# TODO: implement character statistics
+	# 		"hp": 10,
+	# 		"level": 2, 
+	# 	},
+	# ]
+	switch_scene("battle")
 
 func switch_scene(scene_name) -> void:
 	active_scene_name = scene_name
