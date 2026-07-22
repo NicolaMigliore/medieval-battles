@@ -4,6 +4,7 @@
 	- apply elemental damage to attack
 	- apply bleeding to boosted character
 	- chance to grant block at each turn
+	- after action pick a random character and move to the end of the execution order
 	Charms will be unlocked randomly adding some rouge-lite feeling and offering more build choice.
 
 # TODOs:

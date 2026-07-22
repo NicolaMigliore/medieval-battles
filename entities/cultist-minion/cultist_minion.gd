@@ -11,6 +11,7 @@ var cur_animation = "front_idle"
 var id = "cult_minion"
 var actor_name = "cultist minion"
 var portrait = null
+var is_player_controlled = false
 
 # Stats
 @onready var max_hp = 5
@@ -30,29 +31,45 @@ func _ready():
 	animation_player.stop()
 	animation_player.play("front_idle")
 
-# func _physics_process(delta: float) -> void:
-# 	# Add the gravity.
-# 	if not is_on_floor():
-# 		velocity += get_gravity() * delta
-
-# 	# Handle jump.
-# 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-# 		velocity.y = JUMP_VELOCITY
-
-# 	# Get the input direction and handle the movement/deceleration.
-# 	# As good practice, you should replace UI actions with custom gameplay actions.
-# 	var direction := Input.get_axis("ui_left", "ui_right")
-# 	if direction:
-# 		velocity.x = direction * SPEED
-# 	else:
-# 		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-# 	move_and_slide()
-
-
-# Character configuration
+#region Init
 func init(opts) -> void:
 	# Configure character
-	portrait = opts.get("portrait", portrait)
-	actor_name = opts.get("actor_name", actor_name)
-	actions_per_turn = opts.get("actions_per_turn", actions_per_turn)
+
+	for key in opts:
+		if key != "scene":
+			self[key] = opts.get(key, self[key])
+
+	# portrait = opts.get("portrait", portrait)
+	# actor_name = opts.get("actor_name", actor_name)
+	# actions_per_turn = opts.get("actions_per_turn", actions_per_turn)
+	# is_player_controlled = opts.get("is_player_controlled", is_player_controlled)
+#endregion
+
+
+#region Evaluate Action
+# NOTE: Can be overridden to give different behaviour to different character types
+func evaluate_action(context: Dictionary) -> Dictionary:
+	var self_c = context.self_combatant
+	var enemies = context.enemies
+	var allies = context.allies
+
+	# evaluate action weights
+	var weights = {
+		"attack" = attack_pwr,
+		"heal" = heal_pwr,
+		"block" = block_pwr,
+		"boost" = boost_pwr
+	}
+
+	var max_weight = 0
+	var best_action = "wait"
+	for action in weights:
+		if weights[action] > max_weight:
+			max_weight = weights[action]
+			best_action = action
+
+	print("[LOG] Action evaluated: %s -> %s" % [best_action, self_c.character.actor_name])
+
+	# TODO: Evaluate the action to take
+	return { "action": best_action, "target": self_c }
+#endregion

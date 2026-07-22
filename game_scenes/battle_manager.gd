@@ -10,7 +10,7 @@ var _acted: Array = []			# List of combatant that have completed actions
 
 var cur_unit = null
 
-enum phases { CONFIG_ROUND, PICK_UNIT, PICK_ACTION, PICK_TARGET, EXECUTE, DONE }
+enum phases { START, CONFIG_ROUND, PICK_UNIT, PICK_ACTION, PICK_TARGET, EXECUTE, DONE }
 var phase = null
 
 const actions = {
@@ -44,7 +44,7 @@ func _ready() -> void:
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({ "team": 2, "character": character, "actions_per_turn": actions_per_turn })
 
-	call_deferred("_set_phase", phases.CONFIG_ROUND)
+	call_deferred("_set_phase", phases.START)
 
 	# setup initiative panel
 	call_deferred("_populate_initiative_panel")
@@ -92,20 +92,40 @@ func _set_phase(new_phase, data = null):
 	phase = new_phase
 	battle_ui.update_phase_label("Phase: %s" % phase)
 
-	if phase == phases.CONFIG_ROUND:
+	if phase == phases.START:
+		battle_ui.show_ui("Start")
+		var start_msg = "Battle Starts"
+		battle_ui.populate_dialog_panel(start_msg, func():
+			_set_phase(phases.CONFIG_ROUND)
+			_populate_initiative_panel()
+		)
+	elif phase == phases.CONFIG_ROUND:
 		_configure_round()
 		_set_phase(phases.PICK_UNIT)
 	elif phase == phases.PICK_UNIT:
 		cur_unit = _remaining[0]
 		_set_phase(phases.PICK_ACTION)
 	elif phase == phases.PICK_ACTION:
-		battle_ui.show_ui("PickAction", null)
+		if cur_unit.character.is_player_controlled:
+			battle_ui.show_ui("PickAction", null)
 
-		# connect buttons
-		var vbox = battle_ui.get_node("PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer")
-		for button in vbox.get_children():
-			if not button.pressed.is_connected(_on_action_selected):
-				button.pressed.connect(_on_action_selected.bind(button.name))
+			# connect buttons
+			var vbox = battle_ui.get_node("PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer")
+			for button in vbox.get_children():
+				if not button.pressed.is_connected(_on_action_selected):
+					button.pressed.connect(_on_action_selected.bind(button.name))
+		else:
+			# Automatic AI action and target picking
+			var allies = _combatants.filter(func(c): return c.team == cur_unit.team)
+			var enemies = _combatants.filter(func(c): return c.team != cur_unit.team)
+			var decision = cur_unit.character.evaluate_action({
+				"self_combatant": cur_unit,
+				"allies": allies,
+				"enemies": enemies
+			})
+			cur_action = actions[decision.action]
+			cur_target = decision.target
+			_set_phase(phases.EXECUTE)
 	elif phase == phases.PICK_TARGET:
 		# configure target list
 		target_list = []
@@ -124,7 +144,7 @@ func _set_phase(new_phase, data = null):
 
 func _configure_round():
 	# populate initiative arrays
-	_combatants.sort_custom(func(a,b): return a.character.initiative < b.character.initiative)
+	_combatants.sort_custom(func(a,b): return a.character.initiative > b.character.initiative)
 	_remaining = []
 	_acted = []
 	for combatant in _combatants:
@@ -132,6 +152,7 @@ func _configure_round():
 			_remaining.append(combatant)
 
 func _get_actions_per_turn(character):
+	# TODO: Implement logic based on charms and disabled actions
 	var base = character.actions_per_turn
 	var final = base
 	return final
@@ -261,8 +282,8 @@ func _get_boost_amount() -> float:
 
 func _end_turn() -> void:
 	_populate_initiative_panel()
-
-	if _remaining.size() == 0:
+	var size = _remaining.size()
+	if size == 0:
 		_set_phase(phases.CONFIG_ROUND)
 	else:
 		_set_phase(phases.PICK_UNIT)

@@ -28,6 +28,10 @@ func update_phase_label(msg) -> void:
 func show_ui(panel_name: String, _data = null) -> void:
 	_hide_all_panels()
 	
+	if panel_name == "Start":
+		get_node("CharacterInitiativePanel").hide()
+		get_node("DialogPanel").show()
+
 	if panel_name == "PickAction":
 		get_node("PickActionPanel").show()
 		# Set focus
@@ -124,6 +128,7 @@ func populate_info_panel(combatant) -> void:
 	var stats_text = "[center][table=2 bgcolor=#ffffff]
 	[cell expand=1 border=#ffffff ratio=1.5]HP[/cell][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s/%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]Shield[/cell][hr][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]Initiative[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]Attack[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]Block[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]Heal[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
@@ -132,6 +137,7 @@ func populate_info_panel(combatant) -> void:
 		character.hp,
 		character.max_hp,
 		character.block,
+		character.initiative,
 		character.attack_pwr,
 		character.block_pwr,
 		character.heal_pwr,
@@ -147,7 +153,10 @@ func populate_dialog_panel(msg: String, _on_advance) -> void:
 	text_label.text= msg
 
 	var advance_button: Button = $DialogPanel/MarginContainer/Container/AdvanceButton
-	if not advance_button.pressed.is_connected(_on_advance):
-		advance_button.pressed.connect(_on_advance)
+	
+	for connection in advance_button.pressed.get_connections():
+		advance_button.pressed.disconnect(connection["callable"])
+
+	advance_button.pressed.connect(_on_advance)
 	advance_button.grab_focus()
 #endregion
