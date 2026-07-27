@@ -31,16 +31,16 @@ func _ready() -> void:
 	# init allies
 	for i in BattleData.allies.size():
 		var character = BattleData.allies[i].scene.instantiate()
-		character.init(BattleData.allies[i])
 		ally_slots.get_child(i).add_child(character)
+		character.init(BattleData.allies[i])
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({ "team": 1, "character": character, "actions_per_turn": actions_per_turn})
 
 	# init enemies
 	for i in BattleData.enemies.size():
 		var character = BattleData.enemies[i].scene.instantiate()
-		character.init(BattleData.enemies[i])		# configure character stats
 		enemy_slots.get_child(i).add_child(character)
+		character.init(BattleData.enemies[i])		# configure character stats
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({ "team": 2, "character": character, "actions_per_turn": actions_per_turn })
 
@@ -192,17 +192,28 @@ func _do_action() -> void:
 	execution_message = "- MISSING MESSAGE -"
 	match cur_action.name:
 		"attack":
-			var amount = _get_damage_amount()
+			var amount:float = _get_damage_amount()
+			var block_amount = cur_target.character.block
+			if block_amount > 0:
+				cur_target.character.block = max(0, cur_target.character.block - amount)
+				amount = max(0, amount - block_amount)
 			cur_target.character.hp -= amount
-			execution_message = "%s attacks %s for %d damage" % [
-				cur_unit.character.actor_name,
-				cur_target.character.actor_name,
-				amount
-			]
+			if block_amount > 0:
+				execution_message = "%s attacks %s but is blocked by their shield and does %.2f damage" % [
+					cur_unit.character.actor_name,
+					cur_target.character.actor_name,
+					amount
+				]
+			else:
+				execution_message = "%s attacks %s for %.2f damage" % [
+					cur_unit.character.actor_name,
+					cur_target.character.actor_name,
+					amount
+				]
 		"heal":
-			var amount = _get_heal_amount()
+			var amount:float = _get_heal_amount()
 			cur_target.character.hp = min(cur_target.character.max_hp, cur_target.character.hp + amount)
-			execution_message = "%s heals %s for %d hp" % [
+			execution_message = "%s heals %s for %.2f hp" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
 				amount
@@ -210,7 +221,7 @@ func _do_action() -> void:
 		"block":
 			var amount = _get_block_amount()
 			cur_target.character.block += amount
-			execution_message = "%s shields %s for %d shield power bringing the total to %d" % [
+			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f%%" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
 				amount,
@@ -219,14 +230,18 @@ func _do_action() -> void:
 		"boost":
 			var amount = _get_boost_amount()
 			cur_target.character.boost += amount
-			execution_message = "%s boosts %s's next action" % [
+			execution_message = "%s boosts %s's next action by %d" % [
 				cur_unit.character.actor_name,
-				cur_target.character.actor_name
+				cur_target.character.actor_name,
+				amount * 100
 			]
 		"wait":
 			execution_message = "%s waits before taking an action" % [
 				cur_unit.character.actor_name
 			]
+
+	# Clear current boost value
+	cur_unit.character.boost = 0
 
 	# show dialog
 	battle_ui.show_ui("Execute")
@@ -243,10 +258,47 @@ func _do_action() -> void:
 # Get current unit's attack value considering effects and boosts
 func _get_damage_amount() -> float:
 	var base_dmg = cur_unit.character.attack_pwr
-	# TODO: calculate modifiers
-	var final_dmg = base_dmg
-	return final_dmg
+	var boost_amount = base_dmg * cur_unit.character.boost
+	
+	# TODO: calculate equipment modifiers
 
+	var final_dmg = base_dmg + boost_amount
+	return final_dmg
+#endregion
+
+#region Heal
+func _get_heal_amount() -> float:
+	var base_heal = cur_unit.character.heal_pwr
+	var boost_amount = base_heal * cur_unit.character.boost
+
+	# TODO: calculate equipment modifiers
+
+	var final_heal = base_heal + boost_amount
+	return final_heal
+#endregion
+
+# region Block
+func _get_block_amount() -> float:
+	var base_block = cur_unit.character.block_pwr
+	var boost_amount = base_block * cur_unit.character.boost
+
+	# TODO: calculate modifiers
+	
+	var final_block = base_block + boost_amount
+	return final_block
+#endregion
+
+# region Boost
+func _get_boost_amount() -> float:
+	var base_boost = cur_unit.character.boost_pwr
+
+	# TODO: calculate modifiers
+	
+	var final_boost = base_boost
+	return final_boost
+#endregion
+
+#region Status Effects
 # Add a status effect to the current target
 func _add_status_effects(_status_effects:Array) -> void:
 	pass
@@ -254,31 +306,6 @@ func _add_status_effects(_status_effects:Array) -> void:
 func _apply_status_effects() -> void:
 	pass
 #endregion
-
-#region Heal
-func _get_heal_amount() -> float:
-	var base_heal = cur_unit.character.heal_pwr
-	# TODO: calculate modifiers
-	var final_heal = base_heal
-	return final_heal
-#endregion
-
-# region Block
-func _get_block_amount() -> float:
-	var base_block = cur_unit.character.block_pwr
-	# TODO: calculate modifiers
-	var final_block = base_block
-	return final_block
-#endregion
-
-# region Block
-func _get_boost_amount() -> float:
-	var base_boost = cur_unit.character.boost_pwr
-	# TODO: calculate modifiers
-	var final_boost = base_boost
-	return final_boost
-#endregion
-
 
 func _end_turn() -> void:
 	_populate_initiative_panel()

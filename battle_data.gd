@@ -8,7 +8,9 @@ var allies: Array[Dictionary] = [
 		"is_player_controlled": true,
 		"actor_name": "Elfamir",
 		"actions_per_turn": 2,
-		"initiative": 1
+		"initiative": 1,
+		"block": 2,
+		"hp": 3
 	},
 	{
 		"scene": preload("res://entities/cultist-minion/cultist-minion.tscn"),
@@ -24,14 +26,16 @@ var enemies: Array[Dictionary] = [
 		"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
 		"is_player_controlled": false,
 		"actor_name": "Skeleton A",
-		"initiative": 3
+		"initiative": 3,
+		"attack_bias": 0.3
 	},
 	{
 		"scene": preload("res://entities/skeleton-minion/skeleton-minion.tscn"),
 		"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
 		"is_player_controlled": false,
 		"actor_name": "Skeleton B",
-		"initiative": 1
+		"initiative": 1,
+		"attack_bias": 0.3
 	}
 ]
 var on_victory: Callable

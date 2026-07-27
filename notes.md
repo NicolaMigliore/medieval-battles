@@ -8,6 +8,7 @@
 	Charms will be unlocked randomly adding some rouge-lite feeling and offering more build choice.
 
 # TODOs:
-- [ ] On round configure order based on initiative
-- [ ] Implement boosting effects
-- [ ] Implement AI attacking
+- [x] On round configure order based on initiative
+- [X] Implement boosting effects
+- [X] Implement AI taking actions
+- [ ] move characters forward when they are taking an action
