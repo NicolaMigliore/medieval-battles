@@ -20,6 +20,12 @@ func _hide_all_panels() -> void:
 	get_node("CharacterInitiativePanel").show()
 	get_node("DebugPanel").show()
 
+# Hide a specific ui element
+func hide_ui(panel_name: String) -> void:
+	var node = get_node(panel_name)
+	if node:
+		node.hide()
+
 
 func update_phase_label(msg) -> void:
 	phase_label.text = msg

@@ -11,4 +11,9 @@
 - [x] On round configure order based on initiative
 - [X] Implement boosting effects
 - [X] Implement AI taking actions
-- [ ] move characters forward when they are taking an action
+- [X] Move characters forward when they are taking an action
+- [ ] Move characters during actions
+- [ ] Add action particles
+- [ ] Add action outlines
+- [ ] Update Sprites
+- [ ] Implement animations

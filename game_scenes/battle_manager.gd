@@ -1,5 +1,8 @@
 extends Node
 
+const ACTIVE_POSITION_OFFSET = .5
+const MOVEMENT_SPEED:float = 8.0
+
 @onready var ally_slots = $AllySlots
 @onready var enemy_slots = $EnemySlots
 @onready var battle_ui = $"../UI/BattleUI"
@@ -34,7 +37,12 @@ func _ready() -> void:
 		ally_slots.get_child(i).add_child(character)
 		character.init(BattleData.allies[i])
 		var actions_per_turn =_get_actions_per_turn(character)
-		_combatants.append({ "team": 1, "character": character, "actions_per_turn": actions_per_turn})
+		_combatants.append({
+			"team": 1,
+			"character": character,
+			"actions_per_turn": actions_per_turn,
+			"destination": null
+		})
 
 	# init enemies
 	for i in BattleData.enemies.size():
@@ -42,7 +50,12 @@ func _ready() -> void:
 		enemy_slots.get_child(i).add_child(character)
 		character.init(BattleData.enemies[i])		# configure character stats
 		var actions_per_turn =_get_actions_per_turn(character)
-		_combatants.append({ "team": 2, "character": character, "actions_per_turn": actions_per_turn })
+		_combatants.append({
+			"team": 2,
+			"character": character,
+			"actions_per_turn": actions_per_turn,
+			"destination": null	
+		})
 
 	call_deferred("_set_phase", phases.START)
 
@@ -53,6 +66,18 @@ func _ready() -> void:
 
 	# Register UI signals
 	battle_ui.portrait_selected.connect(_on_target_selected)
+
+#region Physics
+func _physics_process(delta: float) -> void:
+
+	for combatant in _combatants:
+		if combatant.destination:
+			var destination: Vector3 = combatant.destination
+			var character = combatant.character
+			if destination and character:
+				character.global_position = character.global_position.lerp(destination, delta * MOVEMENT_SPEED)
+
+#endregion
 
 
 func _process(_delta: float) -> void:
@@ -104,6 +129,10 @@ func _set_phase(new_phase, data = null):
 		_set_phase(phases.PICK_UNIT)
 	elif phase == phases.PICK_UNIT:
 		cur_unit = _remaining[0]
+		# move forward character
+		var old_pos = Vector3(cur_unit.character.global_position)
+		var offset_value = -ACTIVE_POSITION_OFFSET if cur_unit.team == 1 else ACTIVE_POSITION_OFFSET
+		_move_to(cur_unit,Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
 		_set_phase(phases.PICK_ACTION)
 	elif phase == phases.PICK_ACTION:
 		if cur_unit.character.is_player_controlled:
@@ -125,6 +154,10 @@ func _set_phase(new_phase, data = null):
 			})
 			cur_action = actions[decision.action]
 			cur_target = decision.target
+
+			# Simulate thinking time
+			await get_tree().create_timer(1.0).timeout
+
 			_set_phase(phases.EXECUTE)
 	elif phase == phases.PICK_TARGET:
 		# configure target list
@@ -188,10 +221,19 @@ func _on_target_selected(combatant) -> void:
 		_set_phase(phases.EXECUTE)
 
 
+#region Do Action
 func _do_action() -> void:
 	execution_message = "- MISSING MESSAGE -"
 	match cur_action.name:
 		"attack":
+			# Animate attack
+			var old_pos = Vector3(cur_unit.character.global_position)
+			var target_pos = Vector3(cur_target.character.global_position)
+			_move_to(cur_unit,Vector3(target_pos.x, target_pos.y, target_pos.z))
+
+			await get_tree().create_timer(0.7).timeout
+			_move_to(cur_unit,Vector3(old_pos))
+
 			var amount:float = _get_damage_amount()
 			var block_amount = cur_target.character.block
 			if block_amount > 0:
@@ -253,6 +295,7 @@ func _do_action() -> void:
 		_remaining.append(combatant)
 	else:
 		_acted.append(combatant)
+# endregion
 
 #region Attack
 # Get current unit's attack value considering effects and boosts
@@ -309,8 +352,20 @@ func _apply_status_effects() -> void:
 
 func _end_turn() -> void:
 	_populate_initiative_panel()
+	battle_ui.hide_ui("DialogPanel")
+
+	# reset character position
+	_move_to(cur_unit,cur_unit.character.get_parent().global_position)
+	# Wait some time to complete animations
+	await get_tree().create_timer(1.0).timeout
+
 	var size = _remaining.size()
 	if size == 0:
 		_set_phase(phases.CONFIG_ROUND)
 	else:
 		_set_phase(phases.PICK_UNIT)
+
+
+func _move_to(combatant, destination: Vector3) -> void:
+	if combatant and destination:
+		combatant.destination = destination
