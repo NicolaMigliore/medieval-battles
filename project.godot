@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 BattleData="*res://battle_data.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+
 [input]
 
 input_up={

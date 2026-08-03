@@ -30,12 +30,13 @@ var cur_target = null
 
 var execution_message : String = ""
 
+#region Ready
 func _ready() -> void:
 	# init allies
 	for i in BattleData.allies.size():
 		var character = BattleData.allies[i].scene.instantiate()
 		ally_slots.get_child(i).add_child(character)
-		character.init(BattleData.allies[i])
+		character.init(BattleData.allies[i], false)
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
 			"team": 1,
@@ -48,7 +49,7 @@ func _ready() -> void:
 	for i in BattleData.enemies.size():
 		var character = BattleData.enemies[i].scene.instantiate()
 		enemy_slots.get_child(i).add_child(character)
-		character.init(BattleData.enemies[i])		# configure character stats
+		character.init(BattleData.enemies[i], true)		# configure character stats
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
 			"team": 2,
@@ -66,17 +67,18 @@ func _ready() -> void:
 
 	# Register UI signals
 	battle_ui.portrait_selected.connect(_on_target_selected)
+#endregion
 
 #region Physics
 func _physics_process(delta: float) -> void:
 
-	for combatant in _combatants:
-		if combatant.destination:
-			var destination: Vector3 = combatant.destination
-			var character = combatant.character
-			if destination and character:
-				character.global_position = character.global_position.lerp(destination, delta * MOVEMENT_SPEED)
-
+	# for combatant in _combatants:
+	# 	if combatant.destination:
+	# 		var destination: Vector3 = combatant.destination
+	# 		var character = combatant.character
+	# 		if destination and character:
+	# 			character.global_position = character.global_position.lerp(destination, delta * MOVEMENT_SPEED)
+	pass
 #endregion
 
 
@@ -132,7 +134,8 @@ func _set_phase(new_phase, data = null):
 		# move forward character
 		var old_pos = Vector3(cur_unit.character.global_position)
 		var offset_value = -ACTIVE_POSITION_OFFSET if cur_unit.team == 1 else ACTIVE_POSITION_OFFSET
-		_move_to(cur_unit,Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
+		# _move_to(cur_unit,Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
+		cur_unit.character.lerp_to(Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
 		_set_phase(phases.PICK_ACTION)
 	elif phase == phases.PICK_ACTION:
 		if cur_unit.character.is_player_controlled:
@@ -227,12 +230,17 @@ func _do_action() -> void:
 	match cur_action.name:
 		"attack":
 			# Animate attack
+			cur_unit.character.play_anticipation()
 			var old_pos = Vector3(cur_unit.character.global_position)
 			var target_pos = Vector3(cur_target.character.global_position)
-			_move_to(cur_unit,Vector3(target_pos.x, target_pos.y, target_pos.z))
+			
+			# Animate attacker
+			cur_unit.character.play_attack(target_pos, old_pos)
+			await cur_unit.character.attack_animation_started
 
-			await get_tree().create_timer(0.7).timeout
-			_move_to(cur_unit,Vector3(old_pos))
+			# Animate target
+			cur_target.character.play_hit()
+
 
 			var amount:float = _get_damage_amount()
 			var block_amount = cur_target.character.block
@@ -240,6 +248,9 @@ func _do_action() -> void:
 				cur_target.character.block = max(0, cur_target.character.block - amount)
 				amount = max(0, amount - block_amount)
 			cur_target.character.hp -= amount
+
+			# TODO: Check if dead remove from battle
+
 			if block_amount > 0:
 				execution_message = "%s attacks %s but is blocked by their shield and does %.2f damage" % [
 					cur_unit.character.actor_name,
@@ -355,7 +366,8 @@ func _end_turn() -> void:
 	battle_ui.hide_ui("DialogPanel")
 
 	# reset character position
-	_move_to(cur_unit,cur_unit.character.get_parent().global_position)
+	# _move_to(cur_unit,cur_unit.character.get_parent().global_position)
+	cur_unit.character.lerp_to(cur_unit.character.get_parent().global_position)
 	# Wait some time to complete animations
 	await get_tree().create_timer(1.0).timeout
 
@@ -366,6 +378,6 @@ func _end_turn() -> void:
 		_set_phase(phases.PICK_UNIT)
 
 
-func _move_to(combatant, destination: Vector3) -> void:
-	if combatant and destination:
-		combatant.destination = destination
+# func _move_to(combatant, destination: Vector3) -> void:
+# 	if combatant and destination:
+# 		combatant.destination = destination
