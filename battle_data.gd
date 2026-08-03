@@ -19,43 +19,43 @@ var allies: Array[Dictionary] = [
 		"actor_name": "Elfamir",
 		"actions_per_turn": 2,
 		"initiative": 1,
-		"block": 2,
-		"hp": 3
+		"block": 0,
+		"hp": 1
 	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-		"is_player_controlled": true,
-		"actor_name": "Cultist A",
-		"initiative": 2
-	},{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-		"is_player_controlled": true,
-		"actor_name": "Elastar",
-		"actions_per_turn": 2,
-		"initiative": 1,
-		"block": 2,
-		"hp": 3
-	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-		"is_player_controlled": true,
-		"actor_name": "Cultist B",
-		"initiative": 2
-	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-		"is_player_controlled": true,
-		"actor_name": "Cultist C",
-		"initiative": 2
-	}
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+	# 	"is_player_controlled": true,
+	# 	"actor_name": "Cultist A",
+	# 	"initiative": 2
+	# },{
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+	# 	"is_player_controlled": true,
+	# 	"actor_name": "Elastar",
+	# 	"actions_per_turn": 2,
+	# 	"initiative": 1,
+	# 	"block": 2,
+	# 	"hp": 3
+	# },
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+	# 	"is_player_controlled": true,
+	# 	"actor_name": "Cultist B",
+	# 	"initiative": 2
+	# },
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+	# 	"is_player_controlled": true,
+	# 	"actor_name": "Cultist C",
+	# 	"initiative": 2
+	# }
 ]   
 var enemies: Array[Dictionary] = [
 	{
@@ -65,7 +65,8 @@ var enemies: Array[Dictionary] = [
 		"is_player_controlled": false,
 		"actor_name": "Skeleton A",
 		"initiative": 3,
-		"attack_bias": 0.3
+		"attack_bias": 0.3,
+		"hp": 0.5
 	},
 	{
 		"scene": preload("res://entities/warrior/warrior.tscn"),

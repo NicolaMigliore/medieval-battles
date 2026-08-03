@@ -41,3 +41,6 @@ func _on_requested_switch_scene(scene_name) -> void:
 		
 		#load new scene
 		switch_scene(scene_name)
+
+		var transition_mask = get_node("CanvasLayer/TransitionTextureMask")
+		transition_mask.fade_in()

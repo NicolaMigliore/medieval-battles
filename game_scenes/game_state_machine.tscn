@@ -1,6 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://cj1c1v30akir2"]
+[gd_scene load_steps=6 format=3 uid="uid://cj1c1v30akir2"]
 
 [ext_resource type="Script" uid="uid://b11ix30b7euhh" path="res://game_scenes/game_state_machine.gd" id="1_v4oyh"]
+[ext_resource type="Shader" uid="uid://6t4b5of10whv" path="res://UI/transition_texture_mask.gdshader" id="2_nc8pv"]
+[ext_resource type="Script" uid="uid://fi216fitetxk" path="res://UI/transition_texture_mask.gd" id="3_atlbj"]
+[ext_resource type="Texture2D" uid="uid://6sl30q2s3ygt" path="res://UI/circle-mask.png" id="3_o25wo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o25wo"]
+shader = ExtResource("2_nc8pv")
+shader_parameter/mask_texture = ExtResource("3_o25wo")
+shader_parameter/zoom = 2.0
+shader_parameter/strength = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
 
 [node name="GameStateMachine" type="Node"]
 script = ExtResource("1_v4oyh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TransitionTextureMask" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_o25wo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_atlbj")
