@@ -3,6 +3,7 @@ class_name Character
 
 signal attack_animation_started
 signal attack_animation_finished
+signal hit_animation_finished
 
 @onready var animation_player = $Animation/AnimationPlayer
 @onready var animation_tree = $Animation/AnimationTree
@@ -200,6 +201,8 @@ func _get_best_boost_target(targets:Array):
 func _on_animation_finished(anim_name: String) -> void:
 	if anim_name == "character/right_attack":
 		attack_animation_finished.emit()
+	if anim_name == "character/right_hit":
+		hit_animation_finished.emit()
 
 func _travel(state_name: String) -> void:
 	var playback : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
@@ -233,6 +236,7 @@ func play_death() -> void:
 # Fired when any animation finishes
 func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 	_on_animation_finished(anim_name)
+
 
 func _on_animation_tree_animation_started(anim_name: StringName) -> void:
 	if anim_name == "character/right_attack":

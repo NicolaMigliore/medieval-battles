@@ -42,7 +42,8 @@ func _ready() -> void:
 			"team": 1,
 			"character": character,
 			"actions_per_turn": actions_per_turn,
-			"destination": null
+			# "destination": null
+			"is_active" : true
 		})
 
 	# init enemies
@@ -55,7 +56,8 @@ func _ready() -> void:
 			"team": 2,
 			"character": character,
 			"actions_per_turn": actions_per_turn,
-			"destination": null	
+			# "destination": null
+			"is_active": true	
 		})
 
 	call_deferred("_set_phase", phases.START)
@@ -69,21 +71,9 @@ func _ready() -> void:
 	battle_ui.portrait_selected.connect(_on_target_selected)
 #endregion
 
-#region Physics
-func _physics_process(delta: float) -> void:
-
-	# for combatant in _combatants:
-	# 	if combatant.destination:
-	# 		var destination: Vector3 = combatant.destination
-	# 		var character = combatant.character
-	# 		if destination and character:
-	# 			character.global_position = character.global_position.lerp(destination, delta * MOVEMENT_SPEED)
-	pass
-#endregion
-
 
 func _process(_delta: float) -> void:
-	# TODO: cleanup dead
+	# # TODO: cleanup dead
 
 	# TODO: manage block shaders
 
@@ -94,9 +84,6 @@ func _process(_delta: float) -> void:
 	if phase == phases.DONE:
 		# TODO: check timer and change scene 
 		print("Change scene!")
-
-	# show end of battle message
-	# TODO: check if battle is over
 
 	#region Pick unit
 	# Pick next unit
@@ -176,6 +163,20 @@ func _set_phase(new_phase, data = null):
 		battle_ui.show_ui("PickTarget", data)
 	elif phase == phases.EXECUTE:
 		_do_action()
+	elif phase == phases.DONE:
+		var done_message: String = ""
+		var defeated_team = data.defeated_team
+		if defeated_team == 1:
+			done_message = "Party was defeated and had to retreat..."
+		else:
+			done_message = "Party was victorious!"
+		# TODO: Play sounds
+		# TODO: assign penalty or reward
+
+		# show dialog
+		battle_ui.show_ui("Execute")
+		battle_ui.populate_dialog_panel(done_message, _end_battle)
+
 
 
 func _configure_round():
@@ -240,7 +241,7 @@ func _do_action() -> void:
 
 			# Animate target
 			cur_target.character.play_hit()
-
+			await cur_target.character.hit_animation_finished
 
 			var amount:float = _get_damage_amount()
 			var block_amount = cur_target.character.block
@@ -250,6 +251,11 @@ func _do_action() -> void:
 			cur_target.character.hp -= amount
 
 			# TODO: Check if dead remove from battle
+			if cur_target.character.hp <= 0:
+				_remaining.erase(cur_target)
+				_acted.erase(cur_target)
+				cur_target.character.play_death()
+				cur_target.is_active= false
 
 			if block_amount > 0:
 				execution_message = "%s attacks %s but is blocked by their shield and does %.2f damage" % [
@@ -274,7 +280,7 @@ func _do_action() -> void:
 		"block":
 			var amount = _get_block_amount()
 			cur_target.character.block += amount
-			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f%%" % [
+			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
 				amount,
@@ -283,10 +289,11 @@ func _do_action() -> void:
 		"boost":
 			var amount = _get_boost_amount()
 			cur_target.character.boost += amount
-			execution_message = "%s boosts %s's next action by %d" % [
+			execution_message = "%s boosts %s's next action by %.2f%% bringing the total to %d%%" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
-				amount * 100
+				amount * 100,
+				cur_target.character.boost * 100
 			]
 		"wait":
 			execution_message = "%s waits before taking an action" % [
@@ -366,10 +373,21 @@ func _end_turn() -> void:
 	battle_ui.hide_ui("DialogPanel")
 
 	# reset character position
-	# _move_to(cur_unit,cur_unit.character.get_parent().global_position)
 	cur_unit.character.lerp_to(cur_unit.character.get_parent().global_position)
 	# Wait some time to complete animations
 	await get_tree().create_timer(1.0).timeout
+
+	# Check if battle is over and show end of battle message
+	# TODO: check if battle is over
+	var t1_active_nbr = _combatants.filter(func(comb): return comb.team == 1 and comb.is_active).size()
+	var t2_active_nbr = _combatants.filter(func(comb): return comb.team == 2 and comb.is_active).size()
+	if t1_active_nbr == 0:
+		_set_phase(phases.DONE, {defeated_team = 1})
+		return
+	elif t2_active_nbr == 0:
+		_set_phase(phases.DONE, {defeated_team = 2})
+		return
+
 
 	var size = _remaining.size()
 	if size == 0:
@@ -378,6 +396,5 @@ func _end_turn() -> void:
 		_set_phase(phases.PICK_UNIT)
 
 
-# func _move_to(combatant, destination: Vector3) -> void:
-# 	if combatant and destination:
-# 		combatant.destination = destination
+func _end_battle() -> void:
+	get_parent().requested_switch_scene.emit("battle")
