@@ -277,3 +277,5 @@ offset_bottom = 40.0
 [node name="PhaseLabel" type="Label" parent="UI/BattleUI/DebugPanel"]
 layout_mode = 2
 text = "placeholder"
+
+[node name="HPBars" type="Node" parent="UI/BattleUI"]

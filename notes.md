@@ -12,8 +12,10 @@
 - [X] Implement boosting effects
 - [X] Implement AI taking actions
 - [X] Move characters forward when they are taking an action
-- [ ] Move characters during actions
+- [X] Move characters during actions
+- [X] Add progress bars for HP
 - [ ] Add action particles
 - [ ] Add action outlines
 - [ ] Update Sprites
 - [ ] Implement animations
+- [ ] Add shader effects for boosted and shielded characters

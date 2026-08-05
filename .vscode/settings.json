@@ -3,7 +3,9 @@
 	"editor.insertSpaces": false,
 	"workbench.colorTheme": "Godot 4",
 	"cSpell.words": [
-		"tscn"
+		"perc",
+		"tscn",
+		"unproject"
 	],
 	"workbench.colorCustomizations": {
 		"activityBar.background": "#0F3328",

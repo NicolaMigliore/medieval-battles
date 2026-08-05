@@ -22,24 +22,24 @@ var allies: Array[Dictionary] = [
 		"block": 0,
 		"hp": 1
 	},
-	# {
-	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
-	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
-	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-	# 	"is_player_controlled": true,
-	# 	"actor_name": "Cultist A",
-	# 	"initiative": 2
-	# },{
-	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
-	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
-	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-	# 	"is_player_controlled": true,
-	# 	"actor_name": "Elastar",
-	# 	"actions_per_turn": 2,
-	# 	"initiative": 1,
-	# 	"block": 2,
-	# 	"hp": 3
-	# },
+	{
+		"scene": preload("res://entities/warrior/warrior.tscn"),
+		"sprite_texture": WARRIOR_SPRITES.pick_random(),
+		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+		"is_player_controlled": true,
+		"actor_name": "Cultist A",
+		"initiative": 2
+	},{
+		"scene": preload("res://entities/warrior/warrior.tscn"),
+		"sprite_texture": WARRIOR_SPRITES.pick_random(),
+		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+		"is_player_controlled": true,
+		"actor_name": "Elastar",
+		"actions_per_turn": 2,
+		"initiative": 1,
+		"block": 2,
+		"hp": 3
+	},
 	# {
 	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
 	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
@@ -77,33 +77,33 @@ var enemies: Array[Dictionary] = [
 		"initiative": 1,
 		"attack_bias": 0.3
 	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
-		"is_player_controlled": false,
-		"actor_name": "Skeleton C",
-		"initiative": 1,
-		"attack_bias": 0.3
-	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
-		"is_player_controlled": false,
-		"actor_name": "Skeleton D",
-		"initiative": 1,
-		"attack_bias": 0.3
-	},
-	{
-		"scene": preload("res://entities/warrior/warrior.tscn"),
-		"sprite_texture": WARRIOR_SPRITES.pick_random(),
-		"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
-		"is_player_controlled": false,
-		"actor_name": "Skeleton E",
-		"initiative": 1,
-		"attack_bias": 0.3
-	}
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
+	# 	"is_player_controlled": false,
+	# 	"actor_name": "Skeleton C",
+	# 	"initiative": 1,
+	# 	"attack_bias": 0.3
+	# },
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
+	# 	"is_player_controlled": false,
+	# 	"actor_name": "Skeleton D",
+	# 	"initiative": 1,
+	# 	"attack_bias": 0.3
+	# },
+	# {
+	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
+	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
+	# 	"portrait": preload("res://entities/skeleton-minion/skeleton-minion-portrait.png"),
+	# 	"is_player_controlled": false,
+	# 	"actor_name": "Skeleton E",
+	# 	"initiative": 1,
+	# 	"attack_bias": 0.3
+	# }
 ]
 var on_victory: Callable
 var on_defeat: Callable

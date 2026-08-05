@@ -5,7 +5,8 @@ const MOVEMENT_SPEED:float = 8.0
 
 @onready var ally_slots = $AllySlots
 @onready var enemy_slots = $EnemySlots
-@onready var battle_ui = $"../UI/BattleUI"
+@onready var battle_ui:BattleUI = $"../UI/BattleUI"
+@onready var camera: Camera3D = $"../Camera3D"
 
 var _combatants: Array = []		# List of all combatants
 var _remaining: Array = []		# List of combatants that haven't completed actions
@@ -32,6 +33,10 @@ var execution_message : String = ""
 
 #region Ready
 func _ready() -> void:
+	# battle_ui = $"../UI/BattleUI"
+
+	var combatant_idx = 0
+
 	# init allies
 	for i in BattleData.allies.size():
 		var character = BattleData.allies[i].scene.instantiate()
@@ -39,12 +44,14 @@ func _ready() -> void:
 		character.init(BattleData.allies[i], false)
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
+			"idx": combatant_idx,
 			"team": 1,
 			"character": character,
 			"actions_per_turn": actions_per_turn,
 			# "destination": null
 			"is_active" : true
 		})
+		combatant_idx += 1
 
 	# init enemies
 	for i in BattleData.enemies.size():
@@ -53,17 +60,22 @@ func _ready() -> void:
 		character.init(BattleData.enemies[i], true)		# configure character stats
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
+			"idx": combatant_idx,
 			"team": 2,
 			"character": character,
 			"actions_per_turn": actions_per_turn,
 			# "destination": null
 			"is_active": true	
 		})
+		combatant_idx += 1
 
 	call_deferred("_set_phase", phases.START)
 
 	# setup initiative panel
 	call_deferred("_populate_initiative_panel")
+
+	# setup hp bars
+	call_deferred("_populate_hp_bars")
 
 	# _set_phase(phases.PICK_UNIT)
 
@@ -135,8 +147,8 @@ func _set_phase(new_phase, data = null):
 					button.pressed.connect(_on_action_selected.bind(button.name))
 		else:
 			# Automatic AI action and target picking
-			var allies = _combatants.filter(func(c): return c.team == cur_unit.team)
-			var enemies = _combatants.filter(func(c): return c.team != cur_unit.team)
+			var allies = _combatants.filter(func(c): return c.team == cur_unit.team and c.is_active)
+			var enemies = _combatants.filter(func(c): return c.team != cur_unit.team and c.is_active)
 			var decision = cur_unit.character.evaluate_action({
 				"self_combatant": cur_unit,
 				"allies": allies,
@@ -181,10 +193,11 @@ func _set_phase(new_phase, data = null):
 
 func _configure_round():
 	# populate initiative arrays
-	_combatants.sort_custom(func(a,b): return a.character.initiative > b.character.initiative)
 	_remaining = []
 	_acted = []
-	for combatant in _combatants:
+	_combatants.sort_custom(func(a,b): return a.character.initiative > b.character.initiative)
+	var active_combatants = _combatants.filter(func(comb): return comb.is_active)
+	for combatant in active_combatants:
 		for i in range(combatant.actions_per_turn):
 			_remaining.append(combatant)
 
@@ -218,6 +231,16 @@ func _on_action_selected(button_name: String) -> void:
 func _populate_initiative_panel() -> void:
 	battle_ui.populate_initiative_panel(_remaining, _acted)
 
+func _populate_hp_bars() -> void:
+	battle_ui.populate_hp_bars(_combatants)
+	# TODO: Position on the bars over combatants
+	var positions = []
+	for comb in _combatants:
+		var pos_2d:Vector2 = camera.unproject_position(comb.character.global_position)
+		# pos_2d = pos_2d - Vector2(0, -16)s		# Offset above the character
+		positions.append(pos_2d)
+	battle_ui.sync_bars_position(positions)
+
 func _on_target_selected(combatant) -> void:
 	if phase == phases.PICK_TARGET:
 		cur_target = combatant
@@ -230,6 +253,12 @@ func _do_action() -> void:
 	execution_message = "- MISSING MESSAGE -"
 	match cur_action.name:
 		"attack":
+			var amount:float = _get_damage_amount()
+			var block_amount = cur_target.character.block
+			if block_amount > 0:
+				cur_target.character.block = max(0, cur_target.character.block - amount)
+				amount = max(0, amount - block_amount)
+
 			# Animate attack
 			cur_unit.character.play_anticipation()
 			var old_pos = Vector3(cur_unit.character.global_position)
@@ -239,21 +268,22 @@ func _do_action() -> void:
 			cur_unit.character.play_attack(target_pos, old_pos)
 			await cur_unit.character.attack_animation_started
 
+			# Animate HP bar
+			var new_target_hp = max(0, cur_target.character.hp - amount) 
+			battle_ui.set_bar_visibility(cur_target.idx, true, true)
+			battle_ui.set_bar_value(cur_target.idx, new_target_hp)
+
+			# Update HP
+			cur_target.character.hp = new_target_hp
+			
 			# Animate target
 			cur_target.character.play_hit()
 			await cur_target.character.hit_animation_finished
 
-			var amount:float = _get_damage_amount()
-			var block_amount = cur_target.character.block
-			if block_amount > 0:
-				cur_target.character.block = max(0, cur_target.character.block - amount)
-				amount = max(0, amount - block_amount)
-			cur_target.character.hp -= amount
-
 			# TODO: Check if dead remove from battle
 			if cur_target.character.hp <= 0:
-				_remaining.erase(cur_target)
-				_acted.erase(cur_target)
+				_remaining = _remaining.filter(func(comb): return comb.idx != cur_target.idx)
+				_acted = _acted.filter(func(comb): return comb.idx != cur_target.idx)
 				cur_target.character.play_death()
 				cur_target.is_active= false
 
@@ -271,7 +301,16 @@ func _do_action() -> void:
 				]
 		"heal":
 			var amount:float = _get_heal_amount()
-			cur_target.character.hp = min(cur_target.character.max_hp, cur_target.character.hp + amount)
+			var new_target_hp = min(cur_target.character.max_hp, cur_target.character.hp + amount)
+
+			# Animate HP bar
+			cur_target.character.hp = new_target_hp
+			battle_ui.set_bar_visibility(cur_target.idx, true, true)
+			battle_ui.set_bar_value(cur_target.idx, new_target_hp)
+			
+			# Update HP
+			cur_target.character.hp = new_target_hp
+			
 			execution_message = "%s heals %s for %.2f hp" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,

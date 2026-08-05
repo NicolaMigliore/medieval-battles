@@ -1,22 +1,37 @@
 extends Control
+class_name BattleUI
 
 #region Signals
 signal portrait_selected(combattant)
 #endregion
 
 var _portrait_scene = preload("res://UI/character_portrait.tscn")
+var _hp_bar_scene = preload("res://UI/hp_bar/hp_bar.tscn")
 
 @onready var phase_label = $DebugPanel/PhaseLabel
 
+@onready var dialog_panel = $DialogPanel
+@onready var pick_action_panel = $PickActionPanel
+@onready var target_info_panel = $TargetInfoPanel
+@onready var character_initiative_panel = $CharacterInitiativePanel
+var _panels = []
+
+
 func _ready() -> void:
 	_hide_all_panels()
+	_panels = [
+		dialog_panel,
+		pick_action_panel,
+		target_info_panel,
+		character_initiative_panel
+	]
 
 #region Panel Visibility
 func _hide_all_panels() -> void:
-	for child in get_children():
+	for child in _panels:
 		child.hide()
 
-	# mage initiative panel always visible
+	# initiative panel always visible
 	get_node("CharacterInitiativePanel").show()
 	get_node("DebugPanel").show()
 
@@ -166,3 +181,50 @@ func populate_dialog_panel(msg: String, _on_advance) -> void:
 	advance_button.pressed.connect(_on_advance)
 	advance_button.grab_focus()
 #endregion
+
+
+#region HP Bars
+func populate_hp_bars(combatants) -> void:
+	var parent_node = $HPBars
+	for child in parent_node.get_children():
+		child.queue_free()
+	
+	for combatant in combatants:
+		var hp_bar:Control = _hp_bar_scene.instantiate()
+		parent_node.add_child(hp_bar)
+		var bar:ProgressBar = hp_bar.get_node("ProgressBar")
+		bar.value = combatant.character.hp
+		bar.max_value = combatant.character.max_hp
+		bar.hide()
+
+
+func sync_bars_position(positions: Array) -> void:
+	var bars:Array = get_node("HPBars").get_children()
+	for i in range(bars.size()):
+		var bar: ProgressBar = bars[i].get_node("ProgressBar")
+		var pos = positions[i]
+		bar.position = Vector2(pos)
+
+
+func set_bar_value(bar_idx: int, value: float) -> void:
+	var bars:Array = get_node("HPBars").get_children()
+	var bar: ProgressBar = bars[bar_idx].get_node("ProgressBar")
+	var tween_time: float = 1.0
+	bar.tween_bar(value, tween_time)
+
+func set_bar_visibility(bar_idx: int, reveal: bool, auto_hide:bool = false) -> void:
+	var bars:Array = get_node("HPBars").get_children()
+	var bar: ProgressBar = bars[bar_idx].get_node("ProgressBar")
+	if reveal:
+		bar.show()
+		if auto_hide:
+			var delay: float = 1.5
+			_hide_bar_after_delay(bar, delay)
+	else:
+		bar.hide()
+
+func _hide_bar_after_delay(bar:ProgressBar, delay: float) -> void:
+	await get_tree().create_timer(delay).timeout
+	bar.hide()
+#endregion
+
