@@ -15,6 +15,7 @@ var _hp_bar_scene = preload("res://UI/hp_bar/hp_bar.tscn")
 @onready var target_info_panel = $TargetInfoPanel
 @onready var character_initiative_panel = $CharacterInitiativePanel
 var _panels = []
+var _hp_bars_dict: Dictionary
 
 
 func _ready() -> void:
@@ -85,6 +86,7 @@ func populate_initiative_panel(remaining, acted) -> void:
 		# connect signals
 		portrait.pressed.connect(_on_portrait_pressed.bind(combatant))
 		portrait.focus_entered.connect(_on_portrait_focused.bind(combatant))
+		portrait.focus_exited.connect(_on_portrait_focus_exited.bind(combatant))
 		portrait.mouse_entered.connect(_on_portrait_hover_start.bind(combatant))
 		portrait.mouse_exited.connect(_on_portrait_hover_end)
 
@@ -97,6 +99,7 @@ func populate_initiative_panel(remaining, acted) -> void:
 		# connect signals
 		portrait.pressed.connect(_on_portrait_pressed.bind(combatant))
 		portrait.focus_entered.connect(_on_portrait_focused.bind(combatant))
+		portrait.focus_exited.connect(_on_portrait_focus_exited.bind(combatant))
 		portrait.mouse_entered.connect(_on_portrait_hover_start.bind(combatant))
 		portrait.mouse_exited.connect(_on_portrait_hover_end)
 
@@ -121,6 +124,16 @@ func _on_portrait_pressed(combatant) -> void:
 func _on_portrait_focused(combatant) -> void:
 	if combatant:
 		populate_info_panel(combatant)
+		set_bar_visibility(combatant.idx, true, false)
+
+		# set bar label
+		var bars:Array = get_node("HPBars").get_children()
+		var hp_bar: HPBar = bars[combatant.idx]
+		hp_bar.set_label(combatant.character.actor_name)
+	
+func _on_portrait_focus_exited(combatant) -> void:
+	if combatant:
+		set_bar_visibility(combatant.idx, false, false)
 
 func _on_portrait_hover_start(combatant) -> void:
 	if combatant:
@@ -188,43 +201,46 @@ func populate_hp_bars(combatants) -> void:
 	var parent_node = $HPBars
 	for child in parent_node.get_children():
 		child.queue_free()
+	_hp_bars_dict = {}
 	
 	for combatant in combatants:
-		var hp_bar:Control = _hp_bar_scene.instantiate()
+		var hp_bar:HPBar = _hp_bar_scene.instantiate()
 		parent_node.add_child(hp_bar)
+		_hp_bars_dict[combatant.idx] = hp_bar
+
+		# TODO: handle Progress Bar manipulation through custom functions
 		var bar:ProgressBar = hp_bar.get_node("ProgressBar")
 		bar.value = combatant.character.hp
 		bar.max_value = combatant.character.max_hp
-		bar.hide()
+		hp_bar.set_label(combatant.character.actor_name)
+		hp_bar.hide()
 
 
-func sync_bars_position(positions: Array) -> void:
-	var bars:Array = get_node("HPBars").get_children()
-	for i in range(bars.size()):
-		var bar: ProgressBar = bars[i].get_node("ProgressBar")
-		var pos = positions[i]
-		bar.position = Vector2(pos)
+func sync_bar_position(bar_id:int, pos:Vector2) -> void:
+	var hp_bar:HPBar = _hp_bars_dict[bar_id]
+	if hp_bar:
+		hp_bar.position = Vector2(pos)
 
 
 func set_bar_value(bar_idx: int, value: float) -> void:
 	var bars:Array = get_node("HPBars").get_children()
-	var bar: ProgressBar = bars[bar_idx].get_node("ProgressBar")
+	var hp_bar: HPBar = bars[bar_idx]
 	var tween_time: float = 1.0
-	bar.tween_bar(value, tween_time)
+	hp_bar.tween_bar(value, tween_time)
 
 func set_bar_visibility(bar_idx: int, reveal: bool, auto_hide:bool = false) -> void:
 	var bars:Array = get_node("HPBars").get_children()
-	var bar: ProgressBar = bars[bar_idx].get_node("ProgressBar")
+	var hp_bar: HPBar= bars[bar_idx]
 	if reveal:
-		bar.show()
+		hp_bar.show()
 		if auto_hide:
 			var delay: float = 1.5
-			_hide_bar_after_delay(bar, delay)
+			_hide_bar_after_delay(hp_bar, delay)
 	else:
-		bar.hide()
+		hp_bar.hide()
 
-func _hide_bar_after_delay(bar:ProgressBar, delay: float) -> void:
+func _hide_bar_after_delay(hp_bar:HPBar, delay: float) -> void:
 	await get_tree().create_timer(delay).timeout
-	bar.hide()
+	hp_bar.hide()
 #endregion
 

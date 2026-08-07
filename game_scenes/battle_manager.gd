@@ -19,7 +19,7 @@ var phase = null
 
 const actions = {
 	"attack": { "name": "attack", "target": "enemy", "stat_key": "attack_pwr" },
-	"block": { "name": "block", "target": "ally", "stat_key": "block_pwr" },
+	"block": { "name": "block", "target": "self", "stat_key": "block_pwr" },
 	"heal": { "name": "heal", "target": "ally", "stat_key": "heal_pwr" },
 	"boost": { "name": "boost", "target": "ally", "stat_key": "boost_pwr" },
 	"wait": { "name": "wait", "target": "self", "stat_key": null }
@@ -42,7 +42,12 @@ func _ready() -> void:
 		var character = BattleData.allies[i].scene.instantiate()
 		ally_slots.get_child(i).add_child(character)
 		character.init(BattleData.allies[i], false)
+		# Update shader (for shield)
+		character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", character.block > 0)
+
+
 		var actions_per_turn =_get_actions_per_turn(character)
+
 		_combatants.append({
 			"idx": combatant_idx,
 			"team": 1,
@@ -83,36 +88,11 @@ func _ready() -> void:
 	battle_ui.portrait_selected.connect(_on_target_selected)
 #endregion
 
-
+#region Process
 func _process(_delta: float) -> void:
-	# # TODO: cleanup dead
-
-	# TODO: manage block shaders
-
-	# TODO: update action fx
-
-	#region Battle Done
-	# Exit battle scene
-	if phase == phases.DONE:
-		# TODO: check timer and change scene 
-		print("Change scene!")
-
-	#region Pick unit
-	# Pick next unit
-	# if phase == phases.PICK_UNIT:
-		
-
-	#region Pick Action
-	# if phase == phases.PICK_ACTION:
-
-	#region Pick Target
-	# if phase == phases.PICK_TARGET:
-	# 	# TODO: handle player input
-
-
-	#region Execute
-	# if phase == phases.EXECUTE:
-
+	# Sync HP bars (needed for self heals)
+	_sync_all_bar_positions()
+#endregion
 
 func _set_phase(new_phase, data = null):
 	phase = new_phase
@@ -135,8 +115,9 @@ func _set_phase(new_phase, data = null):
 		var offset_value = -ACTIVE_POSITION_OFFSET if cur_unit.team == 1 else ACTIVE_POSITION_OFFSET
 		# _move_to(cur_unit,Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
 		cur_unit.character.lerp_to(Vector3(old_pos.x, old_pos.y, old_pos.z + offset_value))
+
 		_set_phase(phases.PICK_ACTION)
-	elif phase == phases.PICK_ACTION:
+	elif phase == phases.PICK_ACTION:				# Needed to position the bar for self healing
 		if cur_unit.character.is_player_controlled:
 			battle_ui.show_ui("PickAction", null)
 
@@ -201,6 +182,9 @@ func _configure_round():
 		for i in range(combatant.actions_per_turn):
 			_remaining.append(combatant)
 
+		# Clear unit boost value
+		combatant.character.boost = 0
+
 func _get_actions_per_turn(character):
 	# TODO: Implement logic based on charms and disabled actions
 	var base = character.actions_per_turn
@@ -234,12 +218,12 @@ func _populate_initiative_panel() -> void:
 func _populate_hp_bars() -> void:
 	battle_ui.populate_hp_bars(_combatants)
 	# TODO: Position on the bars over combatants
-	var positions = []
-	for comb in _combatants:
-		var pos_2d:Vector2 = camera.unproject_position(comb.character.global_position)
-		# pos_2d = pos_2d - Vector2(0, -16)s		# Offset above the character
-		positions.append(pos_2d)
-	battle_ui.sync_bars_position(positions)
+	# var positions = []
+	# for comb in _combatants:
+	# 	var pos_2d:Vector2 = camera.unproject_position(comb.character.global_position)
+	# 	positions.append(pos_2d)
+	# battle_ui.sync_bars_position(positions)
+	# _sync_all_bar_positions()
 
 func _on_target_selected(combatant) -> void:
 	if phase == phases.PICK_TARGET:
@@ -258,6 +242,9 @@ func _do_action() -> void:
 			if block_amount > 0:
 				cur_target.character.block = max(0, cur_target.character.block - amount)
 				amount = max(0, amount - block_amount)
+				if cur_target.character.block <= 0:
+					cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+
 
 			# Animate attack
 			cur_unit.character.play_anticipation()
@@ -303,6 +290,13 @@ func _do_action() -> void:
 			var amount:float = _get_heal_amount()
 			var new_target_hp = min(cur_target.character.max_hp, cur_target.character.hp + amount)
 
+			# Animate healer
+			cur_unit.character.play_heal_give()
+			await cur_unit.character.heal_give_animation_finished
+
+			# Animate target
+			cur_target.character.play_heal_take()
+			
 			# Animate HP bar
 			cur_target.character.hp = new_target_hp
 			battle_ui.set_bar_visibility(cur_target.idx, true, true)
@@ -319,6 +313,14 @@ func _do_action() -> void:
 		"block":
 			var amount = _get_block_amount()
 			cur_target.character.block += amount
+			# Update shader
+			cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+
+
+			# Animate blocker
+			cur_unit.character.play_block()
+			await cur_unit.character.block_animation_finished
+
 			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
@@ -328,7 +330,15 @@ func _do_action() -> void:
 		"boost":
 			var amount = _get_boost_amount()
 			cur_target.character.boost += amount
-			execution_message = "%s boosts %s's next action by %.2f%% bringing the total to %d%%" % [
+
+			# Animate booster
+			cur_unit.character.play_boost_give()
+			await cur_unit.character.boost_give_animation_finished
+
+			# Animate target
+			cur_target.character.play_boost_take()
+
+			execution_message = "%s boosts %s's next action by %.d%% bringing the total to +%d%%" % [
 				cur_unit.character.actor_name,
 				cur_target.character.actor_name,
 				amount * 100,
@@ -338,9 +348,6 @@ func _do_action() -> void:
 			execution_message = "%s waits before taking an action" % [
 				cur_unit.character.actor_name
 			]
-
-	# Clear current boost value
-	cur_unit.character.boost = 0
 
 	# show dialog
 	battle_ui.show_ui("Execute")
@@ -427,7 +434,6 @@ func _end_turn() -> void:
 		_set_phase(phases.DONE, {defeated_team = 2})
 		return
 
-
 	var size = _remaining.size()
 	if size == 0:
 		_set_phase(phases.CONFIG_ROUND)
@@ -437,3 +443,15 @@ func _end_turn() -> void:
 
 func _end_battle() -> void:
 	get_parent().requested_switch_scene.emit("battle")
+
+#region UI
+
+func _sync_all_bar_positions() -> void:
+	for comb in _combatants:
+		var pos: Vector2 = camera.unproject_position(comb.character.global_position)
+		var control_centering_offset:Vector2 = Vector2(-20,-20)
+		var character_offset:Vector2 = Vector2(0,-101)
+		pos = pos + control_centering_offset + character_offset
+		battle_ui.sync_bar_position(comb.idx, pos)
+
+#endregion

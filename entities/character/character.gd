@@ -4,6 +4,9 @@ class_name Character
 signal attack_animation_started
 signal attack_animation_finished
 signal hit_animation_finished
+signal heal_give_animation_finished
+signal block_animation_finished
+signal boost_give_animation_finished
 
 @onready var animation_player = $Animation/AnimationPlayer
 @onready var animation_tree = $Animation/AnimationTree
@@ -203,6 +206,12 @@ func _on_animation_finished(anim_name: String) -> void:
 		attack_animation_finished.emit()
 	if anim_name == "character/right_hit":
 		hit_animation_finished.emit()
+	if anim_name == "character/right_heal_give":
+		heal_give_animation_finished.emit()
+	if anim_name == "character/right_block":
+		block_animation_finished.emit()
+	if anim_name == "character/right_boost_give":
+		boost_give_animation_finished.emit()
 
 func _travel(state_name: String) -> void:
 	var playback : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
@@ -223,13 +232,26 @@ func play_attack(target_pos: Vector3, return_pos: Vector3) -> void:
 	lerp_to(Vector3(return_pos))
 			
 
-
 func play_hit() -> void:
 	_travel("character_right_hit")
 
 func play_death() -> void:
 	_travel("character_right_death")
 
+func play_heal_give() -> void:
+	_travel("character_right_heal_give")
+
+func play_heal_take() -> void:
+	_travel("character_right_heal_take")
+
+func play_block() -> void:
+	_travel("character_right_block")
+
+func play_boost_give() -> void:
+	_travel("character_right_boost_give")
+
+func play_boost_take() -> void:
+	_travel("character_right_boost_take")
 
 #endregion
 
