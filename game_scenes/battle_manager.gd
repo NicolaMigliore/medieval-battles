@@ -252,7 +252,8 @@ func _do_action() -> void:
 			# Animate attacker
 			cur_unit.character.play_anticipation()
 			var old_pos = Vector3(cur_unit.character.global_position)
-			var target_pos = Vector3(cur_target.character.global_position)
+			var offset = cur_target.character.global_position.direction_to(old_pos) * .2
+			var target_pos = Vector3(cur_target.character.global_position) + offset
 			cur_unit.character.play_attack(target_pos, old_pos)
 			
 			await cur_unit.character.attack_animation_started
