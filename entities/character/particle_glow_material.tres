@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://qmfr7h1d437v"]
+
+[ext_resource type="Texture2D" uid="uid://683krufi7dw2" path="res://particles/particle_heal.png" id="1_6s7ag"]
+[ext_resource type="Texture2D" uid="uid://dfiomy36chs0m" path="res://particles/circle_05.png" id="1_cqoyb"]
+
+[resource]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1.0039216, 0.9999855, 0.9999855, 1)
+albedo_texture = ExtResource("1_cqoyb")
+emission_enabled = true
+emission_energy_multiplier = 0.4
+emission_texture = ExtResource("1_6s7ag")
+texture_filter = 0
+billboard_mode = 1
+billboard_keep_scale = true

@@ -94,6 +94,8 @@ func _process(_delta: float) -> void:
 	_sync_all_bar_positions()
 #endregion
 
+
+#region Set Phase
 func _set_phase(new_phase, data = null):
 	phase = new_phase
 	battle_ui.update_phase_label("Phase: %s" % phase)
@@ -169,7 +171,7 @@ func _set_phase(new_phase, data = null):
 		# show dialog
 		battle_ui.show_ui("Execute")
 		battle_ui.populate_dialog_panel(done_message, _end_battle)
-
+#endregion
 
 
 func _configure_round():
@@ -184,6 +186,8 @@ func _configure_round():
 
 		# Clear unit boost value
 		combatant.character.boost = 0
+		combatant.character.set_boosted_particles(false)
+
 
 func _get_actions_per_turn(character):
 	# TODO: Implement logic based on charms and disabled actions
@@ -245,14 +249,12 @@ func _do_action() -> void:
 				if cur_target.character.block <= 0:
 					cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
 
-
-			# Animate attack
+			# Animate attacker
 			cur_unit.character.play_anticipation()
 			var old_pos = Vector3(cur_unit.character.global_position)
 			var target_pos = Vector3(cur_target.character.global_position)
-			
-			# Animate attacker
 			cur_unit.character.play_attack(target_pos, old_pos)
+			
 			await cur_unit.character.attack_animation_started
 
 			# Animate HP bar
@@ -265,6 +267,7 @@ func _do_action() -> void:
 			
 			# Animate target
 			cur_target.character.play_hit()
+			cur_target.character.set_hit_particles(true)
 			await cur_target.character.hit_animation_finished
 
 			# TODO: Check if dead remove from battle
@@ -313,13 +316,17 @@ func _do_action() -> void:
 		"block":
 			var amount = _get_block_amount()
 			cur_target.character.block += amount
-			# Update shader
-			cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
 
 
 			# Animate blocker
 			cur_unit.character.play_block()
-			await cur_unit.character.block_animation_finished
+			# await cur_unit.character.block_animation_finished
+			
+			cur_unit.character.set_block_particles(true)
+			await cur_unit.character.block_particles_finished
+
+			# Update shader
+			cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
 
 			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f" % [
 				cur_unit.character.actor_name,
@@ -337,6 +344,8 @@ func _do_action() -> void:
 
 			# Animate target
 			cur_target.character.play_boost_take()
+			cur_target.character.set_boost_particles(true)
+			cur_target.character.set_boosted_particles(true)
 
 			execution_message = "%s boosts %s's next action by %.d%% bringing the total to +%d%%" % [
 				cur_unit.character.actor_name,

@@ -1,12 +1,152 @@
-[gd_scene load_steps=49 format=3 uid="uid://34hufo7gt441"]
+[gd_scene load_steps=73 format=3 uid="uid://34hufo7gt441"]
 
 [ext_resource type="Script" uid="uid://om4pfywt0ads" path="res://entities/character/character.gd" id="1_6i0tm"]
+[ext_resource type="Texture2D" uid="uid://bbtkjevxgngcp" path="res://particles/particle_dust.png" id="2_2ltml"]
 [ext_resource type="Texture2D" uid="uid://djqo25xbak5nu" path="res://entities/character/character.png" id="2_6i0tm"]
 [ext_resource type="Shader" uid="uid://dnqt8xp6trkkp" path="res://entities/character/hit_flash.gdshader" id="2_7315l"]
+[ext_resource type="Material" uid="uid://qmfr7h1d437v" path="res://entities/character/particle_glow_material.tres" id="4_l75fg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3glrm"]
-radius = 0.11230469
-height = 0.3149109
+radius = 0.076660156
+height = 0.22044373
+
+[sub_resource type="Gradient" id="Gradient_2ltml"]
+offsets = PackedFloat32Array(0, 0.47387388, 1)
+colors = PackedColorArray(0.82218075, 0.54361945, 0.35223964, 1, 0.2478, 0.59, 0.25350335, 1, 0.5211406, 0.5211406, 0.5211405, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xn0r5"]
+gradient = SubResource("Gradient_2ltml")
+
+[sub_resource type="Gradient" id="Gradient_l75fg"]
+offsets = PackedFloat32Array(0, 0.43783784, 0.64144146)
+colors = PackedColorArray(0.18000486, 0.18000486, 0.18000486, 1, 0.78450423, 0.616045, 0.32626614, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vwd7k"]
+gradient = SubResource("Gradient_l75fg")
+
+[sub_resource type="Curve" id="Curve_2ltml"]
+_data = [Vector2(0, 0.51106197), 0.0, 0.0, 0, 0, Vector2(0.25301206, 0.8315424), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_xn0r5"]
+curve = SubResource("Curve_2ltml")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xn0r5"]
+lifetime_randomness = 0.25
+emission_shape_offset = Vector3(0, 0.02, 0)
+emission_shape_scale = Vector3(0.2, 0.035, 0.2)
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, 0, 0)
+spread = 3.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+angular_velocity_min = -200.00002
+angular_velocity_max = 199.99998
+gravity = Vector3(0, 0.2, 0)
+linear_accel_min = -10.000002
+linear_accel_max = -2.2351742e-06
+damping_min = 4.2000003
+damping_max = 4.2000003
+attractor_interaction_enabled = false
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_xn0r5")
+color = Color(0.5917071, 0.48592728, 0.15705729, 1)
+color_ramp = SubResource("GradientTexture1D_vwd7k")
+color_initial_ramp = SubResource("GradientTexture1D_xn0r5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l75fg"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_2ltml")
+texture_filter = 0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+stencil_flags = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_vwd7k"]
+material = SubResource("StandardMaterial3D_l75fg")
+size = Vector2(0.25, 0.25)
+
+[sub_resource type="Curve" id="Curve_xn0r5"]
+_data = [Vector2(0.24784856, 1), 0.0, 0.0, 0, 0, Vector2(0.99483657, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_l75fg"]
+curve = SubResource("Curve_xn0r5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2ltml"]
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.5
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_l75fg")
+color = Color(0.94036186, 5.3425133e-06, 3.85046e-07, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xn0r5"]
+vertex_color_use_as_albedo = true
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_l75fg"]
+material = SubResource("StandardMaterial3D_xn0r5")
+size = Vector2(0.01, 0.01)
+
+[sub_resource type="Curve" id="Curve_l75fg"]
+_data = [Vector2(0, 0.8233249), 0.0, 0.0, 0, 0, Vector2(0.44578314, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_vwd7k"]
+curve = SubResource("Curve_l75fg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l75fg"]
+lifetime_randomness = 0.2
+emission_shape = 1
+emission_sphere_radius = 0.3
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -10.000002
+radial_accel_max = -10.000002
+damping_min = 6.0000005
+damping_max = 10.0
+scale_min = 0.06
+scale_max = 0.099999994
+scale_curve = SubResource("CurveTexture_vwd7k")
+color = Color(0.09800003, 0.48020008, 0.98, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ceyjw"]
+material = ExtResource("4_l75fg")
+
+[sub_resource type="Curve" id="Curve_vwd7k"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.49741825, 0.60967135), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ceyjw"]
+curve = SubResource("Curve_vwd7k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vwd7k"]
+lifetime_randomness = 0.2
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 52.23
+spread = 42.025
+gravity = Vector3(0, 1, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 9.689998
+scale_min = 0.049999997
+scale_max = 0.099999994
+scale_curve = SubResource("CurveTexture_ceyjw")
+color = Color(0.92258656, 0.9853323, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_4ya86"]
+material = ExtResource("4_l75fg")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7315l"]
 resource_local_to_scene = true
@@ -214,6 +354,86 @@ tracks/1/keys = {
 "values": [0.0, 0.15041003796179986, -0.1495899762881998, 0.0004100308367998]
 }
 
+[sub_resource type="Animation" id="Animation_l75fg"]
+resource_name = "right_boost_give"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [49, 3, 26, 72, 52, 56]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.1, 0.13333333, 0.20000003, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.9, 1.2, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.8, 1.4, 1), Vector3(0.8, 1.4, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath(".:material_override:shader_parameter/intensity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.102306, 0.202306, 0.3, 0.40230593, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_vwd7k"]
+resource_name = "right_boost_take"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 6, 7, 8, 10]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.1, 0.13333333, 0.20000003, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.9, 1.2, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.8, 1.4, 1), Vector3(0.8, 1.4, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath(".:material_override:shader_parameter/intensity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.102306, 0.202306, 0.3, 0.40230593, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+}
+
 [sub_resource type="Animation" id="Animation_oagy8"]
 resource_name = "right_death"
 length = 0.7
@@ -416,86 +636,6 @@ tracks/0/keys = {
 "values": [47, 48]
 }
 
-[sub_resource type="Animation" id="Animation_l75fg"]
-resource_name = "right_boost_give"
-length = 0.9
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [49, 3, 26, 72, 52, 56]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.1, 0.13333333, 0.20000003, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(1, 1, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.9, 1.2, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.8, 1.4, 1), Vector3(0.8, 1.4, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = false
-tracks/2/path = NodePath(".:material_override:shader_parameter/intensity")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.102306, 0.202306, 0.3, 0.40230593, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
-}
-
-[sub_resource type="Animation" id="Animation_vwd7k"]
-resource_name = "right_boost_take"
-length = 0.9
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [1, 6, 7, 8, 10]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.1, 0.13333333, 0.20000003, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(1, 1, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.9, 1.2, 1), Vector3(1.3470094, 0.81987363, 1), Vector3(0.8, 1.4, 1), Vector3(0.8, 1.4, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = false
-tracks/2/path = NodePath(".:material_override:shader_parameter/intensity")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.102306, 0.202306, 0.3, 0.40230593, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gvgwg"]
 _data = {
 &"right_anticipation": SubResource("Animation_by3fe"),
@@ -623,17 +763,68 @@ states/character_right_hit/position = Vector2(440, 31)
 states/character_right_idle/node = SubResource("AnimationNodeAnimation_2ltml")
 states/character_right_idle/position = Vector2(286, 126)
 transitions = ["Start", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_xn0r5"), "character_right_idle", "character_right_anticipation", SubResource("AnimationNodeStateMachineTransition_l75fg"), "character_right_anticipation", "character_right_attack", SubResource("AnimationNodeStateMachineTransition_vwd7k"), "character_right_attack", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_ceyjw"), "character_right_idle", "character_right_hit", SubResource("AnimationNodeStateMachineTransition_4ya86"), "character_right_hit", "character_right_death", SubResource("AnimationNodeStateMachineTransition_0vyii"), "character_right_hit", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_6i0tm"), "character_right_idle", "character_right_heal_give", SubResource("AnimationNodeStateMachineTransition_6y70v"), "character_right_idle", "character_right_heal_take", SubResource("AnimationNodeStateMachineTransition_wu0gw"), "character_right_heal_give", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_0i2jp"), "character_right_heal_take", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_555hj"), "character_right_idle", "character_right_block", SubResource("AnimationNodeStateMachineTransition_xrw5f"), "character_right_block", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_300kk"), "character_right_boost_take", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_sa5ij"), "character_right_boost_give", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_7cb1a"), "character_right_idle", "character_right_boost_give", SubResource("AnimationNodeStateMachineTransition_dovdo"), "character_right_idle", "character_right_boost_take", SubResource("AnimationNodeStateMachineTransition_oo5hp")]
-graph_offset = Vector2(-239.34901, 51.9772)
+graph_offset = Vector2(-232.6466, 126.67603)
 
 [node name="Character" type="CharacterBody3D"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 script = ExtResource("1_6i0tm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113937706, 0)
 shape = SubResource("CapsuleShape3D_3glrm")
 
+[node name="Particles" type="Node3D" parent="CollisionShape3D"]
+
+[node name="RunParticles" type="GPUParticles3D" parent="CollisionShape3D/Particles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0975501, 0)
+emitting = false
+amount = 6
+speed_scale = 2.0
+explosiveness = 0.2
+randomness = 0.2
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_xn0r5")
+draw_pass_1 = SubResource("QuadMesh_vwd7k")
+
+[node name="HitParticles" type="GPUParticles3D" parent="CollisionShape3D/Particles"]
+emitting = false
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_2ltml")
+draw_pass_1 = SubResource("QuadMesh_l75fg")
+
+[node name="BlockParticles" type="GPUParticles3D" parent="CollisionShape3D/Particles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.031200737, 0)
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_l75fg")
+draw_pass_1 = SubResource("QuadMesh_ceyjw")
+
+[node name="BoostParticles" type="GPUParticles3D" parent="CollisionShape3D/Particles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.038071886, 0)
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_vwd7k")
+draw_pass_1 = SubResource("QuadMesh_4ya86")
+
+[node name="BoostedParticles" type="GPUParticles3D" parent="CollisionShape3D/Particles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.038071886, 0)
+emitting = false
+amount = 2
+amount_ratio = 0.5
+lifetime = 0.5
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_vwd7k")
+draw_pass_1 = SubResource("QuadMesh_4ya86")
+
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1600233, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.020440966, 0)
 material_override = SubResource("ShaderMaterial_7315l")
 cast_shadow = 2
 offset = Vector2(0, 6)

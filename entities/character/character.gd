@@ -7,6 +7,8 @@ signal hit_animation_finished
 signal heal_give_animation_finished
 signal block_animation_finished
 signal boost_give_animation_finished
+signal destination_reached
+signal block_particles_finished
 
 @onready var animation_player = $Animation/AnimationPlayer
 @onready var animation_tree = $Animation/AnimationTree
@@ -50,6 +52,8 @@ func _physics_process(delta: float) -> void:
 		global_position = global_position.lerp(_lerp_destination, delta * _lerp_speed)
 		if global_position.distance_squared_to(_lerp_destination) < 0.0001:
 			_must_lerp = false
+			destination_reached.emit()
+
 
 func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
 	_lerp_destination = destination
@@ -221,12 +225,16 @@ func play_anticipation() -> void:
 	_travel("character_right_anticipation")
 
 func play_attack(target_pos: Vector3, return_pos: Vector3) -> void:
+	# Move to the target
 	var destination: Vector3 = target_pos - global_position.direction_to(target_pos) * 0.08
 	lerp_to(Vector3(destination.x, destination.y, destination.z))
-	await get_tree().create_timer(0.7).timeout
+	# await get_tree().create_timer(0.7).timeout
+	set_run_particles(true)
+	await destination_reached
 
 	# Animate attack impact
 	_travel("character_right_attack")
+	set_run_particles(false)
 	await attack_animation_finished
 
 	lerp_to(Vector3(return_pos))
@@ -253,13 +261,42 @@ func play_boost_give() -> void:
 func play_boost_take() -> void:
 	_travel("character_right_boost_take")
 
-#endregion
 
 # Fired when any animation finishes
 func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 	_on_animation_finished(anim_name)
 
-
+# Fired when any animation starts
 func _on_animation_tree_animation_started(anim_name: StringName) -> void:
 	if anim_name == "character/right_attack":
 		attack_animation_started.emit()
+
+#endregion
+
+#region Particles
+func set_run_particles(emit: bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/RunParticles")
+	particles.emitting = emit
+
+func set_hit_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/HitParticles")
+	particles.emitting = emit
+
+func set_block_particles(emit: bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/BlockParticles")
+	particles.emitting = emit
+
+	await particles.finished
+	block_particles_finished.emit()
+
+# On shot particles to show that the character is being boosted
+func set_boost_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/BoostParticles")
+	particles.emitting = emit
+
+# Persistent particles to show that the character is boosted
+func set_boosted_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/BoostedParticles")
+	particles.emitting = emit
+
+#endregion

@@ -40,22 +40,22 @@ var allies: Array[Dictionary] = [
 		"block": 2,
 		"hp": 3
 	},
-	# {
-	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
-	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
-	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-	# 	"is_player_controlled": true,
-	# 	"actor_name": "Cultist B",
-	# 	"initiative": 2
-	# },
-	# {
-	# 	"scene": preload("res://entities/warrior/warrior.tscn"),
-	# 	"sprite_texture": WARRIOR_SPRITES.pick_random(),
-	# 	"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
-	# 	"is_player_controlled": true,
-	# 	"actor_name": "Cultist C",
-	# 	"initiative": 2
-	# }
+	{
+		"scene": preload("res://entities/warrior/warrior.tscn"),
+		"sprite_texture": WARRIOR_SPRITES.pick_random(),
+		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+		"is_player_controlled": true,
+		"actor_name": "Cultist B",
+		"initiative": 2
+	},
+	{
+		"scene": preload("res://entities/warrior/warrior.tscn"),
+		"sprite_texture": WARRIOR_SPRITES.pick_random(),
+		"portrait": preload("res://entities/cultist-minion/cultist-minion-portrait.png"),
+		"is_player_controlled": true,
+		"actor_name": "Cultist C",
+		"initiative": 2
+	}
 ]   
 var enemies: Array[Dictionary] = [
 	{

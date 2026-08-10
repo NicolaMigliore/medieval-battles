@@ -14,8 +14,9 @@
 - [X] Move characters forward when they are taking an action
 - [X] Move characters during actions
 - [X] Add progress bars for HP
-- [ ] Add action particles
-- [ ] Add action outlines
+- [X] Add action particles
+- [X] Add action outlines
 - [ ] Update Sprites
-- [ ] Implement animations
-- [ ] Add shader effects for boosted and shielded characters
+- [X] Implement animations
+- [X] Add shader effects for boosted and shielded characters
+- [ ] Create test battle for balancing
