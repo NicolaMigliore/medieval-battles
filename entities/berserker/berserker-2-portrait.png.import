@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p0epe2kddkeg"
-path="res://.godot/imported/warrior-6.png-2445e2265529ec3bfd0dc5c1bfece0e4.ctex"
+uid="uid://ma42ij4egmxh"
+path="res://.godot/imported/berserker-2-portrait.png-392aaffba87049a094f766e0d9fd8605.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/warrior/warrior-6.png"
-dest_files=["res://.godot/imported/warrior-6.png-2445e2265529ec3bfd0dc5c1bfece0e4.ctex"]
+source_file="res://entities/berserker/berserker-2-portrait.png"
+dest_files=["res://.godot/imported/berserker-2-portrait.png-392aaffba87049a094f766e0d9fd8605.ctex"]
 
 [params]
 

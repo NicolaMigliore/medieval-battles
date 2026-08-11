@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2secqd37b4af"
-path="res://.godot/imported/warrior-3.png-4eba17e87fcb1d68b7ed2ad51627c3dd.ctex"
+uid="uid://60475sintvic"
+path="res://.godot/imported/skeleton-mage-1.png-a6392b40bd3dcb7f54b5d9668ac65ffe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/warrior/warrior-3.png"
-dest_files=["res://.godot/imported/warrior-3.png-4eba17e87fcb1d68b7ed2ad51627c3dd.ctex"]
+source_file="res://entities/skeleton/skeleton-mage/skeleton-mage-1.png"
+dest_files=["res://.godot/imported/skeleton-mage-1.png-a6392b40bd3dcb7f54b5d9668ac65ffe.ctex"]
 
 [params]
 

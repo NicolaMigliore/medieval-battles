@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2secqd37b4af"
-path="res://.godot/imported/warrior-3.png-4eba17e87fcb1d68b7ed2ad51627c3dd.ctex"
+uid="uid://dg6lvbw1cfnj3"
+path="res://.godot/imported/skeleton-minion-1.png-303788ac762dffc9a4f10133c4d20ef2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/warrior/warrior-3.png"
-dest_files=["res://.godot/imported/warrior-3.png-4eba17e87fcb1d68b7ed2ad51627c3dd.ctex"]
+source_file="res://entities/skeleton/skeleton-minion/skeleton-minion-1.png"
+dest_files=["res://.godot/imported/skeleton-minion-1.png-303788ac762dffc9a4f10133c4d20ef2.ctex"]
 
 [params]
 

@@ -5,6 +5,7 @@
 	- apply bleeding to boosted character
 	- chance to grant block at each turn
 	- after action pick a random character and move to the end of the execution order
+	- Necromancy: chance to add to the team a skeleton
 	Charms will be unlocked randomly adding some rouge-lite feeling and offering more build choice.
 
 # TODOs:
@@ -16,7 +17,11 @@
 - [X] Add progress bars for HP
 - [X] Add action particles
 - [X] Add action outlines
-- [ ] Update Sprites
+- [X] Update Sprites
+- [X] Update portraits
 - [X] Implement animations
 - [X] Add shader effects for boosted and shielded characters
 - [ ] Create test battle for balancing
+- [ ] Create bard unit
+- [ ] Create tank unit
+- [ ] Create minion unit

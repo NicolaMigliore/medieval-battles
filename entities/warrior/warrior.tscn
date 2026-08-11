@@ -1,10 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://ccr7hejris1oe"]
+[gd_scene load_steps=5 format=3 uid="uid://ccr7hejris1oe"]
 
 [ext_resource type="PackedScene" uid="uid://34hufo7gt441" path="res://entities/character/character.tscn" id="1_3ggnq"]
-[ext_resource type="Texture2D" uid="uid://dh1oopxsi6ce2" path="res://entities/warrior/warrior-1.png" id="2_by3fe"]
+[ext_resource type="Shader" uid="uid://dnqt8xp6trkkp" path="res://entities/character/hit_flash.gdshader" id="2_rw3ev"]
+[ext_resource type="Texture2D" uid="uid://djqo25xbak5nu" path="res://entities/character/character.png" id="3_gvgwg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3umg"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_rw3ev")
+shader_parameter/use_billboard = true
+shader_parameter/tilt = 0.0
+shader_parameter/texture_albedo = ExtResource("3_gvgwg")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/scissor_threshold = 1.0
+shader_parameter/outline_color = Color(0.05000007, 1, 0, 1)
+shader_parameter/outline_width = 1.0000000475
+shader_parameter/outline_alpha = 0.0
+shader_parameter/shield_active = false
+shader_parameter/shimmer_color = Color(0.4, 0.7, 1, 1)
+shader_parameter/shimmer_speed = 5.0
+shader_parameter/shimmer_frequency = 18.0000008075
+shader_parameter/shimmer_strength = 0.70000003325
 
 [node name="Warrior" instance=ExtResource("1_3ggnq")]
+initiative = 2
 
-[node name="Sprite2D" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
-texture = ExtResource("2_by3fe")
+[node name="HealGiveParticles" parent="CollisionShape3D/Particles" index="5"]
+emitting = false
+
+[node name="GPUParticlesAttractorBox3D" parent="CollisionShape3D/Particles" index="6"]
+strength = 1.0
+radius = 10.0
+
+[node name="Sprite3D" parent="." index="1"]
+material_override = SubResource("ShaderMaterial_o3umg")
