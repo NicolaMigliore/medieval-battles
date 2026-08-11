@@ -268,7 +268,10 @@ func _do_action() -> void:
 			
 			# Animate target
 			cur_target.character.play_hit()
-			cur_target.character.set_hit_particles(true)
+			if amount > 0:
+				cur_target.character.set_hit_particles(true)
+			if block_amount > 0:
+				cur_target.character.set_hit_shield_particles(true)
 			await cur_target.character.hit_animation_finished
 
 			# TODO: Check if dead remove from battle
@@ -296,10 +299,12 @@ func _do_action() -> void:
 
 			# Animate healer
 			cur_unit.character.play_heal_give()
+			cur_unit.character.set_heal_give_particles(true)
 			await cur_unit.character.heal_give_animation_finished
 
 			# Animate target
 			cur_target.character.play_heal_take()
+			cur_target.character.set_heal_take_particles(true)
 			
 			# Animate HP bar
 			cur_target.character.hp = new_target_hp

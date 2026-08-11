@@ -14,32 +14,32 @@ signal block_particles_finished
 @onready var animation_tree = $Animation/AnimationTree
 
 # Properties
-var cur_animation = "front_idle"
-
-var id = "cult_minion"
-var actor_name = "cultist minion"
 var portrait = null
 var is_player_controlled = false
 
 # Stats
-@onready var max_hp: float = 5
-@onready var attack_pwr = 1
-@onready var block_pwr = 1
-@onready var heal_pwr = 1
-@onready var boost_pwr = 1
+@export_category("Stats")
+@export var actor_name = "character"
+@export var max_hp: float = 5
+@export var attack_pwr: float = 1
+@export var block_pwr: float = 1
+@export var heal_pwr: float = 1
+@export var boost_pwr: float = 1
+@export var initiative = 1
+@export var actions_per_turn = 1
 
 # Bias to incentivize actions
-@onready var attack_bias: float = 0
-@onready var block_bias: float = 0
-@onready var heal_bias: float = 0
-@onready var boost_bias: float = 0
+@export_category("Combat Bias")
+@export var attack_bias: float = 0
+@export var block_bias: float = 0
+@export var heal_bias: float = 0
+@export var boost_bias: float = 0
 
 # Runtime attributes
 @onready var hp: float = 5
 @onready var block: float = 0
 var boost: float = 0				# current boost amount to be applied to the next move
-var initiative = 1
-var actions_per_turn = 1
+
 var _must_lerp: bool = false
 var _lerp_destination: Vector3
 var _lerp_speed: float
@@ -147,7 +147,9 @@ func evaluate_action(context: Dictionary) -> Dictionary:
 		"heal":
 			best_target = _get_best_heal_target(allies)
 		"boost":
-			best_target = _get_best_boost_target(allies.filter(func(ally): return ally.character != self_c.character))
+			var boost_targets = allies.filter(func(ally): return ally.character != self_c.character)
+			if allies.size() == 1: boost_targets = allies			# If only one member of the team remains they can boost themselves
+			best_target = _get_best_boost_target(boost_targets)
 
 	print("[DEBUG] Weights:
 			attack: %.2f
@@ -280,6 +282,18 @@ func set_run_particles(emit: bool) -> void:
 
 func set_hit_particles(emit:bool) -> void:
 	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/HitParticles")
+	particles.emitting = emit
+
+func set_hit_shield_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/HitShieldParticles")
+	particles.emitting = emit
+
+func set_heal_give_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/HealGiveParticles")
+	particles.emitting = emit
+
+func set_heal_take_particles(emit:bool) -> void:
+	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/HealTakeParticles")
 	particles.emitting = emit
 
 func set_block_particles(emit: bool) -> void:

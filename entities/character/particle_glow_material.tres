@@ -6,7 +6,6 @@
 [resource]
 transparency = 1
 vertex_color_use_as_albedo = true
-albedo_color = Color(1.0039216, 0.9999855, 0.9999855, 1)
 albedo_texture = ExtResource("1_cqoyb")
 emission_enabled = true
 emission_energy_multiplier = 0.4
