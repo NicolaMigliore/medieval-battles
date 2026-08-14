@@ -1,10 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://bj15rhr1ng8jb"]
+[gd_scene load_steps=13 format=3 uid="uid://bj15rhr1ng8jb"]
 
 [ext_resource type="Script" uid="uid://dunatilrt2rne" path="res://game_scenes/battle_scene.gd" id="1_2vy4q"]
 [ext_resource type="Texture2D" uid="uid://dasp1b2pit54a" path="res://placeholder_texture.png" id="3_rd2ks"]
 [ext_resource type="Script" uid="uid://dphg88qjbs8wa" path="res://game_scenes/battle_manager.gd" id="4_ctw5g"]
 [ext_resource type="Script" uid="uid://dlq0hw4cacpns" path="res://UI/battle_ui.gd" id="5_pavr6"]
+[ext_resource type="Texture2D" uid="uid://b1idqw7nn7sc0" path="res://UI/action-icons/attack-icon.png" id="6_e7vad"]
 [ext_resource type="Theme" uid="uid://big8r512m2y2r" path="res://themes/battle.tres" id="6_jixf1"]
+[ext_resource type="Texture2D" uid="uid://c2vov2y6t656e" path="res://UI/action-icons/heal-icon.png" id="7_6k1j2"]
+[ext_resource type="Texture2D" uid="uid://8ui1qymrsp1m" path="res://UI/action-icons/shield-icon.png" id="8_msidb"]
+[ext_resource type="Texture2D" uid="uid://4j1ey5hwfc1i" path="res://UI/action-icons/boost-icon.png" id="9_k3wpr"]
+[ext_resource type="Texture2D" uid="uid://c2kq1qjqsedmc" path="res://UI/action-icons/wait-icon.png" id="10_wqxba"]
 
 [sub_resource type="Environment" id="Environment_pavr6"]
 background_mode = 2
@@ -87,6 +92,7 @@ grow_vertical = 2
 script = ExtResource("5_pavr6")
 
 [node name="DialogPanel" type="PanelContainer" parent="UI/BattleUI"]
+visible = false
 custom_minimum_size = Vector2(600, 220)
 layout_mode = 1
 anchors_preset = 7
@@ -128,8 +134,7 @@ text = "Next"
 flat = true
 
 [node name="PickActionPanel" type="Panel" parent="UI/BattleUI"]
-visible = false
-custom_minimum_size = Vector2(600, 220)
+custom_minimum_size = Vector2(720, 140)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -157,47 +162,62 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/BattleUI/PickActionPanel/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+columns = 2
 
-[node name="AttackButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="AttackButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("6_jixf1")
 text = "ATTACK"
+icon = ExtResource("6_e7vad")
+expand_icon = true
 
-[node name="HealButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HealButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("6_jixf1")
 text = "HEAL
 "
+icon = ExtResource("7_6k1j2")
+expand_icon = true
 
-[node name="BlockButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="BlockButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("6_jixf1")
 text = "BLOCK"
+icon = ExtResource("8_msidb")
+expand_icon = true
 
-[node name="BoostButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="BoostButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("6_jixf1")
 text = "BOOST"
+icon = ExtResource("9_k3wpr")
+expand_icon = true
 
-[node name="WaitButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="WaitButton" type="Button" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("6_jixf1")
 text = "WAIT"
+icon = ExtResource("10_wqxba")
+expand_icon = true
+
+[node name="ActionDescriptionLabel" type="RichTextLabel" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="TargetInfoPanel" type="Panel" parent="UI/BattleUI"]
 custom_minimum_size = Vector2(200, 500)

@@ -87,6 +87,7 @@ func _ready() -> void:
 
 	# Register UI signals
 	battle_ui.portrait_selected.connect(_on_target_selected)
+	_register_action_button_focus_signals()
 #endregion
 
 #region Process
@@ -125,8 +126,8 @@ func _set_phase(new_phase, data = null):
 			battle_ui.show_ui("PickAction", null)
 
 			# connect buttons
-			var vbox = battle_ui.get_node("PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer")
-			for button in vbox.get_children():
+			var grid = battle_ui.get_node("PickActionPanel/MarginContainer/HBoxContainer/GridContainer")
+			for button in grid.get_children():
 				if not button.pressed.is_connected(_on_action_selected):
 					button.pressed.connect(_on_action_selected.bind(button.name))
 		else:
@@ -473,4 +474,28 @@ func _sync_all_bar_positions() -> void:
 		pos = pos + control_centering_offset + character_offset
 		battle_ui.sync_bar_position(comb.idx, pos)
 
+func _register_action_button_focus_signals() -> void:
+	# Register focus enter and exit events
+	battle_ui.action_button_focus_entered.connect(
+		func(action_name: String):
+			var msg = ""
+			match action_name:
+				"attack":
+					# msg = "Attack the target unit for %.2f HP.\nDamage is the result of base attack and boosts, but it will be reduced by the target's shield amount." % _get_damage_amount()
+					msg = "Attack the target unit for %.2f HP.\n\nDamage is the result of base attack and boosts, but it will be reduced by the target's shield amount." % _get_damage_amount()
+				"heal":
+					msg = "Heal the target unit for %.2f HP.\n\nHeal amount is the result of the base heal and boosts." % _get_heal_amount()
+				"block":
+					msg = "Raise the unit's shield by %.2f shield points.\n\nBlocked amount is the result of base heal and boosts." % _get_block_amount()
+				"boost":
+					msg = "Boost the target's actions by %.d%% for the remainder of the round.\n\nAt the end of the round all boosts will be reset." % (_get_boost_amount()*100)
+				"wait":
+					msg = "Wait for a better time to act.\n\nThe unit's action turn will be placed at the end of the round."
+		
+			battle_ui.set_action_description_label(msg)
+	)
+
+	battle_ui.action_button_focus_exited.connect(func(_action_name: String):
+		battle_ui.clear_action_description_label()
+	)
 #endregion

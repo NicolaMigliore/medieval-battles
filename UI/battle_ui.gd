@@ -3,6 +3,8 @@ class_name BattleUI
 
 #region Signals
 signal portrait_selected(combattant)
+signal action_button_focus_entered(action)
+signal action_button_focus_exited(action)
 #endregion
 
 var _portrait_scene = preload("res://UI/character_portrait.tscn")
@@ -28,6 +30,10 @@ func _ready() -> void:
 		target_info_panel,
 		character_initiative_panel
 	]
+
+	# Register action buttons signals
+	register_action_buttons_signals()
+
 
 #region Panel Visibility
 func _hide_all_panels() -> void:
@@ -63,7 +69,7 @@ func show_ui(panel_name: String, _data = null) -> void:
 	if panel_name == "PickAction":
 		get_node("PickActionPanel").show()
 		# Set focus
-		$PickActionPanel/MarginContainer/HBoxContainer/VBoxContainer/AttackButton.grab_focus()
+		$PickActionPanel/MarginContainer/HBoxContainer/GridContainer/AttackButton.grab_focus()
 
 	if panel_name == "PickTarget":
 		var vbox: VBoxContainer = $CharacterInitiativePanel/MarginContainer/VBoxContainer
@@ -199,6 +205,49 @@ func populate_dialog_panel(msg: String, _on_advance) -> void:
 
 	advance_button.pressed.connect(_on_advance)
 	advance_button.grab_focus()
+#endregion
+
+
+#region Action Panel
+func register_action_buttons_signals() -> void:
+	var grid: GridContainer = pick_action_panel.get_node("MarginContainer/HBoxContainer/GridContainer")
+	
+	var action_attack_button: Button = grid.get_node("AttackButton")
+	action_attack_button.focus_entered.connect(func(): action_button_focus_entered.emit("attack"))
+	action_attack_button.focus_exited.connect(func(): action_button_focus_exited.emit("attack"))
+	action_attack_button.mouse_entered.connect(func(): action_attack_button.grab_focus())
+	
+	var action_heal_button: Button = grid.get_node("HealButton")
+	action_heal_button.focus_entered.connect(func(): action_button_focus_entered.emit("heal"))
+	action_heal_button.focus_exited.connect(func(): action_button_focus_exited.emit("heal"))
+	action_heal_button.mouse_entered.connect(func(): action_heal_button.grab_focus())
+	
+	var action_block_button: Button = grid.get_node("BlockButton")
+	action_block_button.focus_entered.connect(func(): action_button_focus_entered.emit("block"))
+	action_block_button.focus_exited.connect(func(): action_button_focus_exited.emit("block"))
+	action_block_button.mouse_entered.connect(func(): action_block_button.grab_focus())
+	
+	var action_boost_button: Button = grid.get_node("BoostButton")
+	action_boost_button.focus_entered.connect(func(): action_button_focus_entered.emit("boost"))
+	action_boost_button.focus_exited.connect(func(): action_button_focus_exited.emit("boost"))
+	action_boost_button.mouse_entered.connect(func(): action_boost_button.grab_focus())
+	
+	var action_wait_button: Button = grid.get_node("WaitButton")
+	action_wait_button.focus_entered.connect(func(): action_button_focus_entered.emit("wait"))
+	action_wait_button.focus_exited.connect(func(): action_button_focus_exited.emit("wait"))
+	action_wait_button.mouse_entered.connect(func(): action_wait_button.grab_focus())
+
+
+func clear_action_description_label() -> void:
+	var desc_label: RichTextLabel = $PickActionPanel/MarginContainer/HBoxContainer/ActionDescriptionLabel
+	desc_label.text = ""
+
+
+func set_action_description_label(text: String) -> void:
+	var desc_label: RichTextLabel = $PickActionPanel/MarginContainer/HBoxContainer/ActionDescriptionLabel
+	if text:
+		desc_label.text = text
+
 #endregion
 
 
