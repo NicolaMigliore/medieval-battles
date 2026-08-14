@@ -16,6 +16,7 @@ var cur_unit = null
 
 enum phases { START, CONFIG_ROUND, PICK_UNIT, PICK_ACTION, PICK_TARGET, EXECUTE, DONE }
 var phase = null
+var turn = 0
 
 const actions = {
 	"attack": { "name": "attack", "target": "enemy", "stat_key": "attack_pwr" },
@@ -187,6 +188,9 @@ func _configure_round():
 		# Clear unit boost value
 		combatant.character.boost = 0
 		combatant.character.set_boosted_particles(false)
+
+	turn += 1
+	battle_ui.update_turn_label("Turn: %d" % turn)
 
 
 func _get_actions_per_turn(character):

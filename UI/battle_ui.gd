@@ -8,7 +8,9 @@ signal portrait_selected(combattant)
 var _portrait_scene = preload("res://UI/character_portrait.tscn")
 var _hp_bar_scene = preload("res://UI/hp_bar/hp_bar.tscn")
 
-@onready var phase_label = $DebugPanel/PhaseLabel
+@onready var phase_label = $DebugPanel/VBoxContainer/PhaseLabel
+@onready var turn_label = $DebugPanel/VBoxContainer/TurnLabel
+
 
 @onready var dialog_panel = $DialogPanel
 @onready var pick_action_panel = $PickActionPanel
@@ -43,8 +45,12 @@ func hide_ui(panel_name: String) -> void:
 		node.hide()
 
 
+#region Debug
 func update_phase_label(msg) -> void:
 	phase_label.text = msg
+func update_turn_label(msg) -> void:
+	turn_label.text = msg
+#endregion
 
 
 func show_ui(panel_name: String, _data = null) -> void:

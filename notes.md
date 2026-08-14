@@ -6,7 +6,10 @@
 	- chance to grant block at each turn
 	- after action pick a random character and move to the end of the execution order
 	- Necromancy: chance to add to the team a skeleton
+	- Curse: invert the effect of moves, can target anyone and can be used to use a healer to do great damage or similar.
 	Charms will be unlocked randomly adding some rouge-lite feeling and offering more build choice.
+- [ ] Game should start with a warrior and a second character that the player can choose.
+	The choice should be prompted by an NPC that asks to describe player and ally.
 
 # TODOs:
 - [x] On round configure order based on initiative
@@ -22,6 +25,11 @@
 - [X] Implement animations
 - [X] Add shader effects for boosted and shielded characters
 - [ ] Create test battle for balancing
+	- [ ] Create sparring scene
 - [ ] Create bard unit
 - [ ] Create tank unit
-- [ ] Create minion unit
+- [X] Create minion unit
+- [ ] Add damage, heal, block, and boost text particles
+
+# BUGS:
+- [ ] CPU boost action targets allies who have no actions left. They should only pick a target from the remaining characters with actions to take. 

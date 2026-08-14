@@ -859,6 +859,7 @@ graph_offset = Vector2(-232.6466, 126.67603)
 [node name="Character" type="CharacterBody3D"]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 script = ExtResource("1_6i0tm")
+boost_pwr = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113937706, 0)

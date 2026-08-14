@@ -63,6 +63,9 @@ func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
 
 #region Init
 func init(opts: Dictionary, flip_h: bool) -> void:
+	# Set starting HP
+	hp = max_hp
+
 	# Configure character
 	for key in opts:
 		if key != "scene" and key != "sprite_texture":
