@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="medieval-battles"
-run/main_scene="uid://cj1c1v30akir2"
+run/main_scene="uid://bj15rhr1ng8jb"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -21,7 +21,17 @@ BattleData="*res://battle_data.gd"
 
 [display]
 
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
+
+[gui]
+
+theme/custom="uid://big8r512m2y2r"
+theme/custom_font="uid://bwuo5oo0gehag"
 
 [input]
 
@@ -52,6 +62,6 @@ input_right={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=3
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

@@ -16,7 +16,7 @@ var _hp_bar_scene = preload("res://UI/hp_bar/hp_bar.tscn")
 
 @onready var dialog_panel = $DialogPanel
 @onready var pick_action_panel = $PickActionPanel
-@onready var target_info_panel = $TargetInfoPanel
+@onready var target_info_panel = $CharacterInfoPanel
 @onready var character_initiative_panel = $CharacterInitiativePanel
 var _panels = []
 var _hp_bars_dict: Dictionary
@@ -152,45 +152,17 @@ func _on_portrait_hover_start(combatant) -> void:
 		populate_info_panel(combatant)
 
 func _on_portrait_hover_end() -> void:
-	var info_panel = $TargetInfoPanel
+	var info_panel = $CharacterInfoPanel
 	info_panel.hide()
 #endregion
 
 #region Info Panel
 func populate_info_panel(combatant) -> void:
-	var info_panel = get_node("TargetInfoPanel")
+	var info_panel = $CharacterInfoPanel
 	if not info_panel.visible:
 		info_panel.show()
+	info_panel.set_character_data(combatant.character)
 
-	var vbox = $TargetInfoPanel/MarginContainer/VBoxContainer
-	var character = combatant.character
-	
-	var texture: TextureRect = vbox.get_node("TextureRect")
-	texture.texture = character.portrait
-
-	var name_label: Label = vbox.get_node("TitleLabel")
-	name_label.text = character.actor_name
-
-	var stats_text = "[center][table=2 bgcolor=#ffffff]
-	[cell expand=1 border=#ffffff ratio=1.5]HP[/cell][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s/%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Shield[/cell][hr][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Initiative[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Attack[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Block[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Heal[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[cell expand=1 border=#ffffff ratio=1.5]Boost[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	[/table][/center]" % [
-		character.hp,
-		character.max_hp,
-		character.block,
-		character.initiative,
-		character.attack_pwr,
-		character.block_pwr,
-		character.heal_pwr,
-		character.boost_pwr,
-	]
-	var stats_label: RichTextLabel = vbox.get_node("StatsRichTextLabel")
-	stats_label.text = stats_text
 #endregion
 
 #region Dialog Panel
@@ -298,4 +270,3 @@ func _hide_bar_after_delay(hp_bar:HPBar, delay: float) -> void:
 	await get_tree().create_timer(delay).timeout
 	hp_bar.hide()
 #endregion
-

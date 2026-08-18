@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://bywwgl3o4wpaw"]
+
+[ext_resource type="Script" uid="uid://jkuvmxbm1avi" path="res://UI/character_info_panel/character_info_panel.gd" id="1_p5y0y"]
+[ext_resource type="Texture2D" uid="uid://dc88f8gcuk6qj" path="res://entities/minion/minion-1-portrait.png" id="2_3e4hc"]
+
+[node name="TargetInfoPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(110, 250)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -125.0
+offset_bottom = 125.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("1_p5y0y")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_3e4hc")
+expand_mode = 3
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Minion"
+horizontal_alignment = 1
+
+[node name="StatsRichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+bbcode_enabled = true
+text = "
+[center][table=2 bgcolor=#ffffff]
+	[cell expand=1 border=#ffffff ratio=1.5]HP[/cell][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s/%s [/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]SHLD[/cell][hr][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]INIT[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]ATK[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]BLK[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]HEL[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[cell expand=1 border=#ffffff ratio=1.5]BST[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
+	[/table][/center]"
+fit_content = true

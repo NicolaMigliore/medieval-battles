@@ -1,0 +1,25 @@
+[remap]
+
+importer="font_data_image"
+type="FontFile"
+uid="uid://cj3swj3d6ch0v"
+path="res://.godot/imported/Simple-Script_OLD.png-298262133efb838debce4a665e2b3dc8.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/Simple-Script_OLD.png"
+dest_files=["res://.godot/imported/Simple-Script_OLD.png-298262133efb838debce4a665e2b3dc8.fontdata"]
+
+[params]
+
+character_ranges=PackedStringArray("A", "B", "C")
+kerning_pairs=PackedStringArray()
+columns=8
+rows=24
+image_margin=Rect2i(0, 0, 0, 0)
+character_margin=Rect2i(1, 1, 2, 2)
+ascent=0
+descent=0
+fallbacks=[]
+compress=true
+scaling_mode=1

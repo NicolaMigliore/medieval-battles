@@ -9,7 +9,7 @@ extends Node
 # 	preload("res://entities/warrior/warrior-6.png")
 # ]
 
-var _base_characters = {
+var base_characters = {
 	"warrior_1" = {
 		"scene": preload("res://entities/warrior/warrior.tscn"),
 		"sprite_texture": preload("res://entities/warrior/warrior-1.png"),
@@ -127,15 +127,15 @@ var _base_characters = {
 
 # populated before changing scene
 var allies: Array[Dictionary] = [ 
-	_base_characters.warrior_1.merged({"is_player_controlled": true}, true),
-	# _base_characters.warrior_3.merged({"is_player_controlled": true}, true),
+	base_characters.warrior_1.merged({"is_player_controlled": true}, true),
+	# base_characters.warrior_3.merged({"is_player_controlled": true}, true),
 ]
 var enemies: Array[Dictionary] = [
-	# _base_characters.berserker_3,
-	# _base_characters.berserker_4,
-	# _base_characters.warrior_2,
-	_base_characters.minion_1.merged({}, true),
-	_base_characters.minion_2.merged({}, true),
+	# base_characters.berserker_3,
+	# base_characters.berserker_4,
+	# base_characters.warrior_2,
+	base_characters.minion_1.merged({}, true),
+	base_characters.minion_2.merged({}, true),
 ]
 var on_victory: Callable
 var on_defeat: Callable
