@@ -1,10 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://swdfxrgwjexi"]
+[gd_scene load_steps=2 format=3 uid="uid://swdfxrgwjexi"]
 
 [ext_resource type="Script" uid="uid://dwct0yag6it0a" path="res://UI/icon_button/icon_button.gd" id="1_5fdfi"]
-[ext_resource type="Texture2D" uid="uid://b1idqw7nn7sc0" path="res://UI/action-icons/attack-icon.png" id="1_x8ohw"]
 
 [node name="IconButton" type="Button"]
-custom_minimum_size = Vector2(25, 25)
+custom_minimum_size = Vector2(42, 32)
 offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("1_5fdfi")
@@ -16,23 +15,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_right = 5
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(8, 8)
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/BoxContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_x8ohw")
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 5
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="MarginContainer/BoxContainer/MarginContainer"]
 layout_mode = 2
-text = "ATTACK"
+theme_override_colors/font_color = Color(1, 1, 1, 1)

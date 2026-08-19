@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name CharacterInfoPanel
 
 func set_character_data(character:Character) -> void:
 	var vbox = $MarginContainer/VBoxContainer

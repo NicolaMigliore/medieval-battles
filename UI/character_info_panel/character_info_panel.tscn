@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://jkuvmxbm1avi" path="res://UI/character_info_panel/character_info_panel.gd" id="1_p5y0y"]
 [ext_resource type="Texture2D" uid="uid://dc88f8gcuk6qj" path="res://entities/minion/minion-1-portrait.png" id="2_3e4hc"]
 
-[node name="TargetInfoPanel" type="PanelContainer"]
+[node name="CharacterInfoPanel" type="PanelContainer"]
 custom_minimum_size = Vector2(110, 250)
 anchors_preset = 6
 anchor_left = 1.0

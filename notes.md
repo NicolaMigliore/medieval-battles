@@ -25,7 +25,7 @@
 - [X] Implement animations
 - [X] Add shader effects for boosted and shielded characters
 - [ ] Create test battle for balancing
-	- [ ] Create sparring scene
+	- [X] Create sparring scene
 - [ ] Create bard unit
 - [ ] Create tank unit
 - [X] Create minion unit
@@ -33,3 +33,4 @@
 
 # BUGS:
 - [ ] CPU boost action targets allies who have no actions left. They should only pick a target from the remaining characters with actions to take. 
+- [ ] Transition animation needs fixing.

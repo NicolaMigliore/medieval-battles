@@ -40,9 +40,10 @@ func _ready() -> void:
 
 	# init allies
 	for i in BattleData.allies.size():
+		# TODO: Review if this is still needed or if already instantiated Character
 		var character = BattleData.allies[i].scene.instantiate()
 		ally_slots.get_child(i).add_child(character)
-		character.init(BattleData.allies[i], false)
+		character.init(BattleData.allies[i])
 		# Update shader (for shield)
 		character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", character.block > 0)
 
@@ -63,7 +64,7 @@ func _ready() -> void:
 	for i in BattleData.enemies.size():
 		var character = BattleData.enemies[i].scene.instantiate()
 		enemy_slots.get_child(i).add_child(character)
-		character.init(BattleData.enemies[i], true)		# configure character stats
+		character.init(BattleData.enemies[i])		# configure character stats
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
 			"idx": combatant_idx,

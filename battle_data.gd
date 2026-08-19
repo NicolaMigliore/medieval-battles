@@ -130,12 +130,54 @@ var allies: Array[Dictionary] = [
 	base_characters.warrior_1.merged({"is_player_controlled": true}, true),
 	# base_characters.warrior_3.merged({"is_player_controlled": true}, true),
 ]
+
 var enemies: Array[Dictionary] = [
-	# base_characters.berserker_3,
-	# base_characters.berserker_4,
-	# base_characters.warrior_2,
 	base_characters.minion_1.merged({}, true),
 	base_characters.minion_2.merged({}, true),
 ]
 var on_victory: Callable
 var on_defeat: Callable
+
+#region Allies
+func add_to_allies(unit) -> String:
+	# Set ID
+	var new_unit_id := str(Time.get_ticks_usec()) + "_" + str(randi())
+	unit.id = new_unit_id
+	
+	unit.is_player_controlled = true
+	allies.append(unit)
+	return new_unit_id
+
+func get_allies() -> Array:
+	return allies
+
+func clear_allies() -> void:
+	allies = []
+
+func pop_ally(id: String) -> void:
+	var idx: int = allies.find_custom(func(unit): return unit.id == id)
+	if idx > -1:
+		allies.pop_at(idx)
+
+#endregion
+
+
+#region Enemies
+func add_to_enemies(unit) -> String:
+	var new_unit_id := str(Time.get_ticks_usec()) + "_" + str(randi())
+	unit.id = new_unit_id
+	unit.is_player_controlled = false
+	enemies.append(unit)
+	return new_unit_id
+
+func get_enemies() -> Array:
+	return enemies
+
+func clear_enemies() -> void:
+	enemies = []
+
+func pop_enemy(id: String) -> void:
+	var idx: int = enemies.find_custom(func(unit): return unit.id == id)
+	if idx > -1:
+		enemies.pop_at(idx)
+#endregion
