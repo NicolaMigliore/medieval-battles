@@ -79,6 +79,11 @@ func init(opts: Dictionary) -> void:
 	# Configure shader
 	sprite.material_override.set_shader_parameter("texture_albedo", sprite.texture)
 	
+
+func set_sprite_flip(flip_h = false):
+	var sprite: Sprite3D = get_node("Sprite3D")
+	sprite.flip_h = flip_h
+	
 #endregion
 
 

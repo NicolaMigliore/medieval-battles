@@ -39,10 +39,10 @@ var _tween: Tween
 # ===================================================
 # INITIALIZATION
 # ===================================================
-# func _ready() -> void:
+func _ready() -> void:
 # 	size = get_viewport_rect().size
 # 	z_index = 1000 # Ensure the transition is on top of other UI elements
-# 	mouse_filter = MOUSE_FILTER_IGNORE # Ignore mouse input so it doesn't block other UI elements
+	mouse_filter = MOUSE_FILTER_IGNORE # Ignore mouse input so it doesn't block other UI elements
 # 	visible = true
 # 	_set_shader_values(strength_start, zoom_start, center_start)
 # 	await get_tree().create_timer(3.0).timeout

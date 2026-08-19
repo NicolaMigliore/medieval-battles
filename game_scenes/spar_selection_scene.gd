@@ -18,10 +18,10 @@ func _ready() -> void:
 	BattleData.clear_allies()
 	BattleData.clear_enemies()
 
-	start_button.pressed.connect(_load_battle)
+	start_button.pressed.connect(_load_battle_scene)
 
 
-func _load_battle() -> void:
+func _load_battle_scene() -> void:
 	requested_switch_scene.emit("battle")
 
 #region Allies
@@ -42,6 +42,8 @@ func _remove_unit_from_team1(unit_id: String) -> void:
 		var focus_idx: int = clamp(removed_idx, 0, buttons.size() - 1)
 		buttons[focus_idx].call_deferred("grab_focus")
 
+	_update_button_disabled()
+
 
 func _add_unit_to_team1(unit) -> void:
 	const max_slots = 5
@@ -55,6 +57,7 @@ func _add_unit_to_team1(unit) -> void:
 	# Add to battle data team
 	BattleData.add_to_allies(unit)
 	_sync_active_team_ui(1)
+	_update_button_disabled()
 
 #endregion
 
@@ -83,6 +86,7 @@ func _remove_unit_from_team2(unit_id: String) -> void:
 		var focus_idx: int = clamp(removed_idx, 0, buttons.size() - 1)
 		buttons[focus_idx].call_deferred("grab_focus")
 
+	_update_button_disabled()
 
 func _add_unit_to_team2(unit) -> void:
 	const team_id: int = 2
@@ -97,6 +101,7 @@ func _add_unit_to_team2(unit) -> void:
 	# Add to battle data team
 	BattleData.add_to_enemies(unit)
 	_sync_active_team_ui(team_id)
+	_update_button_disabled()
 #endregion
 
 #region Rosters
@@ -121,7 +126,7 @@ func _build_roster(team_id: int) -> void:
 		unit_btn.icon_texture = unit.portrait
 		unit_btn.icon_size = Vector2(32, 32)
 		unit_btn.focus_entered.connect(_set_info_panel.bind(unit))
-		unit_btn.mouse_entered.connect(_set_info_panel.bind(unit))
+		unit_btn.mouse_entered.connect(unit_btn.grab_focus)
 		if team_id == 1:
 			unit_btn.pressed.connect(_add_unit_to_team1.bind(unit))
 		else:
@@ -173,3 +178,9 @@ func _set_info_panel(unit) -> void:
 	info_panel.set_character_data(character)
 
 #endregion
+
+func _update_button_disabled() -> void:
+	var count_t1 = BattleData.get_allies().size()
+	var count_t2 = BattleData.get_enemies().size()
+	var is_disabled := count_t1 <= 0 or  count_t2 <= 0
+	start_button.disabled = is_disabled

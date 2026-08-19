@@ -65,6 +65,7 @@ func _ready() -> void:
 		var character = BattleData.enemies[i].scene.instantiate()
 		enemy_slots.get_child(i).add_child(character)
 		character.init(BattleData.enemies[i])		# configure character stats
+		character.set_sprite_flip(true)
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
 			"idx": combatant_idx,
