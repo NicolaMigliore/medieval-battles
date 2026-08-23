@@ -121,6 +121,62 @@ var base_characters = {
 		"portrait": preload("res://entities/mage/mage-4-portrait.png"),
 		"is_player_controlled": false,
 		"actor_name": "Mage",
+	},
+	"bard_1" = {
+		"scene": preload("res://entities/bard/bard.tscn"),
+		"sprite_texture": preload("res://entities/bard/bard-1.png"),
+		"portrait": preload("res://entities/bard/bard-1-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Bard",
+	},
+	"bard_2" = {
+		"scene": preload("res://entities/bard/bard.tscn"),
+		"sprite_texture": preload("res://entities/bard/bard-2.png"),
+		"portrait": preload("res://entities/bard/bard-2-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Bard",
+	},
+	"bard_3" = {
+		"scene": preload("res://entities/bard/bard.tscn"),
+		"sprite_texture": preload("res://entities/bard/bard-3.png"),
+		"portrait": preload("res://entities/bard/bard-3-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Bard",
+	},
+	"bard_4" = {
+		"scene": preload("res://entities/bard/bard.tscn"),
+		"sprite_texture": preload("res://entities/bard/bard-4.png"),
+		"portrait": preload("res://entities/bard/bard-4-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Bard",
+	},
+	"tank_1" = {
+		"scene": preload("res://entities/tank/tank.tscn"),
+		"sprite_texture": preload("res://entities/tank/tank-1.png"),
+		"portrait": preload("res://entities/tank/tank-1-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Tank",
+	},
+	"tank_2" = {
+		"scene": preload("res://entities/tank/tank.tscn"),
+		"sprite_texture": preload("res://entities/tank/tank-2.png"),
+		"portrait": preload("res://entities/tank/tank-2-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Tank",
+	},
+	"tank_3" = {
+		"scene": preload("res://entities/tank/tank.tscn"),
+		"sprite_texture": preload("res://entities/tank/tank-3.png"),
+		"portrait": preload("res://entities/tank/tank-3-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Tank",
+	},
+	"tank_4" = {
+		"scene": preload("res://entities/tank/tank.tscn"),
+		"sprite_texture": preload("res://entities/tank/tank-4.png"),
+		"portrait": preload("res://entities/tank/tank-4-portrait.png"),
+		"is_player_controlled": false,
+		"actor_name": "Tank",
 	}
 }
 

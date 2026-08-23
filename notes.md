@@ -26,8 +26,8 @@
 - [X] Add shader effects for boosted and shielded characters
 - [ ] Create test battle for balancing
 	- [X] Create sparring scene
-- [ ] Create bard unit
-- [ ] Create tank unit
+- [x] Create bard unit
+- [x] Create tank unit
 - [X] Create minion unit
 - [ ] Add damage, heal, block, and boost text particles
 
