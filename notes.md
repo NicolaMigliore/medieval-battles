@@ -1,5 +1,5 @@
 # Features to Implement
-- [ ] Attack order should be determined by a ne "initiative" stat
+- [X] Attack order should be determined by a ne "initiative" stat
 - [ ] Chars: Characters should be able to assign up to 3 charms that can grant special effects to their actions. Examples:
 	- apply elemental damage to attack
 	- apply bleeding to boosted character
@@ -34,3 +34,21 @@
 # BUGS:
 - [ ] CPU boost action targets allies who have no actions left. They should only pick a target from the remaining characters with actions to take. 
 - [ ] Transition animation needs fixing.
+
+
+# Game overview
+The game is a turn based rpg-ish game with rogue-like elements, about being able to pick up the tab at the tavern.
+
+The player starts in debt with the tavern keeper and must make up the required money to pay for all the consumed ale. More party members means better odds, but more ale consumed.
+
+The game loop should be:
+1. Start a run
+2. take on a mission (from the tavern overworld scene)
+3. explore a dungeon (gather loot, money and objectives)
+4. possibly get new party members
+5. repeat
+
+At the end of each day, each character will consume a given amount of ale, costing a certain amount of gold. If the player does not have enough gold, then the party members will start to leave the team.
+If the player has 1 or less party members the run is over.
+
+
