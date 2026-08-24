@@ -472,7 +472,7 @@ func _sync_all_bar_positions() -> void:
 	for comb in _combatants:
 		var pos: Vector2 = camera.unproject_position(comb.character.global_position)
 		var control_centering_offset:Vector2 = Vector2(-20,-20)
-		var character_offset:Vector2 = Vector2(0,-75)
+		var character_offset:Vector2 = Vector2(0,-55)
 		pos = pos + control_centering_offset + character_offset
 		battle_ui.sync_bar_position(comb.idx, pos)
 

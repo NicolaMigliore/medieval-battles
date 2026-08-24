@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bj15rhr1ng8jb"]
+[gd_scene load_steps=16 format=3 uid="uid://bj15rhr1ng8jb"]
 
 [ext_resource type="Script" uid="uid://dunatilrt2rne" path="res://game_scenes/battle_scene.gd" id="1_2vy4q"]
 [ext_resource type="Texture2D" uid="uid://dasp1b2pit54a" path="res://placeholder_texture.png" id="3_rd2ks"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://c2kq1qjqsedmc" path="res://UI/action-icons/wait-icon.png" id="10_wqxba"]
 [ext_resource type="PackedScene" uid="uid://swdfxrgwjexi" path="res://UI/icon_button/icon_button.tscn" id="11_k3wpr"]
 [ext_resource type="PackedScene" uid="uid://bywwgl3o4wpaw" path="res://UI/character_info_panel/character_info_panel.tscn" id="11_msidb"]
+[ext_resource type="PackedScene" uid="uid://cdp47wjjs53rf" path="res://UI/character_portrait.tscn" id="13_wqxba"]
 
 [sub_resource type="Environment" id="Environment_pavr6"]
 background_mode = 2
@@ -94,6 +95,7 @@ grow_vertical = 2
 script = ExtResource("5_pavr6")
 
 [node name="DialogPanel" type="PanelContainer" parent="UI/BattleUI"]
+visible = false
 custom_minimum_size = Vector2(320, 120)
 layout_mode = 1
 anchors_preset = 7
@@ -135,16 +137,16 @@ text = "Next"
 flat = true
 
 [node name="PickActionPanel" type="Panel" parent="UI/BattleUI"]
-custom_minimum_size = Vector2(390, 120)
+custom_minimum_size = Vector2(390, 90)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 20.0
+offset_left = -195.0
+offset_top = -80.0
+offset_right = 195.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -169,44 +171,44 @@ size_flags_vertical = 4
 columns = 2
 
 [node name="AttackButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(89, 32)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 icon_texture = ExtResource("6_e7vad")
+icon_size = Vector2i(16, 16)
 label_text = "ATTACK"
-min_size = Vector2(80, 32)
-vertical_layout = false
+min_size = Vector2(60, 16)
 
 [node name="HealButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(73, 32)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 icon_texture = ExtResource("7_6k1j2")
+icon_size = Vector2i(16, 16)
 label_text = "HEAL"
-min_size = Vector2(80, 36)
-vertical_layout = false
+min_size = Vector2(60, 16)
 
 [node name="BlockButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(81, 32)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 icon_texture = ExtResource("8_msidb")
+icon_size = Vector2i(16, 16)
 label_text = "BLOCK"
-min_size = Vector2(80, 36)
-vertical_layout = false
+min_size = Vector2(60, 16)
 
 [node name="BoostButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(81, 32)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 icon_texture = ExtResource("9_k3wpr")
+icon_size = Vector2i(16, 16)
 label_text = "BOOST"
-min_size = Vector2(80, 36)
-vertical_layout = false
+min_size = Vector2(60, 16)
 
 [node name="WaitButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(73, 32)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 icon_texture = ExtResource("10_wqxba")
+icon_size = Vector2i(16, 16)
 label_text = "WAIT"
-min_size = Vector2(80, 36)
-vertical_layout = false
+min_size = Vector2(60, 16)
 
 [node name="ActionDescriptionLabel" type="RichTextLabel" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -230,22 +232,49 @@ grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/BattleUI/CharacterInitiativePanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
 
 [node name="RemainingVBox" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="VSplitContainer" type="VSplitContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ActedVBox" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+visible = false
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="CharacterPortrait" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait2" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait3" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait4" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait5" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait6" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait7" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
+layout_mode = 2
+
+[node name="CharacterPortrait8" parent="UI/BattleUI/CharacterInitiativePanel/MarginContainer/VBoxContainer" instance=ExtResource("13_wqxba")]
 layout_mode = 2
 
 [node name="DebugPanel" type="PanelContainer" parent="UI/BattleUI"]

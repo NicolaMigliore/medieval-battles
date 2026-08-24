@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dwct0yag6it0a" path="res://UI/icon_button/icon_button.gd" id="1_5fdfi"]
 
 [node name="IconButton" type="Button"]
-custom_minimum_size = Vector2(42, 32)
+custom_minimum_size = Vector2(37, 36)
 offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("1_5fdfi")
@@ -23,11 +23,14 @@ theme_override_constants/margin_bottom = 2
 [node name="BoxContainer" type="BoxContainer" parent="MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/BoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 stretch_mode = 5
 
@@ -37,4 +40,6 @@ theme_override_constants/margin_top = 5
 
 [node name="Label" type="Label" parent="MarginContainer/BoxContainer/MarginContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
+theme_override_font_sizes/font_size = 7
