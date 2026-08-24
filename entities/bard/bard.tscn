@@ -30,7 +30,7 @@ block_pwr = 0.5
 heal_pwr = 0.5
 boost_pwr = 1.0
 initiative = 2
-attack_bias = 1.0
+boost_bias = 1.0
 
 [node name="Sprite3D" parent="." index="1"]
 material_override = SubResource("ShaderMaterial_abccy")
