@@ -1,30 +1,74 @@
 shader_type spatial;
 render_mode blend_mix, unshaded, cull_disabled;
 
-uniform bool use_billboard;
+uniform int billboard_mode : hint_enum("Disabled", "Enabled", "Y-Billboard") = 0;
 uniform float tilt : hint_range(-3.14159, 3.14159) = 0.0;
 varying vec2 local_pos;
 
 void vertex() {
 	local_pos = VERTEX.xy;
 
-	if (use_billboard){
-		// billboard keeping stretch scaleing
-        mat4 mv = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
+	// Normal rendering by default
+	mat4 mv = VIEW_MATRIX * MODEL_MATRIX;
+
+	if (billboard_mode == 1) {
+		// Full billboard
+		mv = VIEW_MATRIX * mat4(
+			INV_VIEW_MATRIX[0],
+			INV_VIEW_MATRIX[1],
+			INV_VIEW_MATRIX[2],
+			MODEL_MATRIX[3]
+		);
+
 		mv[0].xyz *= length(MODEL_MATRIX[0].xyz);
 		mv[1].xyz *= length(MODEL_MATRIX[1].xyz);
 		mv[2].xyz *= length(MODEL_MATRIX[2].xyz);
 
-		// Roll around the view axis (screen-space tilt)
+	} else if (billboard_mode == 2) {
+		// Y-billboard
+		vec3 camera_pos = INV_VIEW_MATRIX[3].xyz;
+		vec3 object_pos = MODEL_MATRIX[3].xyz;
+
+		vec3 forward = camera_pos - object_pos;
+		forward.y = 0.0;
+
+		// Avoid normalize(vec3(0))
+		if (length(forward) > 0.0001) {
+			forward = normalize(forward);
+		} else {
+			forward = vec3(0.0, 0.0, 1.0);
+		}
+
+		vec3 up = vec3(0.0, 1.0, 0.0);
+		vec3 right = normalize(cross(up, forward));
+
+		mat4 billboard_model = mat4(
+			vec4(right, 0.0),
+			vec4(up, 0.0),
+			vec4(forward, 0.0),
+			MODEL_MATRIX[3]
+		);
+
+		mv = VIEW_MATRIX * billboard_model;
+
+		mv[0].xyz *= length(MODEL_MATRIX[0].xyz);
+		mv[1].xyz *= length(MODEL_MATRIX[1].xyz);
+		mv[2].xyz *= length(MODEL_MATRIX[2].xyz);
+	}
+
+	if (billboard_mode > 0) {
+		// Screen-space tilt
 		float s = sin(tilt);
 		float c = cos(tilt);
+
 		vec3 right = mv[0].xyz;
 		vec3 up = mv[1].xyz;
+
 		mv[0].xyz = right * c + up * s;
 		mv[1].xyz = -right * s + up * c;
-
-		MODELVIEW_MATRIX = mv;
 	}
+
+	MODELVIEW_MATRIX = mv;
 }
 
 // Color flash uniforms

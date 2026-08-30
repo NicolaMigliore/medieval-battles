@@ -243,7 +243,7 @@ color = Color(0.073262386, 0.73804265, 7.70092e-07, 1)
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_7315l")
-shader_parameter/use_billboard = true
+shader_parameter/billboard_mode = 0
 shader_parameter/tilt = 0.0
 shader_parameter/texture_albedo = ExtResource("2_6i0tm")
 shader_parameter/flash_color = Color(1, 1, 1, 1)
@@ -854,7 +854,7 @@ states/character_right_hit/position = Vector2(440, 31)
 states/character_right_idle/node = SubResource("AnimationNodeAnimation_2ltml")
 states/character_right_idle/position = Vector2(286, 126)
 transitions = ["Start", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_xn0r5"), "character_right_idle", "character_right_anticipation", SubResource("AnimationNodeStateMachineTransition_l75fg"), "character_right_anticipation", "character_right_attack", SubResource("AnimationNodeStateMachineTransition_vwd7k"), "character_right_attack", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_ceyjw"), "character_right_idle", "character_right_hit", SubResource("AnimationNodeStateMachineTransition_4ya86"), "character_right_hit", "character_right_death", SubResource("AnimationNodeStateMachineTransition_0vyii"), "character_right_hit", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_6i0tm"), "character_right_idle", "character_right_heal_give", SubResource("AnimationNodeStateMachineTransition_6y70v"), "character_right_idle", "character_right_heal_take", SubResource("AnimationNodeStateMachineTransition_wu0gw"), "character_right_heal_give", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_0i2jp"), "character_right_heal_take", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_555hj"), "character_right_idle", "character_right_block", SubResource("AnimationNodeStateMachineTransition_xrw5f"), "character_right_block", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_300kk"), "character_right_boost_take", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_sa5ij"), "character_right_boost_give", "character_right_idle", SubResource("AnimationNodeStateMachineTransition_7cb1a"), "character_right_idle", "character_right_boost_give", SubResource("AnimationNodeStateMachineTransition_dovdo"), "character_right_idle", "character_right_boost_take", SubResource("AnimationNodeStateMachineTransition_oo5hp")]
-graph_offset = Vector2(-232.6466, 126.67603)
+graph_offset = Vector2(-242.6466, -69.32397)
 
 [node name="Character" type="CharacterBody3D"]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
