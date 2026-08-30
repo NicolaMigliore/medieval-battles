@@ -14,8 +14,16 @@ signal block_particles_finished
 @onready var animation_tree = $Animation/AnimationTree
 
 # Properties
+const SPEED = 2.0
 var portrait = null
 var is_player_controlled = false
+
+# Mode
+enum Mode { EXPLORE, BATTLE }
+@export_category("Mode")
+@export var mode = Mode.EXPLORE
+@export var follow_camera:FollowCamera
+@export var overworld_mode: bool = false
 
 # Stats
 @export_category("Stats")
@@ -46,13 +54,48 @@ var _lerp_speed: float
 
 func _ready():
 	animation_tree.active = true
+	set_mode(mode)
 
 func _physics_process(delta: float) -> void:
+	# Lerp during combat
 	if _must_lerp:
 		global_position = global_position.lerp(_lerp_destination, delta * _lerp_speed)
 		if global_position.distance_squared_to(_lerp_destination) < 0.0001:
 			_must_lerp = false
 			destination_reached.emit()
+
+	# World movement
+	if mode == Mode.EXPLORE:
+		# Get the input direction and handle the movement/deceleration.
+		# As good practice, you should replace UI actions with custom gameplay actions.
+		var input_dir := Input.get_vector("input_left", "input_right", "input_up", "input_down")
+		var direction := Vector3.ZERO
+		if follow_camera:
+			var forward := follow_camera.get_movement_forward()
+			var right := -follow_camera.get_movement_right()
+
+			# Ignore vertical movement
+			forward.y = 0
+			right.y = 0
+
+			forward = forward.normalized()
+			right = right.normalized()
+		
+			direction = (
+				right * input_dir.x +
+				forward * -input_dir.y
+			).normalized()
+		else:
+			direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+
+		if direction:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			velocity.z = move_toward(velocity.z, 0, SPEED)
+
+		move_and_slide()
 
 
 func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
@@ -62,7 +105,9 @@ func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
 
 
 #region Init
-func init(opts: Dictionary) -> void:
+func init(opts: Dictionary, new_mode:Mode = Mode.EXPLORE) -> void:
+	set_mode(new_mode)
+
 	# Set starting HP
 	hp = max_hp
 
@@ -84,6 +129,19 @@ func set_sprite_flip(flip_h = false):
 	var sprite: Sprite3D = get_node("Sprite3D")
 	sprite.flip_h = flip_h
 	
+#endregion
+
+
+#region Mode
+func set_mode(new_mode:Mode) -> void:
+	mode = new_mode
+
+	# Set billboard mode
+	match new_mode:
+		Mode.EXPLORE:
+			set_shader_parameter("billboard_mode", 2)
+		Mode.BATTLE:
+			set_shader_parameter("billboard_mode", 1)
 #endregion
 
 
@@ -319,5 +377,14 @@ func set_boost_particles(emit:bool) -> void:
 func set_boosted_particles(emit:bool) -> void:
 	var particles: GPUParticles3D = get_node("CollisionShape3D/Particles/BoostedParticles")
 	particles.emitting = emit
+
+#endregion
+
+
+#region Shader
+
+func set_shader_parameter(param_name: String, value) -> void:	
+	var sprite: Sprite3D = get_node("Sprite3D")
+	sprite.material_override.set_shader_parameter(param_name, value)
 
 #endregion

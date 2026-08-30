@@ -2,6 +2,7 @@ extends Node
 
 var scenes = {
 	title = preload("res://game_scenes/title_scene.tscn"),
+	tavern = preload("res://game_scenes/tavern_scene.tscn"),
 	battle = preload("res://game_scenes/battle_scene.tscn"),
 	spar = preload("res://game_scenes/spar_selection_scene.tscn")
 }
@@ -9,7 +10,7 @@ var active_scene_name: String = ""
 var active_scene = null
 
 func _ready() -> void:
-	switch_scene("spar")
+	switch_scene("tavern")
 
 func switch_scene(scene_name) -> void:
 	active_scene_name = scene_name

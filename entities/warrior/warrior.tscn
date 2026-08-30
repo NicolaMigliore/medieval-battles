@@ -8,7 +8,7 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_rw3ev")
-shader_parameter/use_billboard = true
+shader_parameter/billboard_mode = 0
 shader_parameter/tilt = 0.0
 shader_parameter/texture_albedo = ExtResource("3_gvgwg")
 shader_parameter/flash_color = Color(1, 1, 1, 1)
@@ -25,13 +25,6 @@ shader_parameter/shimmer_strength = 0.70000003325
 
 [node name="Warrior" instance=ExtResource("1_3ggnq")]
 initiative = 2
-
-[node name="HealGiveParticles" parent="CollisionShape3D/Particles" index="5"]
-emitting = false
-
-[node name="GPUParticlesAttractorBox3D" parent="CollisionShape3D/Particles" index="6"]
-strength = 1.0
-radius = 10.0
 
 [node name="Sprite3D" parent="." index="1"]
 material_override = SubResource("ShaderMaterial_o3umg")

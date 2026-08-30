@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bj15rhr1ng8jb"]
+[gd_scene load_steps=17 format=3 uid="uid://bj15rhr1ng8jb"]
 
 [ext_resource type="Script" uid="uid://dunatilrt2rne" path="res://game_scenes/battle_scene.gd" id="1_2vy4q"]
+[ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="2_bx7jq"]
 [ext_resource type="Texture2D" uid="uid://dasp1b2pit54a" path="res://placeholder_texture.png" id="3_rd2ks"]
 [ext_resource type="Script" uid="uid://dphg88qjbs8wa" path="res://game_scenes/battle_manager.gd" id="4_ctw5g"]
 [ext_resource type="Script" uid="uid://dlq0hw4cacpns" path="res://UI/battle_ui.gd" id="5_pavr6"]
@@ -30,12 +31,17 @@ script = ExtResource("1_2vy4q")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_pavr6")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.0321286e-08, -0.8202917, 0.5719454, -1.6878333e-08, 0.5719454, 0.8202917, -1, 2.342173e-08, -3.6906734e-08, 0.7764139, 1.0623724, -6.7092025e-09)
-projection = 1
-fov = 70.0
-size = 2.595789
-far = 3999.85
+[node name="FollowCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 1, 2)
+
+[node name="FollowCamera_OLD" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_bx7jq")]
+transform = Transform3D(1, 0, 0, 0, 0.9063077, 0.42261824, 0, -0.42261824, 0.9063077, -0.3436923, 1.4226183, -3.9615966e-08)
+current = true
+size = 3.0
+target = NodePath("../CameraTarget")
+offset = Vector3(3, 1.5, 0)
+
+[node name="CameraTarget" type="Marker3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023101807, -0.25115967, 0.3809204)
@@ -171,7 +177,7 @@ size_flags_vertical = 4
 columns = 2
 
 [node name="AttackButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(60, 20)
+custom_minimum_size = Vector2(72, 25)
 layout_mode = 2
 icon_texture = ExtResource("6_e7vad")
 icon_size = Vector2i(16, 16)
@@ -179,7 +185,7 @@ label_text = "ATTACK"
 min_size = Vector2(60, 16)
 
 [node name="HealButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(60, 20)
+custom_minimum_size = Vector2(60, 25)
 layout_mode = 2
 icon_texture = ExtResource("7_6k1j2")
 icon_size = Vector2i(16, 16)
@@ -187,7 +193,7 @@ label_text = "HEAL"
 min_size = Vector2(60, 16)
 
 [node name="BlockButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(60, 20)
+custom_minimum_size = Vector2(64, 25)
 layout_mode = 2
 icon_texture = ExtResource("8_msidb")
 icon_size = Vector2i(16, 16)
@@ -195,7 +201,7 @@ label_text = "BLOCK"
 min_size = Vector2(60, 16)
 
 [node name="BoostButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(60, 20)
+custom_minimum_size = Vector2(64, 25)
 layout_mode = 2
 icon_texture = ExtResource("9_k3wpr")
 icon_size = Vector2i(16, 16)
@@ -203,7 +209,7 @@ label_text = "BOOST"
 min_size = Vector2(60, 16)
 
 [node name="WaitButton" parent="UI/BattleUI/PickActionPanel/MarginContainer/HBoxContainer/GridContainer" instance=ExtResource("11_k3wpr")]
-custom_minimum_size = Vector2(60, 20)
+custom_minimum_size = Vector2(60, 25)
 layout_mode = 2
 icon_texture = ExtResource("10_wqxba")
 icon_size = Vector2i(16, 16)
