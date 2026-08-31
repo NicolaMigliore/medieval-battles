@@ -14,7 +14,7 @@ signal block_particles_finished
 @onready var animation_tree = $Animation/AnimationTree
 
 # Properties
-const SPEED = 2.0
+const SPEED = 1.0
 var portrait = null
 var is_player_controlled = false
 
@@ -48,6 +48,9 @@ enum Mode { EXPLORE, BATTLE }
 @onready var block: float = 0
 var boost: float = 0				# current boost amount to be applied to the next move
 
+var direction : Vector3 = Vector3.ZERO
+var last_dir : Vector3
+var _cur_movement_state: String = ""
 var _must_lerp: bool = false
 var _lerp_destination: Vector3
 var _lerp_speed: float
@@ -56,6 +59,8 @@ func _ready():
 	animation_tree.active = true
 	set_mode(mode)
 
+
+#region Physics
 func _physics_process(delta: float) -> void:
 	# Lerp during combat
 	if _must_lerp:
@@ -69,10 +74,9 @@ func _physics_process(delta: float) -> void:
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var input_dir := Input.get_vector("input_left", "input_right", "input_up", "input_down")
-		var direction := Vector3.ZERO
 		if follow_camera:
 			var forward := follow_camera.get_movement_forward()
-			var right := -follow_camera.get_movement_right()
+			var right := follow_camera.get_movement_right()
 
 			# Ignore vertical movement
 			forward.y = 0
@@ -91,17 +95,21 @@ func _physics_process(delta: float) -> void:
 		if direction:
 			velocity.x = direction.x * SPEED
 			velocity.z = direction.z * SPEED
+			last_dir = direction
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
 
 		move_and_slide()
 
+		_animate_movement()
+
 
 func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
 	_lerp_destination = destination
 	_lerp_speed = speed
 	_must_lerp = true
+#endregion
 
 
 #region Init
@@ -140,8 +148,10 @@ func set_mode(new_mode:Mode) -> void:
 	match new_mode:
 		Mode.EXPLORE:
 			set_shader_parameter("billboard_mode", 2)
+			animation_tree["parameters/Transition/transition_request"] = "movement"
 		Mode.BATTLE:
 			set_shader_parameter("billboard_mode", 1)
+			animation_tree["parameters/Transition/transition_request"] = "combat"
 #endregion
 
 
@@ -285,7 +295,7 @@ func _on_animation_finished(anim_name: String) -> void:
 		boost_give_animation_finished.emit()
 
 func _travel(state_name: String) -> void:
-	var playback : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
+	var playback : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/CombatStateMachine/playback")
 	playback.travel(state_name)
 
 func play_anticipation() -> void:
@@ -306,7 +316,6 @@ func play_attack(target_pos: Vector3, return_pos: Vector3) -> void:
 
 	lerp_to(Vector3(return_pos))
 			
-
 func play_hit() -> void:
 	_travel("character_right_hit")
 
@@ -327,6 +336,33 @@ func play_boost_give() -> void:
 
 func play_boost_take() -> void:
 	_travel("character_right_boost_take")
+
+
+func _movement_travel(state_name) -> void:
+	var playback : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/MovementStateMachine/playback")
+	playback.travel(state_name)
+
+func _animate_movement() -> void:
+	var new_movement_state = _cur_movement_state 
+	# Moving animations
+	if direction:
+		var v_amount = direction.dot(follow_camera.get_movement_forward())
+		var h_amount = direction.dot(follow_camera.get_movement_right())
+		var blend_position = Vector2(h_amount,v_amount)
+		animation_tree["parameters/MovementStateMachine/Walk/blend_position"] = blend_position
+		new_movement_state = "Walk"
+
+	# Idle animations
+	else:
+		var v_amount = last_dir.dot(follow_camera.get_movement_forward())
+		var h_amount = last_dir.dot(follow_camera.get_movement_right())
+		var blend_position = Vector2(h_amount, v_amount)
+		animation_tree["parameters/MovementStateMachine/Idle/blend_position"] = blend_position
+		new_movement_state = "Idle"
+
+	# Update animation state
+	if new_movement_state != _cur_movement_state:
+		_movement_travel(new_movement_state)
 
 
 # Fired when any animation finishes

@@ -39,4 +39,4 @@ func get_movement_forward() -> Vector3:
 func get_movement_right() -> Vector3:
 	var forward := get_movement_forward()
 
-	return Vector3.UP.cross(forward).normalized()
+	return forward.cross(Vector3.UP).normalized()
