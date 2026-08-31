@@ -2,20 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6kqdow0hslwn"
-path="res://.godot/imported/warrior-5.png-bbc65d5fee32a6ad11156c185171a7cf.ctex"
+uid="uid://d31g6qyapbxtg"
+path.s3tc="res://.godot/imported/tavern_mesh_library_0.png-17d7e3c430638f82393761fb7c51fd42.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "ff29d3ab3660e02b68933519d742d37c"
 }
 
 [deps]
 
-source_file="res://dev-assets/warrior-5.png"
-dest_files=["res://.godot/imported/warrior-5.png-bbc65d5fee32a6ad11156c185171a7cf.ctex"]
+source_file="res://assets/meshes/tavern/gridmap_library/tavern_mesh_library_0.png"
+dest_files=["res://.godot/imported/tavern_mesh_library_0.png-17d7e3c430638f82393761fb7c51fd42.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +27,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
