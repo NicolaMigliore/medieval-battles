@@ -6,7 +6,7 @@ const MOVEMENT_SPEED:float = 8.0
 @onready var ally_slots = $AllySlots
 @onready var enemy_slots = $EnemySlots
 @onready var battle_ui:BattleUI = $"../UI/BattleUI"
-@onready var camera: Camera3D = $"../Camera3D"
+@onready var camera: Camera3D = $"../FollowCamera"
 
 var _combatants: Array = []		# List of all combatants
 var _remaining: Array = []		# List of combatants that haven't completed actions
@@ -43,9 +43,11 @@ func _ready() -> void:
 		# TODO: Review if this is still needed or if already instantiated Character
 		var character = BattleData.allies[i].scene.instantiate()
 		ally_slots.get_child(i).add_child(character)
-		character.init(BattleData.allies[i])
+		character.init(BattleData.allies[i], Character.Mode.BATTLE)
 		# Update shader (for shield)
-		character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", character.block > 0)
+		# character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", character.block > 0)
+		# character.set_shader_parameter("billboard_mode", 1)
+		character.set_shader_parameter("shield_active", character.block > 0)
 
 
 		var actions_per_turn =_get_actions_per_turn(character)
@@ -64,8 +66,13 @@ func _ready() -> void:
 	for i in BattleData.enemies.size():
 		var character = BattleData.enemies[i].scene.instantiate()
 		enemy_slots.get_child(i).add_child(character)
-		character.init(BattleData.enemies[i])		# configure character stats
+		character.init(BattleData.enemies[i], Character.Mode.BATTLE)		# configure character stats
 		character.set_sprite_flip(true)
+
+		# Update shader (for shield)
+		# character.set_shader_parameter("billboard_mode", 1)
+		character.set_shader_parameter("shield_active", character.block > 0)
+
 		var actions_per_turn =_get_actions_per_turn(character)
 		_combatants.append({
 			"idx": combatant_idx,
@@ -254,7 +261,8 @@ func _do_action() -> void:
 				cur_target.character.block = max(0, cur_target.character.block - amount)
 				amount = max(0, amount - block_amount)
 				if cur_target.character.block <= 0:
-					cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+					# cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+					cur_target.character.set_shader_parameter("shield_active", cur_target.character.block > 0)
 
 			# Animate attacker
 			cur_unit.character.play_anticipation()
@@ -339,7 +347,8 @@ func _do_action() -> void:
 			await cur_unit.character.block_particles_finished
 
 			# Update shader
-			cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+			# cur_target.character.get_node("Sprite3D").material_override.set_shader_parameter("shield_active", cur_target.character.block > 0)
+			cur_target.character.set_shader_parameter("shield_active", cur_target.character.block > 0)
 
 			execution_message = "%s shields %s for %.2f shield power bringing the total to %.2f" % [
 				cur_unit.character.actor_name,

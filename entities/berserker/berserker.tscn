@@ -8,7 +8,7 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_ssbhg")
-shader_parameter/use_billboard = true
+shader_parameter/billboard_mode = 0
 shader_parameter/tilt = 0.0
 shader_parameter/texture_albedo = ExtResource("3_piiiv")
 shader_parameter/flash_color = Color(1, 1, 1, 1)

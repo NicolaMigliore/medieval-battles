@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://buencp2cbn1de"]
+
+[ext_resource type="Script" uid="uid://b7aj7ylqiygsl" path="res://components/follow_camera/follow_camera.gd" id="1_neh0j"]
+
+[sub_resource type="Environment" id="Environment_neh0j"]
+ambient_light_energy = 1.36
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+
+[node name="FollowCamera" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 0, 0)
+environment = SubResource("Environment_neh0j")
+projection = 1
+script = ExtResource("1_neh0j")
