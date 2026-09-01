@@ -936,6 +936,7 @@ blend_point_7/node = SubResource("AnimationNodeAnimation_0i2jp")
 blend_point_7/pos = Vector2(-1, -1)
 blend_point_8/node = SubResource("AnimationNodeAnimation_3psqv")
 blend_point_8/pos = Vector2(0, 0)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_555hj"]
 animation = &"movement/walk_u"
@@ -1006,7 +1007,7 @@ input_1/break_loop_at_end = false
 input_1/reset = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_300kk"]
-graph_offset = Vector2(332.54544, 5.6363525)
+graph_offset = Vector2(214.55566, 11.490829)
 nodes/output/position = Vector2(1060, 180)
 nodes/CombatStateMachine/node = ExtResource("6_l75fg")
 nodes/CombatStateMachine/position = Vector2(540, 300)

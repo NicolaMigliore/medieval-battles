@@ -10,7 +10,6 @@ signal boost_give_animation_finished
 signal destination_reached
 signal block_particles_finished
 
-@onready var animation_player = $Animation/AnimationPlayer
 @onready var animation_tree = $Animation/AnimationTree
 
 # Properties

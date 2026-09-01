@@ -1,0 +1,155 @@
+[gd_scene load_steps=17 format=3 uid="uid://dirrh81unii3a"]
+
+[ext_resource type="Shader" uid="uid://dnqt8xp6trkkp" path="res://entities/character/hit_flash.gdshader" id="1_h344f"]
+[ext_resource type="Script" uid="uid://c21qdor3ggw15" path="res://entities/NPCs/npc.gd" id="1_nsuop"]
+[ext_resource type="Texture2D" uid="uid://djqo25xbak5nu" path="res://entities/character/character.png" id="2_nsuop"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3glrm"]
+radius = 0.076660156
+height = 0.22044373
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7315l"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_h344f")
+shader_parameter/billboard_mode = 0
+shader_parameter/tilt = 0.0
+shader_parameter/texture_albedo = ExtResource("2_nsuop")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/scissor_threshold = 1.0
+shader_parameter/outline_color = Color(0.05000007, 1, 0, 1)
+shader_parameter/outline_width = 1.0000000475
+shader_parameter/outline_alpha = 0.0
+shader_parameter/shield_active = false
+shader_parameter/shimmer_color = Color(0.4, 0.7, 1, 1)
+shader_parameter/shimmer_speed = 5.0
+shader_parameter/shimmer_frequency = 18.0000008075
+shader_parameter/shimmer_strength = 0.70000003325
+
+[sub_resource type="Animation" id="Animation_h344f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nfmne"]
+resource_name = "idle_d"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.53333336),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_nsuop"]
+resource_name = "talking"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.9, 1.1, 1), Vector3(1, 1, 1), Vector3(0.9, 1.1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_20ptf"]
+_data = {
+&"RESET": SubResource("Animation_h344f"),
+&"idle_d": SubResource("Animation_nfmne"),
+&"talking": SubResource("Animation_nsuop")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nsuop"]
+animation = &"idle_d"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nfmne"]
+animation = &"talking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_20ptf"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ec2lv"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7ugjc"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ec2lv"]
+states/idle_d/node = SubResource("AnimationNodeAnimation_nsuop")
+states/idle_d/position = Vector2(434, 100)
+states/talking/node = SubResource("AnimationNodeAnimation_nfmne")
+states/talking/position = Vector2(434, 19)
+transitions = ["Start", "idle_d", SubResource("AnimationNodeStateMachineTransition_20ptf"), "idle_d", "talking", SubResource("AnimationNodeStateMachineTransition_ec2lv"), "talking", "idle_d", SubResource("AnimationNodeStateMachineTransition_7ugjc")]
+graph_offset = Vector2(-44, -25)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7ugjc"]
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_ec2lv")
+nodes/StateMachine/position = Vector2(-80, 140)
+node_connections = [&"output", 0, &"StateMachine"]
+
+[node name="NPC" type="CharacterBody3D"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+script = ExtResource("1_nsuop")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113937706, 0)
+shape = SubResource("CapsuleShape3D_3glrm")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.020440966, 0)
+material_override = SubResource("ShaderMaterial_7315l")
+cast_shadow = 2
+offset = Vector2(0, 6)
+billboard = 1
+texture_filter = 2
+texture = ExtResource("2_nsuop")
+hframes = 23
+vframes = 4
+
+[node name="Animation" type="Node" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
+libraries = {
+&"": SubResource("AnimationLibrary_20ptf")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="Animation"]
+tree_root = SubResource("AnimationNodeBlendTree_7ugjc")
+anim_player = NodePath("../AnimationPlayer")
+
+[connection signal="animation_finished" from="Animation/AnimationTree" to="." method="_on_animation_tree_animation_finished"]
+[connection signal="animation_started" from="Animation/AnimationTree" to="." method="_on_animation_tree_animation_started"]
