@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://kfoxbc4mylhn"
+path="res://.godot/imported/tavern_innkeeper_welcome.dialogue-be413b725383d674d1192efe0f943bea.tres"
+
+[deps]
+
+source_file="res://dialogues/tavern_innkeeper_welcome.dialogue"
+dest_files=["res://.godot/imported/tavern_innkeeper_welcome.dialogue-be413b725383d674d1192efe0f943bea.tres"]
+
+[params]
+
+defaults=true
