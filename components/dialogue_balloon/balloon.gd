@@ -70,6 +70,10 @@ var mutation_cooldown: Timer = Timer.new()
 ## Indicator to show that player can progress dialogue.
 @onready var progress: Polygon2D = %Progress
 
+## Portrait rect
+@onready var portrait_panel: PanelContainer = %PortraitPanel
+@onready var portrait: TextureRect = %Portrait
+
 
 func _ready() -> void:
 	balloon.hide()
@@ -132,6 +136,7 @@ func apply_dialogue_line() -> void:
 
 	character_label.visible = not dialogue_line.character.is_empty()
 	character_label.text = tr(dialogue_line.character, "dialogue")
+	set_character_portrait(dialogue_line.character.to_lower())
 
 	dialogue_label.hide()
 	dialogue_label.dialogue_line = dialogue_line
@@ -215,3 +220,13 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 
 
 #endregion
+
+
+func set_character_portrait(character_name: String= "") -> void:
+	var portrait_path: String = DialogueState.get_character_portrait_path(character_name)
+	if FileAccess.file_exists(portrait_path):
+		portrait_panel.show()
+		portrait.texture = load(portrait_path)
+	else:
+		portrait_panel.hide()
+		portrait.texture = null

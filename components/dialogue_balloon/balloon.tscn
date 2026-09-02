@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://6h3v3yfaf0b5"]
+[gd_scene load_steps=15 format=3 uid="uid://6h3v3yfaf0b5"]
 
 [ext_resource type="Script" uid="uid://bh1b6b2gfd35h" path="res://components/dialogue_balloon/balloon.gd" id="1_36de5"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_a8ve6"]
 [ext_resource type="StyleBox" uid="uid://ou3f8gocvb7k" path="res://themes/dialogue_stylebox.tres" id="2_c1wx5"]
 [ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_72ixx"]
+[ext_resource type="Texture2D" uid="uid://cclcknbhmomut" path="res://entities/character/character-portrait.png" id="4_hm785"]
+[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Mediavel.png" id="4_wkwm7"]
 [ext_resource type="Theme" uid="uid://c66b478pyk4xv" path="res://themes/main_theme.tres" id="5_bovcl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spyqn"]
@@ -65,6 +67,17 @@ MarginContainer/constants/margin_right = 30
 MarginContainer/constants/margin_top = 15
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_qkmqt")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bc7r"]
+atlas = ExtResource("4_wkwm7")
+region = Rect2(689, 213, 46, 39)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fyw7o"]
+texture = SubResource("AtlasTexture_6bc7r")
+texture_margin_left = 8.0
+texture_margin_top = 7.0
+texture_margin_right = 8.0
+texture_margin_bottom = 7.0
+
 [node name="ExampleBalloon" type="CanvasLayer"]
 layer = 100
 script = ExtResource("1_36de5")
@@ -103,6 +116,21 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Balloon/MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
+
+[node name="PortraitPanel" type="PanelContainer" parent="Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_fyw7o")
+
+[node name="Portrait" type="TextureRect" parent="Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PortraitPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("4_hm785")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
