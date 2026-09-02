@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://o4lgocyj08r"
+path="res://.godot/imported/tavern_nickquest_welcome.dialogue-91c0eaa6c303661b3c89f8eb0b265611.tres"
+
+[deps]
+
+source_file="res://dialogues/tavern_nickquest_welcome.dialogue"
+dest_files=["res://.godot/imported/tavern_nickquest_welcome.dialogue-91c0eaa6c303661b3c89f8eb0b265611.tres"]
+
+[params]
+
+defaults=true

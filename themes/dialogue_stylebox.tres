@@ -1,0 +1,14 @@
+[gd_resource type="StyleBoxTexture" load_steps=3 format=3 uid="uid://ou3f8gocvb7k"]
+
+[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Mediavel.png" id="1_fcfhr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bovcl"]
+atlas = ExtResource("1_fcfhr")
+region = Rect2(0, 527, 48, 48)
+
+[resource]
+texture = SubResource("AtlasTexture_bovcl")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0

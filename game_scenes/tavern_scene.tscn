@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://du24dqcnk1f1b"]
+[gd_scene load_steps=38 format=3 uid="uid://du24dqcnk1f1b"]
 
 [ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="1_faj16"]
 [ext_resource type="MeshLibrary" uid="uid://b5ltb74tgbibj" path="res://assets/meshes/tavern/gridmap_library/tavern_mesh_library.tres" id="1_lgmeh"]
@@ -22,46 +22,72 @@
 [ext_resource type="Texture2D" uid="uid://buov5drvg4wri" path="res://entities/NPCs/innkeeper/innkeeper.png" id="19_i2r0y"]
 [ext_resource type="Texture2D" uid="uid://empcxd86w6sq" path="res://entities/NPCs/traveler-silhouette/traveler-silhouette.png" id="20_dbbwf"]
 [ext_resource type="Texture2D" uid="uid://040io7so0xuv" path="res://entities/NPCs/nick-quest/nick-quest.png" id="20_rldv2"]
+[ext_resource type="PackedScene" uid="uid://dyls5y4po5nt" path="res://components/actionable/actionable.tscn" id="22_4fy0q"]
+[ext_resource type="Resource" uid="uid://o4lgocyj08r" path="res://dialogues/tavern_nickquest_welcome.dialogue" id="22_eutnw"]
+[ext_resource type="Resource" uid="uid://kfoxbc4mylhn" path="res://dialogues/tavern_innkeeper_welcome.dialogue" id="23_nj7ds"]
 [ext_resource type="Texture2D" uid="uid://dkkww3i7ntplk" path="res://assets/sprites/icon_exclamation.png" id="23_rldv2"]
+[ext_resource type="Texture2D" uid="uid://bjff7bqmwn1lo" path="res://assets/sprites/btn_space.png" id="25_eutnw"]
 
 [sub_resource type="Environment" id="Environment_a7p7r"]
 ambient_light_energy = 1.36
 fog_enabled = true
 fog_light_color = Color(0, 0, 0, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_paotp"]
-size = Vector3(0.5, 1, 1)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nj7ds"]
+height = 0.24926807
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rldv2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_eutnw"]
 atlas = ExtResource("23_rldv2")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4fy0q"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbhfq"]
 atlas = ExtResource("23_rldv2")
 region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nj7ds"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_bdhdh"]
 atlas = ExtResource("23_rldv2")
 region = Rect2(32, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s6ifi"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_563gg"]
 atlas = ExtResource("23_rldv2")
 region = Rect2(48, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_eutnw"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_303s0"]
 animations = [{
 "frames": [{
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_rldv2")
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eutnw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4fy0q")
+"texture": SubResource("AtlasTexture_xbhfq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_nj7ds")
+"texture": SubResource("AtlasTexture_bdhdh")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s6ifi")
+"texture": SubResource("AtlasTexture_563gg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s62ma"]
+atlas = ExtResource("25_eutnw")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7aprd"]
+atlas = ExtResource("25_eutnw")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_htg0l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s62ma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7aprd")
 }],
 "loop": true,
 "name": &"default",
@@ -101,6 +127,7 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.37905145, 0, 0.9492426)
 follow_camera = NodePath("../FollowCamera")
 overworld_mode = true
+is_player_controlled = true
 
 [node name="LookAtTarget" type="Marker3D" parent="Character"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
@@ -353,9 +380,57 @@ script = ExtResource("18_paotp")
 transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, -1.6685833, 0, 1.7305381)
 sprite_texture = ExtResource("20_rldv2")
 
-[node name="Inkeeper" parent="LevelManager" instance=ExtResource("18_ukus4")]
+[node name="Actionable" parent="LevelManager/NickQuest" instance=ExtResource("22_4fy0q")]
+dialogue_resource = ExtResource("22_eutnw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.12559804, 0)
+shape = SubResource("CylinderShape3D_nj7ds")
+
+[node name="DialogueSprite" type="AnimatedSprite3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33333334, 0)
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_303s0")
+autoplay = "default"
+frame_progress = 0.52361387
+
+[node name="PromptSprite" type="AnimatedSprite3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.33333334, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_htg0l")
+autoplay = "default"
+frame_progress = 0.21851343
+
+[node name="Innkeeper" parent="LevelManager" instance=ExtResource("18_ukus4")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.25, 0, -0.25)
 sprite_texture = ExtResource("19_i2r0y")
+
+[node name="Actionable" parent="LevelManager/Innkeeper" instance=ExtResource("22_4fy0q")]
+dialogue_resource = ExtResource("23_nj7ds")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.12559804, 0)
+shape = SubResource("CylinderShape3D_nj7ds")
+
+[node name="DialogueSprite" type="AnimatedSprite3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33333334, 0)
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_303s0")
+autoplay = "default"
+frame_progress = 0.5087841
+
+[node name="PromptSprite" type="AnimatedSprite3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.33333334, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_htg0l")
+autoplay = "default"
+frame_progress = 0.08399811
 
 [node name="Traveler1" parent="LevelManager" instance=ExtResource("18_ukus4")]
 transform = Transform3D(1.4488888, 0, 0.38822857, 0, 1.5, 0, -0.38822857, 0, 1.4488888, -2.3995342, 0, 2.0230627)
@@ -368,17 +443,3 @@ sprite_texture = ExtResource("20_dbbwf")
 [node name="Traveler3" parent="LevelManager" instance=ExtResource("18_ukus4")]
 transform = Transform3D(1.2990382, 0, -0.75, 0, 1.5, 0, 0.75, 0, 1.2990382, -3.1495342, 0, 2.0102258)
 sprite_texture = ExtResource("20_dbbwf")
-
-[node name="InnkeeperTrigger" type="Area3D" parent="LevelManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.25, 0.25074583)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelManager/InnkeeperTrigger"]
-shape = SubResource("BoxShape3D_paotp")
-
-[node name="Sprite3D" type="AnimatedSprite3D" parent="LevelManager/InnkeeperTrigger"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.182329, -0.5)
-billboard = 2
-texture_filter = 0
-sprite_frames = SubResource("SpriteFrames_eutnw")
-autoplay = "default"
-frame_progress = 0.4002315

@@ -1,0 +1,8 @@
+~ start
+Innkeeper: [[There you are.|Oh, it's you again.|Back for more?]]
+Innkeeper: I'm not serving you any more ale untill you pay up.\nYou owm me [color=#f9d51a]400 gold[/color] for all the booze you have been drinking!
+- Sorry I havve no more gold...
+	Innkeeper: And I have no more patience! => END
+- Come on, I'll pay you tomorrow!
+	Innkeeper: That's what you said yesterday. Find some gold or get lost! => END
+- I'll be right back. => END
