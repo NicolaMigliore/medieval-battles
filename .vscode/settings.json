@@ -3,6 +3,7 @@
 	"editor.insertSpaces": false,
 	"workbench.colorTheme": "Godot 4",
 	"cSpell.words": [
+		"actionables",
 		"perc",
 		"tscn",
 		"unproject"

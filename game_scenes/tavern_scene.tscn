@@ -1,0 +1,450 @@
+[gd_scene load_steps=38 format=3 uid="uid://du24dqcnk1f1b"]
+
+[ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="1_faj16"]
+[ext_resource type="MeshLibrary" uid="uid://b5ltb74tgbibj" path="res://assets/meshes/tavern/gridmap_library/tavern_mesh_library.tres" id="1_lgmeh"]
+[ext_resource type="Script" uid="uid://clcdfkr62xpam" path="res://game_scenes/tavern_scene.gd" id="1_n3qed"]
+[ext_resource type="PackedScene" uid="uid://cd2aro2vr2f7j" path="res://assets/meshes/tavern/props/bar-corner.glb" id="2_a7p7r"]
+[ext_resource type="PackedScene" uid="uid://34hufo7gt441" path="res://entities/character/character.tscn" id="2_ajtgc"]
+[ext_resource type="PackedScene" uid="uid://blldqikrddwr5" path="res://assets/meshes/tavern/props/barrel-1.glb" id="3_ajtgc"]
+[ext_resource type="PackedScene" uid="uid://cvsw1alahj1yy" path="res://assets/meshes/tavern/props/bar.glb" id="4_2rpce"]
+[ext_resource type="PackedScene" uid="uid://dy6iof2a7jil7" path="res://assets/meshes/tavern/props/table-1.glb" id="5_tr576"]
+[ext_resource type="PackedScene" uid="uid://c86dr73yf05aw" path="res://assets/meshes/tavern/props/cup-1.glb" id="6_yx07k"]
+[ext_resource type="PackedScene" uid="uid://b0js3eqglkwpe" path="res://assets/meshes/tavern/props/lantern_on.tscn" id="9_faj16"]
+[ext_resource type="PackedScene" uid="uid://b4ckqargetngm" path="res://assets/meshes/tavern/props/chair-1.glb" id="10_vdw38"]
+[ext_resource type="PackedScene" uid="uid://bsu2fd65u473e" path="res://assets/meshes/tavern/props/bed.glb" id="11_1i0tr"]
+[ext_resource type="PackedScene" uid="uid://cnl11tu11k73p" path="res://assets/meshes/tavern/props/plate-1.glb" id="11_g5vu0"]
+[ext_resource type="PackedScene" uid="uid://t43j1o6xi3jh" path="res://assets/meshes/tavern/props/chest-1.glb" id="12_mp4xp"]
+[ext_resource type="PackedScene" uid="uid://b6hr1lpm40pw5" path="res://assets/meshes/tavern/props/barrel-2.glb" id="14_g5vu0"]
+[ext_resource type="PackedScene" uid="uid://0825a28iu6e6" path="res://assets/meshes/tavern/props/chair-2.glb" id="16_cpwre"]
+[ext_resource type="PackedScene" uid="uid://dgyyqbqr3mj6o" path="res://assets/meshes/tavern/props/lantern-2.glb" id="16_n3qed"]
+[ext_resource type="Script" uid="uid://8jxri8yk3d2g" path="res://game_scenes/tavern_level_manager.gd" id="18_paotp"]
+[ext_resource type="PackedScene" uid="uid://dirrh81unii3a" path="res://entities/NPCs/npc.tscn" id="18_ukus4"]
+[ext_resource type="Texture2D" uid="uid://buov5drvg4wri" path="res://entities/NPCs/innkeeper/innkeeper.png" id="19_i2r0y"]
+[ext_resource type="Texture2D" uid="uid://empcxd86w6sq" path="res://entities/NPCs/traveler-silhouette/traveler-silhouette.png" id="20_dbbwf"]
+[ext_resource type="Texture2D" uid="uid://040io7so0xuv" path="res://entities/NPCs/nick-quest/nick-quest.png" id="20_rldv2"]
+[ext_resource type="PackedScene" uid="uid://dyls5y4po5nt" path="res://components/actionable/actionable.tscn" id="22_4fy0q"]
+[ext_resource type="Resource" uid="uid://o4lgocyj08r" path="res://dialogues/tavern_nickquest_welcome.dialogue" id="22_eutnw"]
+[ext_resource type="Resource" uid="uid://kfoxbc4mylhn" path="res://dialogues/tavern_innkeeper_welcome.dialogue" id="23_nj7ds"]
+[ext_resource type="Texture2D" uid="uid://dkkww3i7ntplk" path="res://assets/sprites/icon_exclamation.png" id="23_rldv2"]
+[ext_resource type="Texture2D" uid="uid://bjff7bqmwn1lo" path="res://assets/sprites/btn_space.png" id="25_eutnw"]
+
+[sub_resource type="Environment" id="Environment_a7p7r"]
+ambient_light_energy = 1.36
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nj7ds"]
+height = 0.24926807
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eutnw"]
+atlas = ExtResource("23_rldv2")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbhfq"]
+atlas = ExtResource("23_rldv2")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bdhdh"]
+atlas = ExtResource("23_rldv2")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_563gg"]
+atlas = ExtResource("23_rldv2")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_303s0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eutnw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbhfq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bdhdh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_563gg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s62ma"]
+atlas = ExtResource("25_eutnw")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7aprd"]
+atlas = ExtResource("25_eutnw")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_htg0l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s62ma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7aprd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="TavernScene" type="Node3D"]
+script = ExtResource("1_n3qed")
+
+[node name="Ambient light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.25, 3.75, -7.649493e-08)
+visible = false
+light_color = Color(0.95199424, 0.85480934, 0.7229636, 1)
+light_energy = 0.75
+sky_mode = 1
+
+[node name="FollowCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_faj16")]
+transform = Transform3D(-4.371139e-08, -0.25881907, 0.9659258, 0, 0.9659259, 0.25881907, -1, 1.1313341e-08, -4.222196e-08, 0.9790515, 0.5, 0.9492426)
+environment = SubResource("Environment_a7p7r")
+projection = 0
+current = true
+size = 2.5
+far = 100.0
+target = NodePath("../Character/LookAtTarget")
+offset = Vector3(0.7, 0.5, 0)
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_lgmeh")
+cell_size = Vector3(0.25, 0.25, 0.25)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(65535, 1, 2, 65535, 3, 1441792, 0, 3, 2, 65535, 65534, 2, 65535, 65535, 2, 65535, 0, 2, 0, 65535, 1441792, 0, 0, 2, 0, 1, 2, 1, 1, 2, 1, 0, 2, 1, 65535, 2, 1, 65534, 2, 1, 3, 2, 2, 1, 1441792, 2, 0, 2, 2, 3, 655362, 65534, 1, 2, 65534, 0, 2, 65534, 65535, 2, 65533, 65534, 2, 65533, 0, 2, 65533, 1, 1441792, 65533, 3, 2, 65534, 3, 2, 65534, 65533, 1441802, 65535, 65533, 1441802, 1, 65533, 1441802, 2, 65534, 2, 2, 65535, 2, 65533, 65533, 1048587, 2, 65533, 1441802, 3, 65534, 10, 3, 65535, 10, 3, 0, 10, 3, 1, 655371, 3, 2, 9, 65533, 4, 2, 65533, 5, 2, 65533, 8, 2, 65533, 9, 2, 65534, 4, 2, 65534, 5, 2, 65534, 7, 2, 65534, 9, 2, 65535, 4, 2, 65535, 5, 2, 65535, 7, 1441792, 65535, 9, 1441792, 0, 4, 1441793, 0, 5, 2, 0, 7, 1441793, 0, 9, 2, 1, 4, 2, 1, 5, 2, 1, 7, 1441792, 1, 9, 2, 2, 4, 655362, 2, 5, 2, 2, 7, 2, 2, 9, 2, 3, 5, 655369, 3, 7, 10, 3, 9, 10, 3, 10, 1048584, 2, 10, 1441802, 1, 10, 1441802, 0, 10, 1441802, 65535, 10, 1441802, 65534, 10, 1441802, 65533, 10, 1441803, 0, 65533, 1441802, 0, 65534, 2, 65534, 65534, 2, 65533, 65535, 2, 65533, 2, 2, 65534, 2, 2, 65535, 2, 1441793, 0, 2, 1441792, 1, 2, 2, 2, 2, 2, 3, 6, 655371, 2, 6, 2, 1, 6, 1441793, 0, 6, 2, 65535, 6, 2, 65534, 6, 2, 65533, 6, 2, 65533, 7, 2, 65534, 8, 2, 65535, 8, 2, 0, 8, 1441793, 1, 8, 2, 2, 8, 1441792, 3, 8, 10, 65527, 65534, 10, 65527, 8, 655370, 65527, 9, 655370, 65528, 65535, 2, 65528, 0, 2, 65528, 1, 1441792, 65528, 2, 2, 65528, 3, 2, 65528, 4, 2, 65528, 5, 2, 65528, 6, 2, 65529, 65535, 1441792, 65529, 0, 2, 65529, 1, 2, 65529, 2, 2, 65529, 3, 2, 65529, 4, 2, 65529, 5, 2, 65529, 6, 2, 65529, 7, 2, 65529, 8, 2, 65529, 9, 2, 65530, 65535, 2, 65530, 0, 2, 65530, 1, 2, 65530, 2, 2, 65530, 3, 2, 65530, 4, 2, 65530, 5, 2, 65530, 6, 2, 65530, 7, 2, 65530, 8, 2, 65530, 9, 2, 65531, 65535, 2, 65531, 0, 2, 65531, 1, 2, 65531, 2, 2, 65531, 3, 2, 65531, 4, 2, 65531, 5, 2, 65531, 6, 1441792, 65531, 7, 2, 65531, 8, 2, 65531, 9, 2, 65532, 65535, 2, 65532, 0, 2, 65532, 1, 2, 65532, 2, 2, 65532, 3, 2, 65532, 4, 2, 65532, 5, 1441792, 65532, 6, 1441793, 65532, 7, 1441792, 65532, 8, 2, 65532, 9, 2, 65532, 65534, 2, 65531, 65534, 2, 65530, 65534, 2, 65529, 65534, 2, 65528, 65534, 2, 65528, 65533, 1441802, 65532, 65533, 1048587, 65531, 65533, 1441802, 65530, 65533, 1441802, 65529, 65533, 1441802, 65527, 65535, 10, 65524, 1, 1441802, 65525, 1, 1441802, 65526, 1, 1441802, 65527, 1, 1048584, 65526, 0, 1048578, 65525, 0, 1048579, 65532, 10, 1441803, 65519, 9, 1048578, 65519, 10, 1441803, 65518, 10, 1048586, 65518, 9, 655363, 65517, 9, 655370, 65517, 8, 655370, 65517, 7, 655370, 65517, 6, 655370, 65517, 5, 655370, 65517, 4, 10, 65519, 5, 655363, 65519, 6, 655363, 65519, 7, 655363, 65519, 8, 655363, 65518, 8, 1048578, 65518, 7, 655363, 65518, 6, 655363, 65518, 5, 1048585, 65521, 5, 1441801, 65521, 6, 655363, 65521, 7, 655363, 65521, 8, 655363, 65521, 9, 655363, 65522, 5, 655365, 65522, 6, 655370, 65522, 7, 655370, 65522, 8, 655370, 65522, 9, 655370, 65522, 10, 7, 65523, 5, 1048585, 65523, 6, 655363, 65523, 7, 655363, 65523, 8, 655363, 65523, 9, 655363, 65523, 10, 1441802, 65524, 5, 655363, 65524, 6, 655363, 65524, 7, 1048578, 65524, 8, 655363, 65524, 9, 655363, 65524, 10, 1441803, 65525, 5, 655363, 65525, 6, 1048578, 65525, 7, 655363, 65525, 8, 655363, 65525, 9, 655363, 65525, 10, 1441803, 65526, 5, 1441801, 65526, 6, 655363, 65526, 7, 655363, 65526, 8, 1048578, 65526, 9, 655363, 65526, 10, 1441802, 65528, 9, 2, 65528, 8, 2, 65528, 7, 2, 65527, 7, 655370, 65527, 6, 655370, 65517, 10, 8, 65520, 5, 1048578, 65520, 6, 655363, 65520, 7, 1048578, 65520, 8, 655363, 65520, 9, 655363, 65520, 10, 1441803, 65521, 10, 1048586, 65526, 65534, 1048579, 65525, 65533, 1048587, 65524, 65533, 1048587, 65523, 65533, 1048586, 65522, 65533, 1048586, 65521, 65533, 1048586, 65520, 65533, 1048587, 65519, 65533, 1048587, 65518, 65533, 1048586, 65517, 3, 11, 65517, 2, 10, 65517, 1, 10, 65517, 0, 10, 65517, 65535, 10, 65517, 65534, 10, 65527, 0, 10, 65523, 1, 1441801, 65522, 1, 1441795, 65521, 1, 1441795, 65520, 1, 1048585, 65519, 1, 1441802, 65518, 1, 1441802, 65527, 5, 655368, 65524, 0, 1048579, 65523, 0, 1048579, 65522, 0, 1048579, 65521, 0, 1048578, 65520, 0, 1048579, 65519, 0, 1048578, 65518, 0, 1048578, 65518, 65535, 1048579, 65518, 65534, 1048579, 65519, 65534, 1048579, 65520, 65534, 1048578, 65521, 65534, 1048579, 65522, 65534, 1048579, 65523, 65534, 1048579, 65524, 65534, 1048579, 65525, 65534, 1048578, 65526, 65535, 1048579, 65525, 65535, 1048579, 65524, 65535, 1048578, 65523, 65535, 1048578, 65522, 65535, 1048579, 65521, 65535, 1048579, 65520, 65535, 1048579, 65519, 65535, 1048579, 65526, 65533, 1441802, 65527, 65533, 1441802, 65517, 65533, 1441800, 65518, 2, 1441794, 65518, 3, 1441794, 65518, 4, 1441792, 65519, 4, 1441792, 65520, 4, 1441794, 65521, 4, 1441792, 65522, 4, 1441792, 65523, 4, 1441793, 65524, 4, 1441792, 65525, 4, 1441792, 65526, 4, 1441792, 65527, 4, 1441793, 65527, 3, 1441792, 65527, 2, 1441792, 65526, 2, 1441792, 65525, 2, 1441794, 65524, 2, 1441793, 65523, 2, 1441792, 65522, 2, 1441794, 65521, 2, 1441793, 65520, 2, 1441792, 65519, 2, 1441794, 65519, 3, 1441794, 65520, 3, 1441794, 65521, 3, 1441794, 65522, 3, 1441794, 65523, 3, 1441793, 65524, 3, 1441794, 65525, 3, 1441794, 65526, 3, 1441794, 3, 3, 1441796, 3, 4, 1441796, 65531, 10, 1441802, 65530, 10, 1441802, 65529, 10, 1441802, 65528, 10, 1441802, 3, 65533, 655368, 65527, 10, 5, 196599, 10, 655364, 196598, 10, 655364, 196597, 10, 655364, 196596, 10, 655364, 196595, 10, 655364, 196594, 10, 655364, 196593, 10, 655364, 196592, 10, 655364, 196591, 10, 655364, 196590, 10, 655364, 196589, 10, 655364, 196589, 9, 655364, 196589, 8, 655364, 196589, 7, 655364, 196589, 6, 655364, 196589, 5, 655364, 196590, 5, 655364, 196593, 5, 655364, 196594, 5, 655364, 196595, 5, 655364, 196594, 6, 655364, 196594, 7, 655364, 196594, 8, 655364, 196594, 9, 655364, 196598, 5, 655364, 196599, 5, 655364, 196599, 6, 655364, 196599, 7, 655364, 196599, 8, 655364, 196599, 9, 655364, 196589, 4, 655364, 196589, 3, 655364, 196589, 2, 655364, 196589, 1, 655364, 196589, 0, 655364, 196589, 65535, 655364, 196589, 65534, 655364, 196589, 65533, 655364, 196590, 65533, 655364, 196591, 65533, 655364, 196592, 65533, 655364, 196593, 65533, 655364, 196594, 65533, 655364, 196595, 65533, 655364, 196596, 65533, 655364, 196592, 1, 655364, 196591, 1, 655364, 196590, 1, 655364, 196595, 1, 655364, 196596, 1, 655364, 196597, 1, 655364, 196598, 1, 655364, 196599, 1, 655364, 196599, 0, 655364, 196599, 65535, 655364, 196599, 65534, 655364, 196599, 65533, 655364, 196598, 65533, 655364, 196597, 65533, 655364, 196600, 65533, 655364, 196601, 65533, 655364, 196602, 65533, 655364, 196603, 65533, 655364, 196604, 65533, 655364, 196605, 65533, 655364, 196606, 65533, 655364, 196607, 65533, 655364, 131072, 65533, 655364, 131073, 65533, 655364, 131074, 65533, 655364, 131075, 65533, 655364, 131075, 65534, 655364, 131075, 65535, 655364, 131075, 0, 655364, 131075, 1, 655364, 131075, 2, 655364, 131075, 5, 655364, 131075, 6, 655364, 131075, 7, 655364, 131075, 8, 655364, 131075, 9, 655364, 131075, 10, 655364, 131074, 10, 655364, 131073, 10, 655364, 131072, 10, 655364, 196607, 10, 655364, 196606, 10, 655364, 196605, 10, 655364, 196604, 10, 655364, 196603, 10, 655364, 196602, 10, 655364, 196601, 10, 655364, 196600, 10, 655364)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Character" parent="." node_paths=PackedStringArray("follow_camera") instance=ExtResource("2_ajtgc")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.37905145, 0, 0.9492426)
+follow_camera = NodePath("../FollowCamera")
+overworld_mode = true
+is_player_controlled = true
+
+[node name="LookAtTarget" type="Marker3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+
+[node name="Props" type="Node" parent="."]
+
+[node name="Bar" type="Node3D" parent="Props"]
+
+[node name="BarCorner" parent="Props/Bar" instance=ExtResource("2_a7p7r")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.249, 0, -0.001)
+
+[node name="Bar" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1, 0, 0)
+
+[node name="Bar1" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.75, 0, 7.649493e-08)
+
+[node name="Bar2" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.5, 0, -2.1855694e-08)
+
+[node name="Bar3" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.25, 0, -3.278354e-08)
+
+[node name="Bar4" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -4.371139e-08)
+
+[node name="Bar5" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.25, 0, -5.463923e-08)
+
+[node name="Bar6" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.5, 0, -6.556708e-08)
+
+[node name="Bar7" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.75, 0, -7.649494e-08)
+
+[node name="Bar8" parent="Props/Bar" instance=ExtResource("4_2rpce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.249, 0, -0.25)
+
+[node name="Barrel" parent="Props/Bar" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68400574, 0, -0.29851365)
+
+[node name="Barrel2" parent="Props/Bar" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6595197, 0, -0.4270228)
+
+[node name="Barrel4" parent="Props/Bar" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.86018175, 0, -0.5099875, 0, 1, 0, 0.5099875, 0, 0.86018175, 0.5235474, 0, -0.34396023)
+
+[node name="Barrel5" parent="Props/Bar" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.86018175, 0, -0.5099875, 0, 1, 0, 0.5099875, 0, 0.86018175, 0.6159104, 0.158095, -0.34879714)
+
+[node name="Barrel3" parent="Props/Bar" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.92660075, 0, -0.37604636, 0, 1, 0, 0.37604636, 0, 0.92660075, -0.5675073, 0, -0.383574)
+
+[node name="Cup" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2901001, 0.1887207, -0.33569336)
+
+[node name="Cup3" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2470093, 0.1887207, -0.30456543)
+
+[node name="Cup2" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, -0.2668231, 0.22316128, -0.0005066674)
+
+[node name="Cup4" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, -1.4985353, 0.12594604, 1.7803018)
+
+[node name="Cup5" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, -1.5485352, 0.12594604, 2.0776105)
+
+[node name="Cup6" parent="Props/Bar" instance=ExtResource("6_yx07k")]
+transform = Transform3D(0, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, 0, -1.4985353, 0.12594604, 2.095633)
+
+[node name="MainHall" type="Node" parent="Props"]
+
+[node name="Table" parent="Props/MainHall" instance=ExtResource("5_tr576")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4763325, 0, 1.8190479)
+
+[node name="Table2" parent="Props/MainHall" instance=ExtResource("5_tr576")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.26523668, 0, 1.5158321)
+
+[node name="Chair6" parent="Props/MainHall" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5162971, -2.3841858e-07, 2.3663309)
+
+[node name="Chair8" parent="Props/MainHall" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9938704, -1.1920929e-07, 2.0413134)
+
+[node name="Chair9" parent="Props/MainHall" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9938704, -1.1920929e-07, 1.7845917)
+
+[node name="Chair10" parent="Props/MainHall" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9938704, -1.1920929e-07, 1.5151603)
+
+[node name="Plate" parent="Props/MainHall" instance=ExtResource("11_g5vu0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32321548, 0.1323592, 1.5362357)
+
+[node name="Plate2" parent="Props/MainHall" instance=ExtResource("11_g5vu0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09335053, 0.12788296, 2.0989456)
+
+[node name="Cup" parent="Props/MainHall" instance=ExtResource("6_yx07k")]
+transform = Transform3D(0.25881907, 0, 0.9659258, 0, 1, 0, -0.9659258, 0, 0.25881907, 0.577878, 0.1278829, 1.4984539)
+
+[node name="Cup3" parent="Props/MainHall" instance=ExtResource("6_yx07k")]
+transform = Transform3D(0.25881907, 0, 0.9659258, 0, 1, 0, -0.9659258, 0, 0.25881907, -0.7017766, 0.1278829, 1.9688139)
+
+[node name="Cup2" parent="Props/MainHall" instance=ExtResource("6_yx07k")]
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, 0.22679205, 0.1278829, 2.052727)
+
+[node name="Table3" parent="Props/MainHall" instance=ExtResource("5_tr576")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.26925403, 0, 2.0748804)
+
+[node name="Table4" parent="Props/MainHall" instance=ExtResource("5_tr576")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.731, 0, 1.819)
+
+[node name="Barrel" parent="Props/MainHall" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9032274, 0, -0.37533593)
+
+[node name="Chair" parent="Props/MainHall" instance=ExtResource("16_cpwre")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.7670385, 0, 1.7465438)
+
+[node name="Lanter" parent="Props/MainHall" instance=ExtResource("16_n3qed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7517674, -5.9604645e-08, -0.33800596)
+
+[node name="Misc" type="Node" parent="Props"]
+
+[node name="Lighting" type="Node" parent="Props"]
+
+[node name="LanternOn" parent="Props/Lighting" instance=ExtResource("9_faj16")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4228302, 0.12561035, 2.094797)
+
+[node name="LanternOn2" parent="Props/Lighting" instance=ExtResource("9_faj16")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2242432, 0.18823242, -0.018615723)
+
+[node name="LanternOn3" parent="Props/Lighting" instance=ExtResource("9_faj16")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.61739165, 0.30741608, -0.35090402)
+
+[node name="WindowLight" type="SpotLight3D" parent="Props/Lighting"]
+transform = Transform3D(0.96592575, 0, -0.25881904, 0, 1, 0, 0.25881904, 0, 0.96592575, -0.75, 0.25, 2.75)
+light_color = Color(0.846033, 0.60735947, 0.35190412, 1)
+shadow_enabled = true
+shadow_bias = 3.405
+shadow_normal_bias = 10.0
+shadow_transmittance_bias = 8.46
+shadow_opacity = 0.64
+shadow_blur = 9.782
+spot_range = 5.28
+spot_attenuation = 0.36
+spot_angle = 56.74703
+
+[node name="WindowLight2" type="SpotLight3D" parent="Props/Lighting"]
+transform = Transform3D(0.9659258, 0, -0.25881907, 0, 1, 0, 0.25881907, 0, 0.9659258, -2.75, 0.25, 2.75)
+light_color = Color(0.846033, 0.60735947, 0.35190412, 1)
+shadow_enabled = true
+shadow_bias = 3.405
+shadow_normal_bias = 10.0
+shadow_transmittance_bias = 8.46
+shadow_opacity = 0.64
+shadow_blur = 9.782
+spot_range = 5.28
+spot_attenuation = 0.36
+spot_angle = 56.74703
+
+[node name="WindowLight3" type="SpotLight3D" parent="Props/Lighting"]
+transform = Transform3D(0.9659258, 0, -0.25881907, 0, 1, 0, 0.25881907, 0, 0.9659258, -4, 0.25, 2.75)
+light_color = Color(0.846033, 0.60735947, 0.35190412, 1)
+shadow_enabled = true
+shadow_bias = 3.405
+shadow_normal_bias = 10.0
+shadow_transmittance_bias = 8.46
+shadow_opacity = 0.64
+shadow_blur = 9.782
+spot_range = 5.28
+spot_attenuation = 0.36
+spot_angle = 56.74703
+
+[node name="Room1" type="Node" parent="Props"]
+
+[node name="Chest" parent="Props/Room1" instance=ExtResource("12_mp4xp")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -2.7552347, 0, 2.349307)
+
+[node name="Bed" parent="Props/Room1" instance=ExtResource("11_1i0tr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3919032, 0, 2.2932832)
+
+[node name="Bed2" parent="Props/Room1" instance=ExtResource("11_1i0tr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1018882, 0, 2.2932832)
+
+[node name="Chair" parent="Props/Room1" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.132606, 0, 1.6391746)
+
+[node name="Room2" type="Node" parent="Props"]
+
+[node name="Chest" parent="Props/Room2" instance=ExtResource("12_mp4xp")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -4.016425, 0, 2.349307)
+
+[node name="Bed" parent="Props/Room2" instance=ExtResource("11_1i0tr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6530938, 0, 2.2932832)
+
+[node name="Bed2" parent="Props/Room2" instance=ExtResource("11_1i0tr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.363079, 0, 2.2932832)
+
+[node name="Chair" parent="Props/Room2" instance=ExtResource("16_cpwre")]
+transform = Transform3D(-0.6189705, 0, 0.7854142, 0, 1, 0, -0.7854142, 0, -0.6189705, -4.3688545, 0, 1.6296585)
+
+[node name="StoreRoom" type="Node" parent="Props"]
+
+[node name="Chair" parent="Props/StoreRoom" instance=ExtResource("10_vdw38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1379611, 0, -0.37580332)
+
+[node name="Barrel" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.388976, 1.1920929e-07, -0.36956495)
+
+[node name="Barrel2" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.9681302, 0, -0.2504476, 0, 1, 0, 0.2504476, 0, 0.9681302, -2.5328681, 1.1920929e-07, -0.38190758)
+
+[node name="Barrel3" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.9681302, 0, -0.2504476, 0, 1, 0, 0.2504476, 0, 0.9681302, -2.6687493, 1.1920929e-07, -0.38795468)
+
+[node name="Barrel5" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.9681302, 0, -0.2504476, 0, 1, 0, 0.2504476, 0, 0.9681302, -2.604083, 1.1920929e-07, -0.2727041)
+
+[node name="Barrel4" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.9681302, 0, -0.2504476, 0, 1, 0, 0.2504476, 0, 0.9681302, -2.5754604, 0.15398079, -0.38757315)
+
+[node name="Barrel6" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.8616646, 0, 0.5074782, 0, 1, 0, -0.5074782, 0, 0.8616646, -4.2546725, 1.1920929e-07, -0.43413457)
+
+[node name="Barrel7" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.8616646, 0, 0.5074782, 0, 1, 0, -0.5074782, 0, 0.8616646, -4.3550305, 1.1920929e-07, -0.3423282)
+
+[node name="Barrel8" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.8616646, 0, 0.5074782, 0, 1, 0, -0.5074782, 0, 0.8616646, -4.2278104, 1.1920929e-07, -0.30655968)
+
+[node name="Barrel9" parent="Props/StoreRoom" instance=ExtResource("3_ajtgc")]
+transform = Transform3D(0.8616646, 0, 0.5074782, 0, 1, 0, -0.5074782, 0, 0.8616646, -4.2887955, 0.15398079, -0.40802363)
+
+[node name="BarrelEmpty" parent="Props/StoreRoom" instance=ExtResource("14_g5vu0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8398774, 0, -0.40573967)
+
+[node name="Chest" parent="Props/StoreRoom" instance=ExtResource("12_mp4xp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.872105, 1.1920929e-07, -0.3654421)
+
+[node name="Bed" parent="Props/StoreRoom" instance=ExtResource("11_1i0tr")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.25, 0, 0)
+
+[node name="LanternOn" parent="Props/StoreRoom" instance=ExtResource("9_faj16")]
+transform = Transform3D(0.9647368, 0, -0.26321644, 0, 1, 0, 0.26321644, 0, 0.9647368, -4.2276716, 0.14506601, -0.3039821)
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("18_paotp")
+
+[node name="NickQuest" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
+transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, -1.6685833, 0, 1.7305381)
+sprite_texture = ExtResource("20_rldv2")
+follow_camera = NodePath("../../FollowCamera")
+
+[node name="Actionable" parent="LevelManager/NickQuest" instance=ExtResource("22_4fy0q")]
+dialogue_resource = ExtResource("22_eutnw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.12559804, 0)
+shape = SubResource("CylinderShape3D_nj7ds")
+
+[node name="DialogueSprite" type="AnimatedSprite3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33333334, 0)
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_303s0")
+autoplay = "default"
+frame_progress = 0.52361387
+
+[node name="PromptSprite" type="AnimatedSprite3D" parent="LevelManager/NickQuest/Actionable"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.33333334, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_htg0l")
+autoplay = "default"
+frame_progress = 0.21851343
+
+[node name="Innkeeper" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.25, 0, -0.25)
+sprite_texture = ExtResource("19_i2r0y")
+follow_camera = NodePath("../../FollowCamera")
+
+[node name="Actionable" parent="LevelManager/Innkeeper" instance=ExtResource("22_4fy0q")]
+dialogue_resource = ExtResource("23_nj7ds")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.12559804, 0)
+shape = SubResource("CylinderShape3D_nj7ds")
+
+[node name="DialogueSprite" type="AnimatedSprite3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33333334, 0)
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_303s0")
+autoplay = "default"
+frame_progress = 0.5087841
+
+[node name="PromptSprite" type="AnimatedSprite3D" parent="LevelManager/Innkeeper/Actionable"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.33333334, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_htg0l")
+autoplay = "default"
+frame_progress = 0.08399811
+
+[node name="Traveler1" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
+transform = Transform3D(-1.0606601, 0, -1.0606602, 0, 1.5, 0, 1.0606602, 0, -1.0606601, -2.3995342, 0, 2.0230627)
+sprite_texture = ExtResource("20_dbbwf")
+follow_camera = NodePath("../../FollowCamera")
+
+[node name="Traveler2" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
+transform = Transform3D(-1.5, 0, 1.3113416e-07, 0, 1.5, 0, -1.3113416e-07, 0, -1.5, -2.7630234, 0, 2.0778134)
+sprite_texture = ExtResource("20_dbbwf")
+follow_camera = NodePath("../../FollowCamera")
+
+[node name="Traveler3" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
+transform = Transform3D(-1.0606601, 0, 1.0606604, 0, 1.5, 0, -1.0606604, 0, -1.0606601, -3.1495342, 0, 2.0102258)
+sprite_texture = ExtResource("20_dbbwf")
+follow_camera = NodePath("../../FollowCamera")

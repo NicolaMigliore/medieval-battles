@@ -1,0 +1,10 @@
+~ start
+Nick Quest: You look awful. Some ale could help!
+- My purse is emty at the moment...
+	Nick Quest: Maybe I can help with that.
+- Are you offering to buy me one?
+	Nick Quest: I am not. But I will offer you some information.
+Nick Quest: There are many ways of making [color=#f9d51a]gold[/color] around these parts.
+Player: Tell me more.
+Nick Quest: Here are some jobs you could take on.[$> DialogueState.open_mission_selector.emit()]
+=> END

@@ -10,20 +10,20 @@ signal boost_give_animation_finished
 signal destination_reached
 signal block_particles_finished
 
-@onready var animation_player = $Animation/AnimationPlayer
 @onready var animation_tree = $Animation/AnimationTree
+@onready var actionable_finder: Area3D = $ActionableFinder
 
 # Properties
 const SPEED = 1.0
 var portrait = null
-var is_player_controlled = false
 
 # Mode
-enum Mode { EXPLORE, BATTLE }
+enum Mode { EXPLORE, BATTLE, IN_DIALOGUE }
 @export_category("Mode")
 @export var mode = Mode.EXPLORE
 @export var follow_camera:FollowCamera
 @export var overworld_mode: bool = false
+@export var is_player_controlled = false
 
 # Stats
 @export_category("Stats")
@@ -109,6 +109,34 @@ func lerp_to(destination: Vector3, speed: float = 8.0) -> void:
 	_lerp_destination = destination
 	_lerp_speed = speed
 	_must_lerp = true
+#endregion
+
+#region Inputs
+func _unhandled_input(_event: InputEvent) -> void:
+	if not is_player_controlled:
+		return
+
+	var can_action = actionable_finder and mode == Mode.EXPLORE
+
+	# Check for actionable interaction
+	if can_action and Input.is_action_just_pressed("ui_accept"):
+		var actionables = actionable_finder.get_overlapping_areas()
+		if actionables.size() > 0:
+			actionables[0].action()
+			var previous_mode = mode
+			actionables[0].dialogue_started.connect(func():
+				set_mode(Mode.IN_DIALOGUE)
+				if follow_camera:
+					follow_camera.start_dialog_focus(actionables[0]),
+				CONNECT_ONE_SHOT
+			)
+			actionables[0].dialogue_ended.connect(func():
+				set_mode(previous_mode)
+				if follow_camera:
+					follow_camera.end_dialogue_focus(),
+				CONNECT_ONE_SHOT
+			)
+			return
 #endregion
 
 

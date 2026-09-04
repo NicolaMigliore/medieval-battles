@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0js3eqglkwpe"]
+
+[ext_resource type="Script" uid="uid://bw4wdgygbowte" path="res://assets/meshes/tavern/props/lantern_on.gd" id="1_ouaud"]
+[ext_resource type="PackedScene" uid="uid://dgxgu8ctr044k" path="res://assets/meshes/tavern/props/lantern-1.glb" id="1_tm5h0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ouaud"]
+noise_type = 3
+frequency = 0.05
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_0gxap"]
+noise = SubResource("FastNoiseLite_ouaud")
+
+[node name="LanternOn" type="Node3D"]
+script = ExtResource("1_ouaud")
+noise_texture = SubResource("NoiseTexture3D_0gxap")
+
+[node name="Lantern" parent="." instance=ExtResource("1_tm5h0")]
+cast_shadow = 0
+
+[node name="Internal light" type="OmniLight3D" parent="Lantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03729248, 0)
+visible = false
+omni_range = 0.166
+omni_attenuation = 1.41
+
+[node name="ExternalLight" type="OmniLight3D" parent="Lantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.061645508, 0)
+light_color = Color(0.93981004, 0.64415115, 0.083181925, 1)
+light_energy = 5.0
+omni_range = 0.5
+omni_attenuation = -0.35

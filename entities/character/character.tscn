@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://34hufo7gt441"]
+[gd_scene load_steps=90 format=3 uid="uid://34hufo7gt441"]
 
 [ext_resource type="Script" uid="uid://om4pfywt0ads" path="res://entities/character/character.gd" id="1_6i0tm"]
 [ext_resource type="Texture2D" uid="uid://bbtkjevxgngcp" path="res://particles/particle_dust.png" id="2_2ltml"]
@@ -258,6 +258,9 @@ shader_parameter/shimmer_color = Color(0.4, 0.7, 1, 1)
 shader_parameter/shimmer_speed = 5.0
 shader_parameter/shimmer_frequency = 18.0000008075
 shader_parameter/shimmer_strength = 0.70000003325
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_l75fg"]
+height = 0.25
 
 [sub_resource type="Animation" id="Animation_3glrm"]
 length = 0.001
@@ -936,6 +939,7 @@ blend_point_7/node = SubResource("AnimationNodeAnimation_0i2jp")
 blend_point_7/pos = Vector2(-1, -1)
 blend_point_8/node = SubResource("AnimationNodeAnimation_3psqv")
 blend_point_8/pos = Vector2(0, 0)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_555hj"]
 animation = &"movement/walk_u"
@@ -1006,7 +1010,7 @@ input_1/break_loop_at_end = false
 input_1/reset = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_300kk"]
-graph_offset = Vector2(332.54544, 5.6363525)
+graph_offset = Vector2(214.55566, 11.490829)
 nodes/output/position = Vector2(1060, 180)
 nodes/CombatStateMachine/node = ExtResource("6_l75fg")
 nodes/CombatStateMachine/position = Vector2(540, 300)
@@ -1116,6 +1120,14 @@ texture_filter = 2
 texture = ExtResource("2_6i0tm")
 hframes = 23
 vframes = 4
+
+[node name="ActionableFinder" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ActionableFinder"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.125, 0)
+shape = SubResource("CylinderShape3D_l75fg")
 
 [node name="Animation" type="Node" parent="."]
 
