@@ -124,8 +124,18 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if actionables.size() > 0:
 			actionables[0].action()
 			var previous_mode = mode
-			actionables[0].dialogue_started.connect(func(): set_mode(Mode.IN_DIALOGUE))
-			actionables[0].dialogue_ended.connect(func(): set_mode(previous_mode))
+			actionables[0].dialogue_started.connect(func():
+				set_mode(Mode.IN_DIALOGUE)
+				if follow_camera:
+					follow_camera.start_dialog_focus(actionables[0]),
+				CONNECT_ONE_SHOT
+			)
+			actionables[0].dialogue_ended.connect(func():
+				set_mode(previous_mode)
+				if follow_camera:
+					follow_camera.end_dialogue_focus(),
+				CONNECT_ONE_SHOT
+			)
 			return
 #endregion
 
