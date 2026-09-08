@@ -5,7 +5,7 @@
 [ext_resource type="StyleBox" uid="uid://ou3f8gocvb7k" path="res://themes/dialogue_stylebox.tres" id="2_c1wx5"]
 [ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_72ixx"]
 [ext_resource type="Texture2D" uid="uid://cclcknbhmomut" path="res://entities/character/character-portrait.png" id="4_hm785"]
-[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Mediavel.png" id="4_wkwm7"]
+[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Medieval.png" id="4_wkwm7"]
 [ext_resource type="Theme" uid="uid://c66b478pyk4xv" path="res://themes/main_theme.tres" id="5_bovcl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spyqn"]

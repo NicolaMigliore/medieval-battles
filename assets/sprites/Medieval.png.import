@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwokxbtmkfmae"
-path="res://.godot/imported/Mediavel.png-ff764d7084cbd8d523bd5ca644a44d26.ctex"
+path="res://.godot/imported/Medieval.png-21c42f89a112a4226ff1a14b10759296.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Mediavel.png"
-dest_files=["res://.godot/imported/Mediavel.png-ff764d7084cbd8d523bd5ca644a44d26.ctex"]
+source_file="res://assets/sprites/Medieval.png"
+dest_files=["res://.godot/imported/Medieval.png-21c42f89a112a4226ff1a14b10759296.ctex"]
 
 [params]
 
