@@ -1,0 +1,136 @@
+[gd_scene load_steps=7 format=3 uid="uid://ce2e5k2enhxbw"]
+
+[ext_resource type="Theme" uid="uid://c66b478pyk4xv" path="res://themes/main_theme.tres" id="1_gdbu8"]
+[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Medieval.png" id="3_74ltq"]
+[ext_resource type="Script" uid="uid://blsnus74omjgt" path="res://UI/settings_menu/settings_menu.gd" id="3_cd12u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cl1d8"]
+atlas = ExtResource("3_74ltq")
+region = Rect2(0, 528, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n8wvl"]
+texture = SubResource("AtlasTexture_cl1d8")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1syaf"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_cd12u")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -76.5
+offset_right = 175.0
+offset_bottom = 76.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("1_gdbu8")
+tab_alignment = 1
+current_tab = 0
+use_hidden_tabs_for_min_size = true
+
+[node name="Gameplay" type="PanelContainer" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_n8wvl")
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Gameplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer"]
+layout_mode = 2
+
+[node name="CameraType" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/CameraType"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.29411766, 0.18039216, 0.101960786, 1)
+text = "Camera Type"
+
+[node name="ItemList" type="OptionButton" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/CameraType"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Smooth"
+popup/item_0/id = 0
+popup/item_1/text = "Fixed Rotation"
+popup/item_1/id = 1
+
+[node name="CameraZoom" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/CameraZoom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.29411766, 0.18039216, 0.101960786, 1)
+text = "Camera Zoom"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/CameraZoom"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.2
+value = 0.6
+
+[node name="Display" type="PanelContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1syaf")
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Display"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Display/MarginContainer"]
+layout_mode = 2
+
+[node name="Fullscreen" type="CheckButton" parent="VBoxContainer/TabContainer/Display/MarginContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Fullscreen"
+
+[node name="Actions" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="ApplyButton" type="Button" parent="VBoxContainer/Actions"]
+layout_mode = 2
+theme = ExtResource("1_gdbu8")
+text = "APPLY"
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/Actions"]
+layout_mode = 2
+theme = ExtResource("1_gdbu8")
+text = "CLOSE"

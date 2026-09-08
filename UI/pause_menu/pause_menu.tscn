@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://soqf045bjtgv"]
+
+[ext_resource type="Script" uid="uid://dnoporexwhdlg" path="res://UI/pause_menu/pause_menu.gd" id="1_bsi2c"]
+[ext_resource type="Theme" uid="uid://c66b478pyk4xv" path="res://themes/main_theme.tres" id="3_kju1d"]
+[ext_resource type="PackedScene" uid="uid://ce2e5k2enhxbw" path="res://UI/settings_menu/settings_menu.tscn" id="3_mc6od"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_bsi2c")
+
+[node name="PausePanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_kju1d")
+
+[node name="MarginContainer" type="MarginContainer" parent="PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PausePanel"]
+layout_mode = 2
+
+[node name="Return" type="Button" parent="PausePanel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_kju1d")
+text = "RETURN"
+
+[node name="Settings" type="Button" parent="PausePanel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_kju1d")
+text = "SETTINGS"
+
+[node name="Title" type="Button" parent="PausePanel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_kju1d")
+text = "MAIN MENU"
+
+[node name="SettingsMenu" parent="." instance=ExtResource("3_mc6od")]
+visible = false

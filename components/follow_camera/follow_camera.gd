@@ -2,24 +2,41 @@ extends Camera3D
 class_name  FollowCamera
 
 @export var target:Node3D
-@export var offset: Vector3 
+
+const BASE_OFFSET: Vector3 = Vector3(.7, .5, 0)
+const ZOOM_OFFSET: Vector3 = Vector3(1, .75, 0)
+@export_range(0,1) var zoom_level: float = 1
+
 @export var smooth_speed: float = 10
 @export var rotation_speed: float = 2.0
 @export var snap_angle_degrees: float = 45.0
-
-enum Mode { FOLLOW, FOLLOW_FIXED_ROTATION, DIALOGUE_FOCUS }
-@export var mode = Mode.FOLLOW
-var previous_mode = null
-
 var yaw: float = 0.0
 var target_yaw: float = 0.0
 
+enum Mode { FOLLOW, FOLLOW_FIXED_ROTATION, DIALOGUE_FOCUS } # Keep DIALOGUE_FOCUS as last
+@export var mode = Mode.FOLLOW
+var previous_mode = null
+
 var dialogue_actionable:Actionable 
+
+func _ready() -> void:
+	# Load camera settings
+	var saved_mode = SettingsManager.get_setting("gameplay_camera_mode")
+	if saved_mode:
+		mode = saved_mode
+	
+	# Connect to settings aplly signal
+	SettingsManager.settings_applied_camera_mode.connect(func(new_mode:Mode): mode = new_mode)
+	SettingsManager.settings_applied_camera_zoom.connect(func(new_zoom:float):
+		zoom_level = new_zoom
+	)
 
 func _process(delta: float) -> void:
 	rotation = Vector3(0.0, 45.0, 0.0)
 	if not target:
 		return
+
+	var offset = _get_offset()
 
 	if mode == Mode.FOLLOW:
 		# Rotate camera with left/right input.
@@ -65,8 +82,8 @@ func _process(delta: float) -> void:
 		look_at(focus_point, Vector3.UP)
 
 
-
 func get_movement_forward() -> Vector3:
+	var offset = _get_offset()
 	var rotated_offset := offset.rotated(Vector3.UP, yaw)
 
 	# Direction from camera toward character.
@@ -78,8 +95,11 @@ func get_movement_forward() -> Vector3:
 
 func get_movement_right() -> Vector3:
 	var forward := get_movement_forward()
-
 	return forward.cross(Vector3.UP).normalized()
+
+
+func _get_offset() -> Vector3:
+	return BASE_OFFSET + ZOOM_OFFSET * (1 - zoom_level)
 
 
 func start_dialog_focus(actionable: Actionable) -> void:
