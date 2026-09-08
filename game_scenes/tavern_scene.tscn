@@ -1,10 +1,11 @@
-[gd_scene load_steps=38 format=3 uid="uid://du24dqcnk1f1b"]
+[gd_scene load_steps=39 format=3 uid="uid://du24dqcnk1f1b"]
 
 [ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="1_faj16"]
 [ext_resource type="MeshLibrary" uid="uid://b5ltb74tgbibj" path="res://assets/meshes/tavern/gridmap_library/tavern_mesh_library.tres" id="1_lgmeh"]
 [ext_resource type="Script" uid="uid://clcdfkr62xpam" path="res://game_scenes/tavern_scene.gd" id="1_n3qed"]
 [ext_resource type="PackedScene" uid="uid://cd2aro2vr2f7j" path="res://assets/meshes/tavern/props/bar-corner.glb" id="2_a7p7r"]
 [ext_resource type="PackedScene" uid="uid://34hufo7gt441" path="res://entities/character/character.tscn" id="2_ajtgc"]
+[ext_resource type="PackedScene" uid="uid://soqf045bjtgv" path="res://UI/pause_menu/pause_menu.tscn" id="2_xbhfq"]
 [ext_resource type="PackedScene" uid="uid://blldqikrddwr5" path="res://assets/meshes/tavern/props/barrel-1.glb" id="3_ajtgc"]
 [ext_resource type="PackedScene" uid="uid://cvsw1alahj1yy" path="res://assets/meshes/tavern/props/bar.glb" id="4_2rpce"]
 [ext_resource type="PackedScene" uid="uid://dy6iof2a7jil7" path="res://assets/meshes/tavern/props/table-1.glb" id="5_tr576"]
@@ -97,6 +98,8 @@ animations = [{
 [node name="TavernScene" type="Node3D"]
 script = ExtResource("1_n3qed")
 
+[node name="PauseMenu" parent="." instance=ExtResource("2_xbhfq")]
+
 [node name="Ambient light" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.25, 3.75, -7.649493e-08)
 visible = false
@@ -105,14 +108,14 @@ light_energy = 0.75
 sky_mode = 1
 
 [node name="FollowCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_faj16")]
-transform = Transform3D(-4.371139e-08, -0.25881907, 0.9659258, 0, 0.9659259, 0.25881907, -1, 1.1313341e-08, -4.222196e-08, 0.9790515, 0.5, 0.9492426)
+transform = Transform3D(-4.371139e-08, -0.25881907, 0.9659258, 0, 0.9659259, 0.25881907, -1, 1.13133405e-08, -4.222196e-08, 1.729, 1.25, 1)
 environment = SubResource("Environment_a7p7r")
 projection = 0
 current = true
-size = 2.5
+size = 1.5
 far = 100.0
 target = NodePath("../Character/LookAtTarget")
-offset = Vector3(0.7, 0.5, 0)
+zoom_level = 0.5
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("1_lgmeh")
@@ -124,7 +127,7 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Character" parent="." node_paths=PackedStringArray("follow_camera") instance=ExtResource("2_ajtgc")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.37905145, 0, 0.9492426)
+transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, 0, 0, 1)
 follow_camera = NodePath("../FollowCamera")
 overworld_mode = true
 is_player_controlled = true
@@ -377,7 +380,7 @@ transform = Transform3D(0.9647368, 0, -0.26321644, 0, 1, 0, 0.26321644, 0, 0.964
 script = ExtResource("18_paotp")
 
 [node name="NickQuest" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
-transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, -1.6685833, 0, 1.7305381)
+transform = Transform3D(-6.5567086e-08, 0, 1.5000001, 0, 1.5, 0, -1.5000001, 0, -6.5567086e-08, -1.6685833, 0, 1.7528429)
 sprite_texture = ExtResource("20_rldv2")
 follow_camera = NodePath("../../FollowCamera")
 
@@ -404,6 +407,8 @@ texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_htg0l")
 autoplay = "default"
 frame_progress = 0.21851343
+
+[node name="Marker3D" type="Marker3D" parent="LevelManager/NickQuest"]
 
 [node name="Innkeeper" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.25, 0, -0.25)
@@ -435,7 +440,7 @@ autoplay = "default"
 frame_progress = 0.08399811
 
 [node name="Traveler1" parent="LevelManager" node_paths=PackedStringArray("follow_camera") instance=ExtResource("18_ukus4")]
-transform = Transform3D(-1.0606601, 0, -1.0606602, 0, 1.5, 0, 1.0606602, 0, -1.0606601, -2.3995342, 0, 2.0230627)
+transform = Transform3D(-1.299038, 0, -0.7500001, 0, 1.5, 0, 0.7500001, 0, -1.299038, -2.3995342, 0, 2.0230627)
 sprite_texture = ExtResource("20_dbbwf")
 follow_camera = NodePath("../../FollowCamera")
 

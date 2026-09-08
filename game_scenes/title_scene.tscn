@@ -1,6 +1,63 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqrgk330qk0n"]
+[gd_scene load_steps=6 format=3 uid="uid://bqrgk330qk0n"]
 
 [ext_resource type="Script" uid="uid://dagi64qma5hvi" path="res://game_scenes/title_scene.gd" id="1_d803o"]
+[ext_resource type="Texture2D" uid="uid://bwokxbtmkfmae" path="res://assets/sprites/Medieval.png" id="2_4un6s"]
+[ext_resource type="Theme" uid="uid://c66b478pyk4xv" path="res://themes/main_theme.tres" id="3_ctpao"]
 
-[node name="TitleScene" type="Node"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_juvrc"]
+atlas = ExtResource("2_4un6s")
+region = Rect2(84, 210, 71, 92)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsp0i"]
+texture = SubResource("AtlasTexture_juvrc")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[node name="TitleScene" type="CanvasLayer"]
 script = ExtResource("1_d803o")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -66.0
+offset_right = 48.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_xsp0i")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Tavern" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ctpao")
+text = "TAVERN"
+
+[node name="Spar" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ctpao")
+text = "SPAR"
+
+[node name="Battle" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ctpao")
+text = "BATTLE"
+
+[node name="Settings" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ctpao")
+text = "SETTINGS"
