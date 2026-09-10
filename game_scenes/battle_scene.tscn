@@ -39,7 +39,6 @@ transform = Transform3D(1, 0, 0, 0, 0.9063077, 0.42261824, 0, -0.42261824, 0.906
 current = true
 size = 3.0
 target = NodePath("../CameraTarget")
-offset = Vector3(3, 1.5, 0)
 
 [node name="CameraTarget" type="Marker3D" parent="."]
 
