@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://bunq8og2pp1pa"]
-
-[ext_resource type="Script" uid="uid://dvxaxa2bfddif" path="res://game_scenes/test_dungeon_generation.gd" id="1_vbqsq"]
-[ext_resource type="Script" uid="uid://bm1q2ue0j1nxh" path="res://dungeons/room.gd" id="2_p2ciq"]
-
-[node name="TestDungeonGeneration" type="Node3D"]
-script = ExtResource("1_vbqsq")
-_room_scene = ExtResource("2_p2ciq")
-_critical_path_length = 7

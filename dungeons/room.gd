@@ -14,7 +14,7 @@ func _process(delta: float) -> void:
 
 
 func add_door(direction_idx: int) -> void:
-	var direction: Vector2i = TestDungeonGenerator.DIRECTIONS[direction_idx]
+	var direction: Vector2i = Dungeon.DIRECTIONS[direction_idx]
 	var door = _door_scene.instantiate()
 	add_child(door)
 	var room_size:float = 10
