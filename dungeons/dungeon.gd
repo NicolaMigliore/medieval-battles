@@ -5,9 +5,9 @@ class_name Dungeon
 # more info in this video: https://www.youtube.com/watch?v=-g1eTeq4JYI
 enum Doors {
 	RIGHT = 1,		#0b0001
-	UP = 2,			#0b0010
+	DOWN = 2,		#0b0010
 	LEFT = 4,		#0b0100
-	DOWN = 8,		#0b1000
+	UP = 8,			#0b1000
 }
 # Room type definition
 enum Contents {
@@ -25,9 +25,9 @@ enum Contents {
 # Must be in the same order as the enum Doors
 const DIRECTIONS: Array[Vector2i] = [
 	Vector2i.RIGHT,
-	Vector2i(0,1),
+	Vector2i(0, -1),
 	Vector2i.LEFT,
-	Vector2i(0, -1)
+	Vector2i(0, 1)
 ]
 
 
