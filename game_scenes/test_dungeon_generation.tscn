@@ -1,21 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://bunq8og2pp1pa"]
+[gd_scene load_steps=6 format=3 uid="uid://bunq8og2pp1pa"]
 
 [ext_resource type="Script" uid="uid://dvxaxa2bfddif" path="res://game_scenes/test_dungeon_generation.gd" id="1_vbqsq"]
+[ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="2_4i8td"]
 [ext_resource type="PackedScene" uid="uid://vk6qrbcvqf13" path="res://dungeons/room.tscn" id="2_p2ciq"]
+[ext_resource type="PackedScene" uid="uid://34hufo7gt441" path="res://entities/character/character.tscn" id="3_bl1h5"]
+
+[sub_resource type="Environment" id="Environment_4i8td"]
+ambient_light_energy = 1.36
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
 
 [node name="TestDungeonGeneration" type="Node3D"]
 script = ExtResource("1_vbqsq")
-_dimensions = null
-_start = null
+_dimensions = Vector2i(14, 10)
 _critical_path_length = 7
 _branches = 5
-_branch_length = null
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0, 60, 0)
+transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0, 11, 0)
+current = true
+fov = 20.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.49999997, -0.43301263, -0.75000006, 0, -0.86602545, 0.4999999, -0.86602545, -0.24999994, -0.4330127, 0, 222.25, -235.5)
+
+[node name="FollowCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_4i8td")]
+transform = Transform3D(-4.3711385e-08, -0.25881904, 0.96592575, 0, 0.96592575, 0.25881904, -1, 1.1313339e-08, -4.2221952e-08, 2.5935, 1.875, 1.5)
+environment = SubResource("Environment_4i8td")
+projection = 0
+size = 1.5
+far = 100.0
+target = NodePath("../Character")
+zoom_level = 0.5
+
+[node name="Character" parent="." node_paths=PackedStringArray("follow_camera") instance=ExtResource("3_bl1h5")]
+follow_camera = NodePath("../FollowCamera")
 
 [node name="RoomHolder" type="Node" parent="."]
 

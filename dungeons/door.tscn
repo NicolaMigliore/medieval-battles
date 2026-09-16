@@ -7,4 +7,3 @@ albedo_color = Color(1, 0, 0, 1)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 material_override = SubResource("StandardMaterial3D_dgkny")
-size = Vector3(2.5, 2.5, 2.5)

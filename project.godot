@@ -45,6 +45,12 @@ enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://add
 theme/custom="uid://big8r512m2y2r"
 theme/custom_font="uid://bwuo5oo0gehag"
 
+[importer_defaults]
+
+scene={
+&"gltf/embedded_image_handling": 3
+}
+
 [input]
 
 input_up={

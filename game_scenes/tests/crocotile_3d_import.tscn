@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://balyyx1f04y8y"]
+
+[ext_resource type="PackedScene" uid="uid://bl2nt21rm5a86" path="res://assets/meshes/dungeon_plains/room-plains-sn.glb" id="1_m15w1"]
+[ext_resource type="PackedScene" uid="uid://ccr7hejris1oe" path="res://entities/warrior/warrior.tscn" id="2_tes0d"]
+[ext_resource type="PackedScene" uid="uid://buencp2cbn1de" path="res://components/follow_camera/follow_camera.tscn" id="3_hnyox"]
+
+[sub_resource type="Environment" id="Environment_tes0d"]
+ambient_light_energy = 1.36
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="FollowCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hnyox")]
+transform = Transform3D(-4.3711385e-08, -0.25881904, 0.96592575, 0, 0.96592575, 0.25881904, -1, 1.1313339e-08, -4.2221952e-08, 2.7970734, 1.875, 0.72499996)
+environment = SubResource("Environment_tes0d")
+projection = 0
+current = true
+size = 1.5
+far = 100.0
+target = NodePath("../Warrior")
+zoom_level = 0.5
+
+[node name="default2" parent="." instance=ExtResource("1_m15w1")]
+
+[node name="Warrior" parent="." node_paths=PackedStringArray("follow_camera") instance=ExtResource("2_tes0d")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.20357347, 0, -0.77500004)
+follow_camera = NodePath("../FollowCamera")
