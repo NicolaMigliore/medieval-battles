@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="RoomLibrary" load_steps=17 format=3 uid="uid://dctdtqgnie3rh"]
+
+[ext_resource type="Script" uid="uid://dts6fj6mxqe3k" path="res://dungeons/room_library_entry.gd" id="1_t72d3"]
+[ext_resource type="PackedScene" uid="uid://cxyxpf2urr5lq" path="res://assets/meshes/dungeon_plains/room-plains-s-1.glb" id="2_nb7ak"]
+[ext_resource type="PackedScene" uid="uid://o73layjqedf6" path="res://assets/meshes/dungeon_plains/room-plains-s.glb" id="3_0pgro"]
+[ext_resource type="PackedScene" uid="uid://pbf7hqe2hry2" path="res://assets/meshes/dungeon_plains/room-plains-se.glb" id="4_3n05e"]
+[ext_resource type="PackedScene" uid="uid://bdcug6oexmt3r" path="res://assets/meshes/dungeon_plains/room-plains-sn-1.glb" id="5_twg4q"]
+[ext_resource type="PackedScene" uid="uid://dlwug1td2ostm" path="res://assets/meshes/dungeon_plains/room-plains-sn-2.glb" id="6_qo5kt"]
+[ext_resource type="PackedScene" uid="uid://dujo80ip1jo0f" path="res://assets/meshes/dungeon_plains/room-plains-sn-3.glb" id="7_y44vj"]
+[ext_resource type="PackedScene" uid="uid://bl2nt21rm5a86" path="res://assets/meshes/dungeon_plains/room-plains-sn.glb" id="8_8d1fq"]
+[ext_resource type="PackedScene" uid="uid://d12aqokhtrolv" path="res://assets/meshes/dungeon_plains/room-plains-swe.glb" id="9_e1x62"]
+[ext_resource type="Script" uid="uid://cc6iv76hn83if" path="res://dungeons/room_library.gd" id="10_1jhgs"]
+[ext_resource type="PackedScene" uid="uid://dhqdx5dw0lxys" path="res://assets/meshes/dungeon_plains/room-plains-swne.glb" id="10_a2epv"]
+
+[sub_resource type="Resource" id="Resource_r4oq3"]
+script = ExtResource("1_t72d3")
+canonical_bitmask = 8
+variants = Array[PackedScene]([ExtResource("2_nb7ak"), ExtResource("3_0pgro")])
+metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
+
+[sub_resource type="Resource" id="Resource_4v45q"]
+script = ExtResource("1_t72d3")
+canonical_bitmask = 9
+variants = Array[PackedScene]([ExtResource("4_3n05e")])
+metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
+
+[sub_resource type="Resource" id="Resource_idrt7"]
+script = ExtResource("1_t72d3")
+canonical_bitmask = 10
+variants = Array[PackedScene]([ExtResource("5_twg4q"), ExtResource("6_qo5kt"), ExtResource("7_y44vj"), ExtResource("8_8d1fq")])
+metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
+
+[sub_resource type="Resource" id="Resource_24ypw"]
+script = ExtResource("1_t72d3")
+canonical_bitmask = 13
+variants = Array[PackedScene]([ExtResource("9_e1x62")])
+metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
+
+[sub_resource type="Resource" id="Resource_nu5ek"]
+script = ExtResource("1_t72d3")
+canonical_bitmask = 15
+variants = Array[PackedScene]([ExtResource("10_a2epv")])
+metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
+
+[resource]
+script = ExtResource("10_1jhgs")
+room_meshes = Dictionary[int, ExtResource("1_t72d3")]({
+8: SubResource("Resource_r4oq3"),
+9: SubResource("Resource_4v45q"),
+10: SubResource("Resource_idrt7"),
+13: SubResource("Resource_24ypw"),
+15: SubResource("Resource_nu5ek")
+})
+metadata/_custom_type_script = "uid://cc6iv76hn83if"

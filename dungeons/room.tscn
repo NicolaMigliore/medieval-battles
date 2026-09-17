@@ -12,5 +12,6 @@ script = ExtResource("1_h3b7s")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5, 0)
-size = Vector3(4.5, 4.5, 4.5)
+visible = false
+size = Vector3(4, 4, 4)
 material = SubResource("StandardMaterial3D_h3b7s")
