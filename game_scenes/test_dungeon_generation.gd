@@ -20,10 +20,17 @@ var room_library: RoomLibrary
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	room_library = RoomLibrary.new()
+	# room_library = preload("res://assets/rom_libraries/plains.tres")
+	room_library = preload("res://assets/rom_libraries/crypt.tres")
 
 	dungeon_obj = Dungeon.new()
-	dungeon_obj.generate()
+	dungeon_obj.generate(
+		Vector2i(15,15), 
+		Vector2i(-1,-1),
+		5,
+		4,
+		Vector2i(1,4)
+	)
 	_print_dungeon()
 	_draw_dungeon()
 
@@ -31,9 +38,8 @@ func _ready() -> void:
 	var player: Character = $Character
 	if player:
 		var entrance_pos: Vector2i = dungeon_obj.get_entrance_position()
-		print("entrance: %s" % entrance_pos)
-		var player_x = (entrance_pos.x + 1) * ROOM_SIZE.x + 4
-		var player_z = (entrance_pos.y + 1) * ROOM_SIZE.z + 4
+		var player_x = (entrance_pos.x) * ROOM_SIZE.x
+		var player_z = (entrance_pos.y) * ROOM_SIZE.z
 		player.global_position = Vector3(player_x, 0, player_z)
 
 
@@ -69,7 +75,7 @@ func _draw_dungeon() -> void:
 			var room_key = "%d_%d" % [cell_pos.x, cell_pos.y]
 			
 			# Position room
-			var door_size = .25
+			var door_size = 0 #.25
 			var room_offset = ROOM_SIZE.x + door_size * 2
 			room.global_position = WORLD_ANCHOR + Vector3(cell_pos.x, 0, cell_pos.y) * room_offset
 			print("room pos: %s" % room.position)
@@ -86,7 +92,7 @@ func _draw_dungeon() -> void:
 			var lab:Label = Label.new()
 			
 			var tmp_text: String = ("0000%s" % str(doors_bitmask))
-			lab.text = tmp_text.substr(tmp_text.length() - 4)
+			lab.text = str(cell_pos) #tmp_text.substr(tmp_text.length() - 4)
 			lab.add_theme_color_override("font_color", Color.BROWN)
 			canvas.add_child(lab)
 			# lab.position = camera.unproject_position(room.global_position)
