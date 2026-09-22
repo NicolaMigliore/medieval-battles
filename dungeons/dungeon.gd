@@ -16,7 +16,7 @@ enum Contents {
 	STAIRS = 32,
 	MISSION_OBJECTIVE = 64,
 	TREASURE = 128,
-	MERCHANT = 256,
+	ENEMY = 256,
 	BRANCH_END = 512,
 	# BOSS = 1024,
 	# RANDOM = 2048,
@@ -39,6 +39,7 @@ var _branch_length: Vector2i = Vector2i(1,4)	# store min max in vector, i.e., Ve
 var _branch_candidates: Array[Vector2i]
 
 var _grid:Array			# array of arrays containing the generated dungeon data 
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 #region Generation
 
@@ -48,8 +49,14 @@ func generate(
 	start: Vector2i = Vector2i(-1,-1),
 	critical_path_length: int = 13,
 	branches: int = 3,
-	branch_length: Vector2i = Vector2i(1,4)
+	branch_length: Vector2i = Vector2i(1,4),
+	seed_value: int = -1
 ) -> void:
+	if seed_value < 0:
+		_rng.randomize()
+	else:
+		_rng.seed = seed_value
+
 	_dimensions = dimensions
 	_start = start
 	_critical_path_length = critical_path_length
@@ -73,9 +80,9 @@ func _init_grid() -> void:
 
 func _place_entrance() -> void:
 	if _start.x < 0 or _start.x >= _dimensions.x:
-		_start.x = randi_range(0, _dimensions.x - 1)
+		_start.x = _rng.randi_range(0, _dimensions.x - 1)
 	if _start.y < 0 or _start.y >= _dimensions.y:
-		_start.y = randi_range(0, _dimensions.y - 1)
+		_start.y = _rng.randi_range(0, _dimensions.y - 1)
 	
 	_grid[_start.x][_start.y] |= Contents.ENTRANCE		# Assign entrance bit
 
@@ -85,7 +92,7 @@ func _generate_path(start_point:Vector2i, length: int, mark_critical_path: bool 
 		return true
 	
 	var current:Vector2i = start_point
-	var random: int = randi_range(0, 3)
+	var random: int = _rng.randi_range(0, 3)
 	var direction: Vector2i = DIRECTIONS[random]
 	
 	# If needed try rotating in the 4 directions util
@@ -109,12 +116,13 @@ func _generate_path(start_point:Vector2i, length: int, mark_critical_path: bool 
 					_grid[current.x][current.y] |= Contents.MISSION_OBJECTIVE
 			
 			# Assign room contents
-			match randi_range(0,2):
-				1:
-					_grid[current.x][current.y] |= Contents.TREASURE
-				2:
-					_grid[current.x][current.y] |= Contents.MERCHANT
-			
+			if not has_content(_grid[current.x][current.y], Contents.MISSION_OBJECTIVE):
+				match _rng.randi_range(0,2):
+					1:
+						_grid[current.x][current.y] |= Contents.TREASURE
+					2:
+						_grid[current.x][current.y] |= Contents.ENEMY
+				
 			# Add room to brach candidates
 			if length > 1:				# Don't use the last cell of the path as a branch candidate
 				_branch_candidates.append(current)
@@ -147,9 +155,9 @@ func _generate_branches() -> void:
 	var branches_created: int = 0
 	var candidate: Vector2i
 	while branches_created < _branches and _branch_candidates.size() > 0:
-		candidate = _branch_candidates[randi_range(0, _branch_candidates.size() - 1)]
+		candidate = _branch_candidates[_rng.randi_range(0, _branch_candidates.size() - 1)]
 		# Try to generate a branch starting from this candidate
-		if _generate_path(candidate, randi_range(_branch_length.x, _branch_length.y)):
+		if _generate_path(candidate, _rng.randi_range(_branch_length.x, _branch_length.y)):
 			branches_created += 1
 		else:
 			# If no direction is valid starting from this candidate, then remove it from the candidates
@@ -188,8 +196,8 @@ func get_cell_bitmask(pos: Vector2i) -> int:
 	return _grid[pos.x][pos.y]
 
 # Check if the requested cell has a specific content
-func has_content(pos: Vector2i, cont: Contents) -> bool:
-	return get_cell_bitmask(pos) & cont != 0
+func has_content(bitmask: int, cont: Contents) -> bool:
+	return bitmask & cont != 0
 
 func is_critical_path(pos: Vector2i) -> bool:
 	return get_cell_bitmask(pos) & Contents.CRITICAL_PATH != 0
@@ -205,3 +213,6 @@ func _to_string() -> String:
 			dungeon_str = dungeon_str + cell_str
 		dungeon_str += "\n"
 	return dungeon_str
+
+func get_seed() -> int:
+	return _rng.seed

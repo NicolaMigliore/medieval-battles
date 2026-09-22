@@ -1010,7 +1010,6 @@ input_1/break_loop_at_end = false
 input_1/reset = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_300kk"]
-graph_offset = Vector2(214.55566, 11.490829)
 nodes/output/position = Vector2(1060, 180)
 nodes/CombatStateMachine/node = ExtResource("6_l75fg")
 nodes/CombatStateMachine/position = Vector2(540, 300)
@@ -1021,7 +1020,7 @@ nodes/Transition/position = Vector2(860, 180)
 node_connections = [&"output", 0, &"Transition", &"Transition", 0, &"MovementStateMachine", &"Transition", 1, &"CombatStateMachine"]
 
 [node name="Character" type="CharacterBody3D"]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
 script = ExtResource("1_6i0tm")
 boost_pwr = 0.5
 
@@ -1111,7 +1110,7 @@ process_material = SubResource("ParticleProcessMaterial_vwd7k")
 draw_pass_1 = SubResource("QuadMesh_4ya86")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.020440966, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 material_override = SubResource("ShaderMaterial_7315l")
 cast_shadow = 2
 offset = Vector2(0, 6)

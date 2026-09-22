@@ -2,43 +2,43 @@
 
 [ext_resource type="Script" uid="uid://cc6iv76hn83if" path="res://dungeons/room_library.gd" id="1_5vhw8"]
 [ext_resource type="Script" uid="uid://dts6fj6mxqe3k" path="res://dungeons/room_library_entry.gd" id="1_q7x4w"]
-[ext_resource type="PackedScene" uid="uid://fydk8folcxnj" path="res://assets/meshes/crypt/room-s-1-col.glb" id="2_3xxav"]
-[ext_resource type="PackedScene" uid="uid://7l728q55jgk6" path="res://assets/meshes/crypt/room-s-col.glb" id="3_4b7nm"]
-[ext_resource type="PackedScene" uid="uid://bbvri6qfh4oyb" path="res://assets/meshes/crypt/room-se-1-col.glb" id="4_ufxrv"]
-[ext_resource type="PackedScene" uid="uid://bd1sor2wkp7kg" path="res://assets/meshes/crypt/room-se-col.glb" id="5_d3md7"]
-[ext_resource type="PackedScene" uid="uid://chfuoych7vci4" path="res://assets/meshes/crypt/room-sn-1-col.glb" id="6_6bsts"]
-[ext_resource type="PackedScene" uid="uid://d08qtreub6a64" path="res://assets/meshes/crypt/room-sn-col.glb" id="7_6huch"]
-[ext_resource type="PackedScene" uid="uid://bhtymue7edbfd" path="res://assets/meshes/crypt/room-swe-col.glb" id="8_syaie"]
-[ext_resource type="PackedScene" uid="uid://s4hp0g5r65yl" path="res://assets/meshes/crypt/room-swne-col.glb" id="9_qe5vt"]
+[ext_resource type="PackedScene" uid="uid://yr26c5pa4yxt" path="res://assets/meshes/crypt/room-s-1-col.gltf" id="2_q7x4w"]
+[ext_resource type="PackedScene" uid="uid://dkrdnanwbxb7q" path="res://assets/meshes/crypt/room-s-col.gltf" id="3_3xxav"]
+[ext_resource type="PackedScene" uid="uid://c4t5i8xkm0ijs" path="res://assets/meshes/crypt/room-se-1-col.gltf" id="4_4b7nm"]
+[ext_resource type="PackedScene" uid="uid://8otn3oadm4gt" path="res://assets/meshes/crypt/room-se-col.gltf" id="5_ufxrv"]
+[ext_resource type="PackedScene" uid="uid://c22fpaukkk3fq" path="res://assets/meshes/crypt/room-sn-1-col.gltf" id="6_d3md7"]
+[ext_resource type="PackedScene" uid="uid://cigujscih5yc1" path="res://assets/meshes/crypt/room-sn-col.gltf" id="7_6bsts"]
+[ext_resource type="PackedScene" uid="uid://doxiagcbciik1" path="res://assets/meshes/crypt/room-swe-col.gltf" id="8_6huch"]
+[ext_resource type="PackedScene" uid="uid://b61rfymorbl0p" path="res://assets/meshes/crypt/room-swne-col.gltf" id="9_syaie"]
 
 [sub_resource type="Resource" id="Resource_r4oq3"]
 script = ExtResource("1_q7x4w")
 canonical_bitmask = 8
-variants = Array[PackedScene]([ExtResource("2_3xxav"), ExtResource("3_4b7nm")])
+variants = Array[PackedScene]([ExtResource("2_q7x4w"), ExtResource("3_3xxav")])
 metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
 
 [sub_resource type="Resource" id="Resource_4v45q"]
 script = ExtResource("1_q7x4w")
 canonical_bitmask = 9
-variants = Array[PackedScene]([ExtResource("4_ufxrv"), ExtResource("5_d3md7")])
+variants = Array[PackedScene]([ExtResource("4_4b7nm"), ExtResource("5_ufxrv")])
 metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
 
 [sub_resource type="Resource" id="Resource_idrt7"]
 script = ExtResource("1_q7x4w")
 canonical_bitmask = 10
-variants = Array[PackedScene]([ExtResource("6_6bsts"), ExtResource("7_6huch")])
+variants = Array[PackedScene]([ExtResource("6_d3md7"), ExtResource("7_6bsts")])
 metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
 
 [sub_resource type="Resource" id="Resource_24ypw"]
 script = ExtResource("1_q7x4w")
 canonical_bitmask = 13
-variants = Array[PackedScene]([ExtResource("8_syaie")])
+variants = Array[PackedScene]([ExtResource("8_6huch")])
 metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
 
 [sub_resource type="Resource" id="Resource_nu5ek"]
 script = ExtResource("1_q7x4w")
 canonical_bitmask = 15
-variants = Array[PackedScene]([ExtResource("9_qe5vt")])
+variants = Array[PackedScene]([ExtResource("9_syaie")])
 metadata/_custom_type_script = "uid://dts6fj6mxqe3k"
 
 [resource]

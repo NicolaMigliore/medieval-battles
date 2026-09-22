@@ -1,9 +1,10 @@
 extends Node3D
 class_name TestDungeonGenerator
 
+@onready var follow_camera: FollowCamera = $FollowCamera
 
 const WORLD_ANCHOR: Vector3 = Vector3(0,0, 0)
-const ROOM_SIZE: Vector3 = Vector3(4, 4, 4)
+const ROOM_SIZE: Vector3 = Vector3(16, 3, 16)
 var _room_scene: PackedScene = preload("res://dungeons/room.tscn")
 var room_dict: Dictionary = {}
 
@@ -17,19 +18,27 @@ var _branch_candidates: Array[Vector2i]
 var dungeon_obj: Dungeon
 var room_library: RoomLibrary
 
+var _prop_enemy_encounter = preload("res://dungeons/props/enemy_encounter.tscn")
+var _random_seed: int
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# room_library = preload("res://assets/rom_libraries/plains.tres")
 	room_library = preload("res://assets/rom_libraries/crypt.tres")
 
+	_random_seed = 1
+	_rng.seed = _random_seed
+	print("Generation seed: %s" % _random_seed)
+
 	dungeon_obj = Dungeon.new()
 	dungeon_obj.generate(
-		Vector2i(15,15), 
+		Vector2i(9,6), 
 		Vector2i(-1,-1),
 		5,
-		4,
-		Vector2i(1,4)
+		0, #4,
+		Vector2i(1,4),
+		_random_seed
 	)
 	_print_dungeon()
 	_draw_dungeon()
@@ -38,13 +47,20 @@ func _ready() -> void:
 	var player: Character = $Character
 	if player:
 		var entrance_pos: Vector2i = dungeon_obj.get_entrance_position()
-		var player_x = (entrance_pos.x) * ROOM_SIZE.x
-		var player_z = (entrance_pos.y) * ROOM_SIZE.z
-		player.global_position = Vector3(player_x, 0, player_z)
+		var room_key = "%d_%d" % [entrance_pos.x, entrance_pos.y]
+		var room: Room = room_dict[room_key].room
+		var player_spawn_socket = room.get_socket_player_spawn()
+		if player_spawn_socket:
+			var player_x = player_spawn_socket.position.x #(entrance_pos.x) * ROOM_SIZE.x
+			var player_z = player_spawn_socket.position.z #(entrance_pos.y) * ROOM_SIZE.z + 1
+			player.position = Vector3(player_x, 0, player_z)
+			print("player pos: %s" % player.position)
+		else:
+			push_error("No player socket found for room key: %s" % room_key)
 
 
 #region DEBUG
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	var cam: Camera3D = $Camera3D
 	var input_dir := Input.get_vector("input_left", "input_right", "input_up", "input_down")
 	var speed = 1
@@ -71,6 +87,7 @@ func _draw_dungeon() -> void:
 		if cell_bitmask:
 			# Instantiate the room scene
 			room = _room_scene.instantiate()
+			room.set_bitmask(cell_bitmask)
 			room_holder.add_child(room)
 			var room_key = "%d_%d" % [cell_pos.x, cell_pos.y]
 			
@@ -78,11 +95,9 @@ func _draw_dungeon() -> void:
 			var door_size = 0 #.25
 			var room_offset = ROOM_SIZE.x + door_size * 2
 			room.global_position = WORLD_ANCHOR + Vector3(cell_pos.x, 0, cell_pos.y) * room_offset
-			print("room pos: %s" % room.position)
 
 			# Configure room mesh
 			var doors_bitmask:int = (cell_bitmask & 0b1111)
-			print("door_bitmask: %d" % doors_bitmask)
 			var room_mesh_and_rotation = room_library.get_room_mesh_and_rotation(doors_bitmask)
 			room.set_mesh(room_mesh_and_rotation.mesh, room_mesh_and_rotation.turns)
 			
@@ -91,13 +106,14 @@ func _draw_dungeon() -> void:
 			var canvas:CanvasLayer = $CanvasLayer
 			var lab:Label = Label.new()
 			
-			var tmp_text: String = ("0000%s" % str(doors_bitmask))
-			lab.text = str(cell_pos) #tmp_text.substr(tmp_text.length() - 4)
+			var tmp_text: String = str(dungeon_obj.has_content(cell_bitmask, Dungeon.Contents.ENEMY)) #("0000%s" % str(cell_bitmask))
+			lab.text = tmp_text.substr(tmp_text.length() - 4)
 			lab.add_theme_color_override("font_color", Color.BROWN)
 			canvas.add_child(lab)
 			# lab.position = camera.unproject_position(room.global_position)
 			
 			room_dict[room_key] = {
+				dungeon_pos = cell_pos,
 				room = room,
 				label = lab
 			}
@@ -108,27 +124,30 @@ func _draw_dungeon() -> void:
 			# 	if room_has_door:
 			# 		room.add_door(i)
 
-			# TODO: set the room contents or pick a pre-made rooms based on bitmask				
 			# Set room color / type
 			var color:Color = Color.BISQUE 
 			
-			var is_critical_path = dungeon_obj.has_content(cell_pos, Dungeon.Contents.CRITICAL_PATH)
+			var is_critical_path = dungeon_obj.has_content(cell_bitmask, Dungeon.Contents.CRITICAL_PATH)
 			if is_critical_path:
 				color = Color.AQUAMARINE
 			
-			var is_start = dungeon_obj.has_content(cell_pos, Dungeon.Contents.ENTRANCE)
+			var is_start = dungeon_obj.has_content(cell_bitmask, Dungeon.Contents.ENTRANCE)
 			if is_start:
 				color = Color.ORANGE
 			
-			var is_branch_end = dungeon_obj.has_content(cell_pos, Dungeon.Contents.BRANCH_END)
+			var is_branch_end = dungeon_obj.has_content(cell_bitmask, Dungeon.Contents.BRANCH_END)
 			if is_branch_end:
 				color = Color.OLIVE
 
-			var is_objective = dungeon_obj.has_content(cell_pos, Dungeon.Contents.MISSION_OBJECTIVE)
+			var is_objective = dungeon_obj.has_content(cell_bitmask, Dungeon.Contents.MISSION_OBJECTIVE)
 			if is_objective:
 				color = Color.YELLOW
 			
 			room.set_room_color(color)
+
+			# TODO: set the room contents or pick a pre-made rooms based on bitmask				
+			_populate_room(room)
+			
 
 func _sync_labels() -> void:
 	var camera: Camera3D = $Camera3D
@@ -142,3 +161,23 @@ func _sync_labels() -> void:
 			label.position = camera.unproject_position(room.global_position) + Vector2(-20, 0)
 
 #endregion
+
+func _populate_room(room:Room) -> void:
+	# spawn enemies
+	var room_has_enemies: bool = dungeon_obj.has_content(room.room_bitmask, Dungeon.Contents.ENEMY)
+	if room_has_enemies:
+		var enemy_encounters: Array[EnemyEncounter] = []
+		var enemy_sockets = room.get_enemy_sockets()
+		for i in range(_rng.randi_range(0, enemy_sockets.size())):
+			var enemy_encounter: EnemyEncounter = _prop_enemy_encounter.instantiate()
+			enemy_encounters.append(enemy_encounter)
+			# TODO: Configure encounter with enemy sprites and battle data
+		# room.spawn_enemy_encounters(enemy_encounters)
+
+	# Set Mission Objective
+	var room_has_objective: bool = dungeon_obj.has_content(room.room_bitmask, Dungeon.Contents.MISSION_OBJECTIVE)
+	if room_has_objective:
+		# TODO: Implement different objective types
+		var boss_encounter: EnemyEncounter = _prop_enemy_encounter.instantiate()
+		room.spawn_boss_encounter(boss_encounter)
+
