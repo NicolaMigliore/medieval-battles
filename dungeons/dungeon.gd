@@ -4,24 +4,24 @@ class_name Dungeon
 # Info: define the needed bits to bitmask the directions
 # more info in this video: https://www.youtube.com/watch?v=-g1eTeq4JYI
 enum Doors {
-	RIGHT = 1,		#0b0001
-	DOWN = 2,		#0b0010
-	LEFT = 4,		#0b0100
-	UP = 8,			#0b1000
+	RIGHT = 1,						#0b0000000000001
+	UP = 2,							#0b0000000000010
+	LEFT = 4,						#0b0000000000100
+	DOWN = 8,						#0b0000000001000
 }
 # Room type definition
 enum Contents {
-	EMPTY = 0,
-	ENTRANCE = 16,
-	STAIRS = 32,
-	MISSION_OBJECTIVE = 64,
-	TREASURE = 128,
-	ENEMY = 256,
-	BRANCH_END = 512,
-	# BOSS = 1024,
+	EMPTY = 0,						#0b0000000000000
+	ENTRANCE = 16,					#0b0000000010000
+	STAIRS = 32,					#0b0000000100000
+	MISSION_OBJECTIVE = 64,			#0b0000001000000
+	TREASURE = 128,					#0b0000010000000
+	ENEMY = 256,					#0b0000100000000
+	BRANCH_END = 512,				#0b0001000000000
+	BOSS = 1024,					#0b0010000000000
 	# RANDOM = 2048,
-	CRITICAL_PATH = 4096
-}
+	CRITICAL_PATH = 4096			#0b1000000000000
+}									#0b1000010001001
 # Must be in the same order as the enum Doors
 const DIRECTIONS: Array[Vector2i] = [
 	Vector2i.RIGHT,
@@ -67,6 +67,7 @@ func generate(
 	_place_entrance()
 	_generate_path(_start, _critical_path_length, true)
 	_generate_branches()
+	print("[LOG] Generated dungeon with seed: %s" % str(_rng.seed))
 
 
 func _init_grid() -> void:

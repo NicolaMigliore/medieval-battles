@@ -1,11 +1,6 @@
 extends Node3D
 class_name Room
 
-enum RoomPropTypes {
-	ENEMY,
-	LOOT
-}
-
 var room_bitmask: int
 var _mesh_instance: Node3D
 
@@ -90,12 +85,13 @@ func spawn_enemy_encounters(enemy_encounters: Array[EnemyEncounter]) -> void:
 
 	for encounter in enemy_encounters:
 		var socket:Dictionary = enemy_sockets.pop_at(randi_range(0, enemy_sockets.size()-1))
-		encounter.global_position = Vector3(socket.position.x, 0, socket.position.z)
 		add_child(encounter)
+		encounter.global_position = Vector3(socket.position.x, 0, socket.position.z)
 		socket.instance = encounter
 
 func spawn_boss_encounter(boss_encounter: EnemyEncounter) -> void:
 	var socket: Dictionary = get_socket("socket-boss")
+	add_child(boss_encounter)
 	boss_encounter.global_position = Vector3(socket.position.x, 0, socket.position.z)
 	socket.instance = boss_encounter
 

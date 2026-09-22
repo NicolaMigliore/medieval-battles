@@ -7,7 +7,7 @@ func _rotate_bitmask_90(bits: int) -> int:
 	return ((bits << 1) | (bits >> 3)) & 0b1111
 
 
-func get_room_mesh_and_rotation(bitmask:int ) -> Dictionary:
+func get_room_mesh_and_rotation(bitmask:int, _rng:RandomNumberGenerator) -> Dictionary:
 	# For each door placement configuration
 	for entry_key in room_meshes.keys():
 		var entry: RoomLibraryEntry = room_meshes[entry_key]
@@ -17,7 +17,8 @@ func get_room_mesh_and_rotation(bitmask:int ) -> Dictionary:
 			# Check if the room has the correct door placement
 			if rotated == bitmask:
 				var rooms:Array[PackedScene] = entry.variants
-				return { "mesh": rooms.pick_random(), "turns": turns}
+				var rand_idx = _rng.randi_range(0, rooms.size()-1)
+				return { "mesh": rooms[rand_idx], "turns": turns}
 			rotated = _rotate_bitmask_90(rotated)
 	push_error("No matching room mesh for the bitmask %d" % bitmask)
 	return {}

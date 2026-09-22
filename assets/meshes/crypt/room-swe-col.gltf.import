@@ -14,7 +14,7 @@ dest_files=["res://.godot/imported/room-swe-col.gltf-5e6b211b00c5b0b5943efaae764
 [params]
 
 nodes/root_type=""
-nodes/root_name=""
+nodes/root_name="RoomSWE"
 nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
