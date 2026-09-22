@@ -21,4 +21,3 @@ func get_room_mesh_and_rotation(bitmask:int ) -> Dictionary:
 			rotated = _rotate_bitmask_90(rotated)
 	push_error("No matching room mesh for the bitmask %d" % bitmask)
 	return {}
-

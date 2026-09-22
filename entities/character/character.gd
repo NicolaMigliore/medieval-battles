@@ -14,7 +14,7 @@ signal block_particles_finished
 @onready var actionable_finder: Area3D = $ActionableFinder
 
 # Properties
-const SPEED = 1.0
+const SPEED = 4.0
 var portrait = null
 
 # Mode

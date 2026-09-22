@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgpl60rg4770d"]
+
+[ext_resource type="Script" uid="uid://bwaecfnr77xc8" path="res://dungeons/props/enemy_encounter.gd" id="1_37xlc"]
+[ext_resource type="PackedScene" uid="uid://dirrh81unii3a" path="res://entities/NPCs/npc.tscn" id="2_37xlc"]
+
+[node name="EnemyEncounter" type="Node3D"]
+script = ExtResource("1_37xlc")
+
+[node name="NPC" parent="." instance=ExtResource("2_37xlc")]

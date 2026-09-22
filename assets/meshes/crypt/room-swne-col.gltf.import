@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://7l728q55jgk6"
-path="res://.godot/imported/room-s-col.glb-0a64c6933b9ed70037b439771f3f2919.scn"
+uid="uid://b61rfymorbl0p"
+path="res://.godot/imported/room-swne-col.gltf-6e1a573a3e278afdd8c3a5b0c4fbe79f.scn"
 
 [deps]
 
-source_file="res://assets/meshes/crypt/room-s-col.glb"
-dest_files=["res://.godot/imported/room-s-col.glb-0a64c6933b9ed70037b439771f3f2919.scn"]
+source_file="res://assets/meshes/crypt/room-swne-col.gltf"
+dest_files=["res://.godot/imported/room-swne-col.gltf-6e1a573a3e278afdd8c3a5b0c4fbe79f.scn"]
 
 [params]
 

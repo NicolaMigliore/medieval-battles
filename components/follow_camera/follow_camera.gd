@@ -3,8 +3,10 @@ class_name  FollowCamera
 
 @export var target:Node3D
 
-const BASE_OFFSET: Vector3 = Vector3(.7, .5, 0)
-const ZOOM_OFFSET: Vector3 = Vector3(1, .75, 0)
+# const BASE_OFFSET: Vector3 = Vector3(.7, .5, 0)
+# const ZOOM_OFFSET: Vector3 = Vector3(1, .75, 0)
+const BASE_OFFSET: Vector3 = Vector3(3, 2, 0)
+const ZOOM_OFFSET: Vector3 = Vector3(4, 3, 0)
 @export_range(0,1) var zoom_level: float = 1
 
 @export var smooth_speed: float = 10

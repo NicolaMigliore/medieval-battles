@@ -253,7 +253,7 @@ animation = &"idle_r"
 animation = &"idle_d"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wnuoe"]
-animation = &"talk_d"
+animation = &"idle_d"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fr0up"]
 animation = &"idle_d"
@@ -343,14 +343,14 @@ transitions = ["Talk", "Idle", SubResource("AnimationNodeStateMachineTransition_
 graph_offset = Vector2(-40, -49)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7ugjc"]
-graph_offset = Vector2(-303, 11)
+graph_offset = Vector2(-412.02075, -42.141815)
 nodes/output/position = Vector2(360, 220)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_ec2lv")
 nodes/StateMachine/position = Vector2(-140, 80)
 node_connections = [&"output", 0, &"StateMachine"]
 
 [node name="NPC" type="CharacterBody3D"]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
 script = ExtResource("1_nsuop")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -377,7 +377,7 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="Animation"]
 tree_root = SubResource("AnimationNodeBlendTree_7ugjc")
 anim_player = NodePath("../AnimationPlayer")
-parameters/StateMachine/Idle/blend_position = Vector2(0.9333968, -0.87775064)
+parameters/StateMachine/Idle/blend_position = Vector2(-0.2335558, 0.16571426)
 parameters/StateMachine/Talk/blend_position = Vector2(0, 0)
 
 [connection signal="animation_finished" from="Animation/AnimationTree" to="." method="_on_animation_tree_animation_finished"]
