@@ -44,6 +44,7 @@ enum Mode { EXPLORE, BATTLE, IN_DIALOGUE }
 @export var boost_bias: float = 0
 
 # Runtime attributes
+var combatant_def: CombatantDefinition
 @onready var hp: float = 5
 @onready var block: float = 0
 var boost: float = 0				# current boost amount to be applied to the next move
@@ -118,6 +119,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 	var can_action = actionable_finder and mode == Mode.EXPLORE
 
+	# TODO: Verify if this is correct or if it should live in level script
 	# Check for actionable interaction
 	if can_action and Input.is_action_just_pressed("ui_accept"):
 		var actionables = actionable_finder.get_overlapping_areas()
@@ -141,21 +143,23 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 
 #region Init
-func init(opts: Dictionary, new_mode:Mode = Mode.EXPLORE) -> void:
+func init(comb_def: CombatantDefinition, new_mode:Mode = Mode.EXPLORE) -> void:
 	set_mode(new_mode)
+	is_player_controlled = comb_def.is_player_controlled
+
+	# Configure character
+	combatant_def = comb_def
+	var stats_dict:Dictionary = combatant_def.get_effective_stats()
+	for key in stats_dict:
+		self[key] = stats_dict.get(key, self[key])
 
 	# Set starting HP
 	hp = max_hp
 
-	# Configure character
-	for key in opts:
-		if key != "scene" and key != "sprite_texture" and key != "id":
-			self[key] = opts.get(key, self[key])
-
 	# configure sprite
 	var sprite: Sprite3D = get_node("Sprite3D")
-	if opts.sprite_texture:
-		sprite.texture = opts.sprite_texture
+	if combatant_def.sprite_texture:
+		sprite.texture = combatant_def.sprite_texture
 
 	# Configure shader
 	sprite.material_override.set_shader_parameter("texture_albedo", sprite.texture)

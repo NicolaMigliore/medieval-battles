@@ -1,34 +1,21 @@
 extends PanelContainer
 class_name CharacterInfoPanel
 
-func set_character_data(character:Character) -> void:
+func set_character_data(combatant:CombatantDefinition, current_hp:float = -1, current_block: float = 0) -> void:
 	var vbox = $MarginContainer/VBoxContainer
 	# var character = combatant.character
 	
 	var texture: TextureRect = vbox.get_node("TextureRect")
-	texture.texture = character.portrait
+	texture.texture = combatant.portrait
 
 	var name_label: Label = vbox.get_node("TitleLabel")
-	name_label.text = character.actor_name
+	name_label.text = combatant.actor_name
 
-	# var stats_text = "[center][table=2 bgcolor=#ffffff]
-	# [cell expand=1 border=#ffffff ratio=1.5]HP[/cell][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s/%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Shield[/cell][hr][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Initiative[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Attack[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Block[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Heal[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [cell expand=1 border=#ffffff ratio=1.5]Boost[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
-	# [/table][/center]" % [
-	# 	character.hp,
-	# 	character.max_hp,
-	# 	character.block,
-	# 	character.initiative,
-	# 	character.attack_pwr,
-	# 	character.block_pwr,
-	# 	character.heal_pwr,
-	# 	character.boost_pwr,
-	# ]
+
+	var stats = combatant.get_effective_stats()
+	var display_hp = current_hp if current_hp>0 else stats.max_hp
+	var display_block = current_block
+
 	var stats_text = "[center][table=2 bgcolor=#ffffff]
 	[cell expand=1 border=#ffffff ratio=1.5]HP[/cell][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s/%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]SHLD[/cell][hr][hr][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
@@ -38,14 +25,14 @@ func set_character_data(character:Character) -> void:
 	[cell expand=1 border=#ffffff ratio=1.5]HEL[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
 	[cell expand=1 border=#ffffff ratio=1.5]BST[/cell][cell expand=1 border=#ffffff ratio=1.0][right]%s[/right][/cell]
 	[/table][/center]" % [
-		character.hp,
-		character.max_hp,
-		character.block,
-		character.initiative,
-		character.attack_pwr,
-		character.block_pwr,
-		character.heal_pwr,
-		character.boost_pwr,
+		display_hp,
+		stats.max_hp,
+		display_block,
+		stats.initiative,
+		stats.attack_pwr,
+		stats.block_pwr,
+		stats.heal_pwr,
+		stats.boost_pwr,
 	]
 	var stats_label: RichTextLabel = vbox.get_node("StatsRichTextLabel")
 	stats_label.text = stats_text 

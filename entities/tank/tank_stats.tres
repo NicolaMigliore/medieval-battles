@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CombatantClassStats" load_steps=2 format=3 uid="uid://s2b2dfj6ispc"]
+
+[ext_resource type="Script" uid="uid://p70fbeq1lfvg" path="res://battle/combatant_class_stats.gd" id="1_akhnd"]
+
+[resource]
+script = ExtResource("1_akhnd")
+max_hp = 7.0
+attack_pwr = 0.7
+block_pwr = 1.5
+heal_pwr = 0.5
+block_bias = 1.0
+metadata/_custom_type_script = "uid://p70fbeq1lfvg"
