@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CombatantClassStats" load_steps=2 format=3 uid="uid://dtpbu4p34jhdb"]
+
+[ext_resource type="Script" uid="uid://p70fbeq1lfvg" path="res://battle/combatant_class_stats.gd" id="1_1ljdv"]
+
+[resource]
+script = ExtResource("1_1ljdv")
+initiative = 2
