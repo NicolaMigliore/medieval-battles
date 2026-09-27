@@ -25,6 +25,9 @@ func _switch_scene(scene_name: String, props: Dictionary = {}) -> void:
 	# Call previous scene exit method
 	active_scene.on_scene_exited()
 
+	# Remove active scene
+	active_scene.queue_free()
+
 	# Configure new active scene
 	active_scene_name = scene_name
 	active_scene = scenes[scene_name].instantiate()
