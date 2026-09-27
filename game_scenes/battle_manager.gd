@@ -17,6 +17,9 @@ var cur_unit = null
 enum phases { START, CONFIG_ROUND, PICK_UNIT, PICK_ACTION, PICK_TARGET, EXECUTE, DONE }
 var phase = null
 var turn = 0
+var _defeated_team = 0
+var on_victory = null
+var on_defeat = null
 
 const actions = {
 	"attack": { "name": "attack", "target": "enemy", "stat_key": "attack_pwr" },
@@ -171,8 +174,8 @@ func _set_phase(new_phase, data = null):
 		_do_action()
 	elif phase == phases.DONE:
 		var done_message: String = ""
-		var defeated_team = data.defeated_team
-		if defeated_team == 1:
+		_defeated_team = data.defeated_team
+		if _defeated_team == 1:
 			done_message = "Party was defeated and had to retreat..."
 		else:
 			done_message = "Party was victorious!"
@@ -473,7 +476,12 @@ func _end_turn() -> void:
 
 
 func _end_battle() -> void:
-	get_parent().requested_switch_scene.emit("battle")
+	if _defeated_team == 1 and on_defeat != null:
+		on_defeat.call()
+	elif _defeated_team == 2 and on_victory != null:
+		on_victory.call()
+	else:
+		get_parent().requested_switch_scene.emit("title")
 
 #region UI
 

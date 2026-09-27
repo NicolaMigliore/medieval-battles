@@ -161,7 +161,11 @@ func populate_info_panel(combatant) -> void:
 	var info_panel = $CharacterInfoPanel
 	if not info_panel.visible:
 		info_panel.show()
-	info_panel.set_character_data(combatant.character)
+	info_panel.set_character_data(
+		combatant.character.combatant_def,
+		combatant.character.hp,
+		combatant.character.block
+	)
 
 #endregion
 

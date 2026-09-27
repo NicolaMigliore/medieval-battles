@@ -6,8 +6,6 @@ var _mesh_instance: Node3D
 
 var sockets: Dictionary = {}   # socket name -> Array[Dictionary] { position: Vector3, instance: Node3D }
 
-var _door_scene = preload("res://dungeons/door.tscn")
-
 
 func set_bitmask(bitmask: int) -> void:
 	room_bitmask = bitmask
@@ -20,16 +18,6 @@ func set_mesh(mesh_scene: PackedScene, rotation_turns: int = 0) -> void:
 	_mesh_instance.rotation.y = rotation_turns * (PI / 2)
 
 	sockets = _parse_sockets(mesh_scene.resource_path, rotation_turns)
-
-
-func add_door(direction_idx: int) -> void:
-	var direction: Vector2i = Dungeon.DIRECTIONS[direction_idx]
-	var door = _door_scene.instantiate()
-	add_child(door)
-	var room_size:float = 4
-	var door_size:float = 1
-	var door_offset = room_size/2 + door_size/2
-	door.global_position = global_position + Vector3(direction.x, 0, direction.y) * door_offset
 
 
 func set_room_color(color: Color) -> void:
@@ -96,10 +84,19 @@ func spawn_boss_encounter(boss_encounter: EnemyEncounter) -> void:
 	socket.instance = boss_encounter
 
 
+func spawn_treasure_encounter(treasure_encounter: TreasureEncounter) -> void:
+	var socket: Dictionary = get_treasure_socket()
+	add_child(treasure_encounter)
+	treasure_encounter.global_position = Vector3(socket.position.x, 0, socket.position.z)
+	socket.instance = treasure_encounter
+
+
 func get_socket_player_spawn() -> Dictionary:
 	return get_socket("socket-player-spawn")
 
 func get_enemy_sockets():
 	return get_sockets("socket-enemy")
-	
+
+func get_treasure_socket():
+	return get_socket("socket-loot")
 #endregion

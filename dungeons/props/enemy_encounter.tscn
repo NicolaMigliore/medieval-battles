@@ -1,9 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cgpl60rg4770d"]
+[gd_scene load_steps=6 format=3 uid="uid://cgpl60rg4770d"]
 
 [ext_resource type="Script" uid="uid://bwaecfnr77xc8" path="res://dungeons/props/enemy_encounter.gd" id="1_37xlc"]
 [ext_resource type="PackedScene" uid="uid://dirrh81unii3a" path="res://entities/NPCs/npc.tscn" id="2_37xlc"]
+[ext_resource type="PackedScene" uid="uid://dyls5y4po5nt" path="res://components/actionable/actionable.tscn" id="3_3koy7"]
+[ext_resource type="Resource" uid="uid://1infr110fj4e" path="res://dialogues/dungeon_battle_begin.dialogue" id="4_wfh6s"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dgk3r"]
 
 [node name="EnemyEncounter" type="Node3D"]
 script = ExtResource("1_37xlc")
 
 [node name="NPC" parent="." instance=ExtResource("2_37xlc")]
+
+[node name="Actionable" parent="NPC" instance=ExtResource("3_3koy7")]
+dialogue_resource = ExtResource("4_wfh6s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/Actionable"]
+transform = Transform3D(2.5, 0, 0, 0, 0.5, 0, 0, 0, 2.5, 0, 0.45833334, 0)
+shape = SubResource("CylinderShape3D_dgk3r")

@@ -76,7 +76,7 @@ func _process(delta: float) -> void:
 		var actionable_pos_global = dialogue_actionable.global_position
 		var focus_point: Vector3 = (actionable_pos_global + target_pos_global) / 2
 
-		var dialogue_zoom = 0.75
+		var dialogue_zoom = 0.75 * 4
 		var focus_offset: Vector3 = offset.rotated(Vector3.UP, yaw).normalized() * dialogue_zoom
 		var target_pos = focus_point + focus_offset
 		global_position = global_position.lerp(target_pos, smooth_speed * delta)

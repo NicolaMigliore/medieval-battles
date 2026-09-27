@@ -1,0 +1,5 @@
+~ start
+You have found some treasure.
+It will be added to your inventory!
+do DialogueState.take_treasure.emit(DialogueState.tmp_treasure_item, DialogueState.tmp_treasure_encounter)
+=> END
