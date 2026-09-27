@@ -1,8 +1,10 @@
 extends GameScene
 class_name DungeonScene
 
+@onready var _ui: CanvasLayer = $UI
 @onready var _minimap: Minimap = $UI/MarginContainer/Minimap
 @onready var _player: Character = $Player
+@onready var _follow_camera: FollowCamera = $FollowCamera
 
 const ROOM_SIZE: Vector3 = Vector3(16, 3, 16)
 
@@ -13,7 +15,7 @@ var _room_library: RoomLibrary
 var _default_room_library: RoomLibrary = preload("res://assets/room_libraries/crypt.tres")
 var _room_scene: PackedScene = preload("res://dungeons/room.tscn")
 var _room_dict: Dictionary = {}
-var _dimensions: Vector2i = Vector2i(9,6)
+var _dimensions: Vector2i = Vector2i(9, 6)
 var _dungeon: Dungeon
 
 # Player position tracking
@@ -22,38 +24,40 @@ var _visited_room_coords: Array[Vector2i]
 
 # Room socket props
 var _prop_enemy_encounter = preload("res://dungeons/props/enemy_encounter.tscn")
+var _prop_treasure_encounter = preload("res://dungeons/props/treasure_encounter.tscn")
+
+var _current_encounter: EnemyEncounter
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var new_player_coords: Vector2i = _world_pos_to_dungeon_coords(_player.global_position)
-	if new_player_coords != _player_coords: 
+	if new_player_coords != _player_coords:
 		_visited_room_coords.append(new_player_coords)
 		_minimap.set_visited_coords(_visited_room_coords)
 
 		_player_coords = new_player_coords
 		_minimap.set_player_coords(_player_coords)
 
-
+#region Load and Unload
 func on_scene_entered(init_props: Dictionary) -> void:
 	_room_library = init_props.room_library if init_props.has("room_library") else _default_room_library
 	_random_seed = init_props.props.random_seed if init_props.has("random_seed") else randi()
 	
 	# # TEST
-	_random_seed = 650458901
+	# _random_seed = 3334062204 #650458901
 	# # TEST
 
 	# Generate Dungeon
 	_dungeon = Dungeon.new()
 	_dungeon.generate(
-		_dimensions, 
-		Vector2i(-1,-1),
+		_dimensions,
+		Vector2i(-1, -1),
 		5,
-		0, #4,
-		Vector2i(1,4),
+		0, # 4,
+		Vector2i(1, 4),
 		_random_seed
 	)
-	_print_dungeon()
 
 	# Instantiate rooms
 	_instantiate_rooms()
@@ -63,6 +67,22 @@ func on_scene_entered(init_props: Dictionary) -> void:
 
 	# Configure minimap
 	call_deferred("_config_minimap")
+
+	# Config dialogues
+	_connect_dialogue_signals()
+
+	_follow_camera.current = true
+
+func on_scene_exited() -> void:
+	_follow_camera.current = false
+
+func on_scene_restored() -> void:
+	_follow_camera.end_dialogue_focus()
+	_follow_camera.current = true
+	_player.set_mode(Character.Mode.EXPLORE)
+	_ui.show()
+#endregion
+
 
 #region Init Rooms
 func _instantiate_rooms() -> void:
@@ -87,7 +107,7 @@ func _instantiate_rooms() -> void:
 			room.global_position = Vector3(cell_pos.x, 0, cell_pos.y) * room_offset
 
 			# Configure room mesh
-			var doors_bitmask:int = (cell_bitmask & 0b1111)
+			var doors_bitmask: int = (cell_bitmask & 0b1111)
 			var room_mesh_and_rotation = _room_library.get_room_mesh_and_rotation(doors_bitmask, _rng)
 			room.set_mesh(room_mesh_and_rotation.mesh, room_mesh_and_rotation.turns)
 			
@@ -97,12 +117,11 @@ func _instantiate_rooms() -> void:
 				dungeon_pos = cell_pos,
 				room = room
 			}
-
-			# TODO: set the room contents or pick a pre-made rooms based on bitmask				
+			
 			_populate_room(room)
 
 
-func _populate_room(room:Room) -> void:
+func _populate_room(room: Room) -> void:
 	# spawn enemies
 	var room_has_enemies: bool = _dungeon.has_content(room.room_bitmask, Dungeon.Contents.ENEMY)
 	if room_has_enemies:
@@ -111,15 +130,73 @@ func _populate_room(room:Room) -> void:
 		for i in range(enemy_sockets.size()):
 			var enemy_encounter: EnemyEncounter = _prop_enemy_encounter.instantiate()
 			enemy_encounters.append(enemy_encounter)
-			# TODO: Configure encounter with enemy sprites and battle data
+
 		room.spawn_enemy_encounters(enemy_encounters)
+
+		# TODO: Configure encounter with enemy sprites and battle data
+		for enemy_encounter in enemy_encounters:
+			# Configure encounter party
+			var enemy_1: CombatantDefinition = BattleData.base_characters["minion_1"].duplicate()
+			enemy_1.stats_modifiers = {
+				max_hp = -2.8,
+				attack_pwr = .1
+			}
+			var party: Array[CombatantDefinition] = [
+				enemy_1,
+			]
+			enemy_encounter.party = party
+
+			# Configure encounter sprite
+			var enemy_sprite = preload("res://entities/minion/minion-1.png")
+			enemy_encounter.set_NPC_sprite(enemy_sprite)
+
+			# Config encounter actionables
+			enemy_encounter.triggered_enemy_encounter.connect(_on_enemy_encounter_triggered.bind(enemy_encounter, "minion_1"))
 
 	# Set Mission Objective
 	var room_has_objective: bool = _dungeon.has_content(room.room_bitmask, Dungeon.Contents.MISSION_OBJECTIVE)
 	if room_has_objective:
 		# TODO: Implement different objective types
-		var boss_encounter: EnemyEncounter = _prop_enemy_encounter.instantiate()
-		room.spawn_boss_encounter(boss_encounter)
+		_spawn_objective_boss(room)
+
+	# Set Treasure
+	var room_has_treasure: bool = _dungeon.has_content(room.room_bitmask, Dungeon.Contents.TREASURE)
+	if room_has_treasure:
+		var treasure_encounter: TreasureEncounter = _prop_treasure_encounter.instantiate()
+		room.spawn_treasure_encounter(treasure_encounter)
+		treasure_encounter.set_treasure_item({"name" = "Golden Cup"})
+
+
+func _spawn_objective_boss(room: Room) -> void:
+	var boss_encounter: EnemyEncounter = _prop_enemy_encounter.instantiate()
+	room.spawn_boss_encounter(boss_encounter)
+	# Configure Boss party
+	var boss: CombatantDefinition = BattleData.base_characters["berserker_4"].duplicate()
+	boss.stats_modifiers = {
+		max_hp = 2,
+		attack_pwr = .5
+	}
+	var party: Array[CombatantDefinition] = [
+		boss,
+		BattleData.base_characters["minion_3"].duplicate(),
+		BattleData.base_characters["minion_4"].duplicate(),
+	]
+	boss_encounter.party = party
+
+	# Configure encounter sprite
+	var boss_sprite = preload("res://entities/berserker/berserker-4.png")
+	boss_encounter.set_NPC_sprite(boss_sprite)
+	
+	# Config encounter actionables
+	boss_encounter.triggered_enemy_encounter.connect(func(actionable: Actionable):
+		_current_encounter = boss_encounter
+		_player.set_mode(Character.Mode.IN_DIALOGUE)
+		if _follow_camera:
+			_follow_camera.start_dialog_focus(actionable)
+
+		DialogueState.tmp_battle_actor_name = "berserker_4"
+	)
+
 #endregion
 
 
@@ -135,7 +212,6 @@ func _place_player_at_entrance() -> void:
 		var player_x = player_spawn_socket.position.x
 		var player_z = player_spawn_socket.position.z
 		_player.position = Vector3(player_x, 0, player_z)
-		print("player pos: %s" % _player.position)
 	else:
 		push_error("No player socket found for room key: %s" % room_key)
 
@@ -145,9 +221,72 @@ func _config_minimap() -> void:
 
 func _world_pos_to_dungeon_coords(global_pos: Vector3) -> Vector2i:
 	var room_offset = ROOM_SIZE.x
-	var x:int = roundi(global_pos.x / room_offset)
-	var y:int = roundi(global_pos.z / room_offset)
+	var x: int = roundi(global_pos.x / room_offset)
+	var y: int = roundi(global_pos.z / room_offset)
 	return Vector2i(x, y)
 
-func _print_dungeon() -> void:
-	print("dungeon_data %s:\n%s" % [_dimensions, _dungeon])
+
+#region Encounters
+func _on_enemy_encounter_triggered(actionable: Actionable, encounter: EnemyEncounter, dialogue_actor_name:String = "Enemy") -> void:
+	_current_encounter = encounter
+	_player.set_mode(Character.Mode.IN_DIALOGUE)
+	if _follow_camera:
+		_follow_camera.start_dialog_focus(actionable)
+
+	DialogueState.tmp_battle_actor_name = dialogue_actor_name
+
+#endregion
+
+
+#region Dialogue Signals
+func _connect_dialogue_signals() -> void:
+	# Begin a battle
+	DialogueState.begin_battle.connect(_on_begin_battle)
+
+	# Take treasure item
+	DialogueState.take_treasure.connect(_on_take_treasure)
+
+
+func _on_begin_battle() -> void:
+	# Configure combatants
+	# TODO: Manage the current player party
+	BattleData.clear_allies()
+	BattleData.add_to_allies(BattleData.base_characters["warrior_1"].duplicate())
+
+	BattleData.clear_enemies()
+	var enemy_party: Array[CombatantDefinition] = _current_encounter.party
+	for enemy in enemy_party:
+		BattleData.add_to_enemies(enemy)
+
+	_follow_camera.current = false
+	_ui.hide()
+
+	requested_push_scene.emit("battle",
+	{
+		on_victory = func():
+			print("Battle was won")
+			DialogueState.tmp_battle_actor_name = null
+			requested_pop_scene.emit()
+			_current_encounter.queue_free()
+			,
+		on_defeat = func():
+			print("battle was lost")
+			DialogueState.tmp_battle_actor_name = null
+			requested_pop_scene.emit()
+			requested_switch_scene.emit("tavern")
+			_current_encounter.queue_free()
+	})
+
+
+func _on_take_treasure(treasure_item, treasure_encounter:TreasureEncounter) -> void:
+	# TODO: Add item to party inventory
+	print("treasure_item: %s" % str(treasure_item))
+
+	treasure_encounter.disable()
+	pass
+
+#endregion
+
+
+# func _start_dialog() -> void:
+

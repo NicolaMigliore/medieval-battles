@@ -21,8 +21,6 @@ func init() -> void:
 		sprite.texture = sprite_texture
 		# Configure shader
 		# sprite.material_override.set_shader_parameter("texture_albedo", sprite.texture)
-
-	
 #endregion
 
 
@@ -79,3 +77,7 @@ func _set_animation_rotation():
 	# 	_travel(new_state)
 
 #endregion
+
+func set_sprite(new_sprite: Texture2D) -> void:
+	var sprite: Sprite3D = get_node("Sprite3D")
+	sprite.texture = new_sprite

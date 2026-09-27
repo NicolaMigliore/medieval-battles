@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://1infr110fj4e"
+path="res://.godot/imported/dungeon_battle_begin.dialogue-2236bc3ad2101956a1b03225b7154acc.tres"
+
+[deps]
+
+source_file="res://dialogues/dungeon_battle_begin.dialogue"
+dest_files=["res://.godot/imported/dungeon_battle_begin.dialogue-2236bc3ad2101956a1b03225b7154acc.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://dolhjsm507pq4"
+path="res://.godot/imported/dungeon_treasure_found.dialogue-73084b508567f5eef8ab273a03307af8.tres"
+
+[deps]
+
+source_file="res://dialogues/dungeon_treasure_found.dialogue"
+dest_files=["res://.godot/imported/dungeon_treasure_found.dialogue-73084b508567f5eef8ab273a03307af8.tres"]
+
+[params]
+
+defaults=true

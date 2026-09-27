@@ -45,7 +45,7 @@ func _remove_unit_from_team1(unit_id: String) -> void:
 	_update_button_disabled()
 
 
-func _add_unit_to_team1(unit) -> void:
+func _add_unit_to_team1(unit:CombatantDefinition) -> void:
 	const max_slots = 5
 	var allies := BattleData.get_allies()
 
@@ -88,7 +88,7 @@ func _remove_unit_from_team2(unit_id: String) -> void:
 
 	_update_button_disabled()
 
-func _add_unit_to_team2(unit) -> void:
+func _add_unit_to_team2(unit: CombatantDefinition) -> void:
 	const team_id: int = 2
 	const max_slots = 5
 	var units := BattleData.get_enemies()
@@ -121,7 +121,7 @@ func _build_roster(team_id: int) -> void:
 	var idx = -1
 	for unit_key in base_units:
 		idx += 1
-		var unit = base_units[unit_key]
+		var unit:CombatantDefinition = base_units[unit_key].duplicate()
 		var unit_btn: IconButton = _button_icon_scene.instantiate()
 		unit_btn.icon_texture = unit.portrait
 		unit_btn.icon_size = Vector2(32, 32)
@@ -170,12 +170,9 @@ func _sync_active_team_ui(team_id: int) -> Array:
 
 
 #region Info Panel
-func _set_info_panel(unit) -> void:
-	var info_panel:CharacterInfoPanel = $Panel/MarginContainer/HBoxContainer/VBoxContainer/CharacterInfoPanel
-	var character: Character = unit.scene.instantiate()
-	character.init(unit)
-	
-	info_panel.set_character_data(character)
+func _set_info_panel(unit: CombatantDefinition) -> void:
+	var info_panel:CharacterInfoPanel = $Panel/MarginContainer/HBoxContainer/VBoxContainer/CharacterInfoPanel	
+	info_panel.set_character_data(unit)
 
 #endregion
 

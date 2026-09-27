@@ -1,7 +1,7 @@
 extends Control
 class_name Minimap
 
-const DEBUG_SHOW_ALL: bool = false
+const DEBUG_SHOW_ALL: bool = true
 
 const CELL_SIZE: float = 16.0
 const CELL_GAP: float = 4.0
@@ -57,7 +57,7 @@ func _draw() -> void:
 
 		# Draw room
 		var bitmask: int = _dungeon.get_cell_bitmask(pos)
-		var color: Color = _get_room_color(bitmask, pos)
+		var color: Color = _get_room_color(pos)
 		var rect: Rect2 = Rect2(top_left, Vector2(CELL_SIZE, CELL_SIZE))
 		_room_style.bg_color = color
 		_room_style.draw(get_canvas_item(), rect)
@@ -90,7 +90,7 @@ func _draw_room_icon(bitmask: int, screen_pos: Vector2) -> void:
 			draw_texture_rect_region(dungeon_icons, dest_rect, src_rect)
 			# break
 
-func _get_room_color(cell_bitmask: int, pos: Vector2i) -> Color:
+func _get_room_color(pos: Vector2i) -> Color:
 	var color: Color = Color.WEB_GRAY
 
 	if _player_coords == pos:

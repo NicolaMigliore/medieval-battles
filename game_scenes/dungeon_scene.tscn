@@ -14,7 +14,10 @@ fog_light_color = Color(0, 0, 0, 1)
 [node name="DungeonScene" type="Node3D"]
 script = ExtResource("1_eokb1")
 
-[node name="RoomHolder" type="Node3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.25881907, 0.9659258, 0, -0.9659258, -0.25881907, 0, 10.5, 0)
+light_color = Color(0.9, 0.63269997, 0.30599996, 1)
+light_energy = 2.0
 
 [node name="FollowCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_bfkde")]
 transform = Transform3D(-4.3711385e-08, -0.25881904, 0.96592575, 0, 0.96592575, 0.25881904, -1, 1.1313339e-08, -4.2221952e-08, 2.5935, 1.875, 1.5)
@@ -28,6 +31,9 @@ zoom_level = 0.5
 
 [node name="Player" parent="." node_paths=PackedStringArray("follow_camera") instance=ExtResource("2_eokb1")]
 follow_camera = NodePath("../FollowCamera")
+is_player_controlled = true
+
+[node name="RoomHolder" type="Node3D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="."]
 

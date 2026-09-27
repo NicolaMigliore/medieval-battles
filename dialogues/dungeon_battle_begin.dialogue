@@ -1,0 +1,7 @@
+~ start
+if DialogueState.tmp_battle_actor_name != null
+	{{DialogueState.tmp_battle_actor_name}}: Hey you! Time to battle!
+else
+	Enemy: Hey you! Time to battle!
+do DialogueState.begin_battle.emit()
+=> END

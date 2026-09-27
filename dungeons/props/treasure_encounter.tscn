@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://rps3gdvjsxyi"]
+
+[ext_resource type="PackedScene" uid="uid://t43j1o6xi3jh" path="res://assets/meshes/tavern/props/chest-1.glb" id="1_8nyli"]
+[ext_resource type="Script" uid="uid://cexvoouac1pum" path="res://dungeons/props/treasure_encounter.gd" id="1_riq2e"]
+[ext_resource type="Script" uid="uid://bprkcn66bfyao" path="res://components/actionable/actionable.gd" id="2_ogfei"]
+[ext_resource type="Texture2D" uid="uid://bjff7bqmwn1lo" path="res://assets/sprites/btn_space.png" id="3_ogfei"]
+[ext_resource type="Resource" uid="uid://dolhjsm507pq4" path="res://dialogues/dungeon_treasure_found.dialogue" id="4_c5m4y"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_riq2e"]
+height = 0.23913574
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s62ma"]
+atlas = ExtResource("3_ogfei")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7aprd"]
+atlas = ExtResource("3_ogfei")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_riq2e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s62ma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7aprd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="TreasureEncounter" type="Node3D"]
+script = ExtResource("1_riq2e")
+
+[node name="Chest" parent="." instance=ExtResource("1_8nyli")]
+
+[node name="Actionable" type="Area3D" parent="Chest"]
+collision_layer = 17
+script = ExtResource("2_ogfei")
+dialogue_resource = ExtResource("4_c5m4y")
+metadata/_custom_type_script = "uid://bprkcn66bfyao"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/Actionable"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_riq2e")
+
+[node name="PromptSprite" type="AnimatedSprite3D" parent="Chest/Actionable"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_riq2e")
+autoplay = "default"
+frame_progress = 0.5381669
