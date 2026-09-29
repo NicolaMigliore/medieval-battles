@@ -1,7 +1,10 @@
 ~ start
-if DialogueState.tmp_battle_actor_name != null
-	{{DialogueState.tmp_battle_actor_name}}: Hey you! Time to battle!
-else
-	Enemy: Hey you! Time to battle!
-do DialogueState.begin_battle.emit()
+{{display_name}}: Hey you! Time to battle!
+do request_begin_battle()
+=> END
+
+~ boss_start
+{{display_name}}: You came all this way just to battle me?
+I guess I should be honored.
+do request_begin_battle()
 => END

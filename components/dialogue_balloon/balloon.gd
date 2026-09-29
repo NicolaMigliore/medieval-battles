@@ -92,7 +92,7 @@ func _ready() -> void:
 		start()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_instance_valid(dialogue_line):
 		progress.visible = not dialogue_label.is_typing and dialogue_line.responses.size() == 0 and not dialogue_line.has_tag("voice")
 
@@ -136,7 +136,7 @@ func apply_dialogue_line() -> void:
 
 	character_label.visible = not dialogue_line.character.is_empty()
 	character_label.text = tr(dialogue_line.character, "dialogue")
-	set_character_portrait(dialogue_line.character.to_lower())
+	set_character_portrait(dialogue_line.character.to_lower(), dialogue_line.extra_game_states)
 
 	dialogue_label.hide()
 	dialogue_label.dialogue_line = dialogue_line
@@ -222,7 +222,15 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 #endregion
 
 
-func set_character_portrait(character_name: String= "") -> void:
+func set_character_portrait(character_name: String= "", extra_game_states: Array = []) -> void:
+	# Use EncounterDefinition if available
+	for state in extra_game_states:
+		if state is EncounterDefinition:
+			portrait_panel.show()
+			portrait.texture = state.portrait_texture
+			return
+	
+	# Revert to portrait resolution if no EncounterDefinition is available
 	var portrait_path: String = DialogueState.get_character_portrait_path(character_name)
 	if FileAccess.file_exists(portrait_path):
 		portrait_panel.show()

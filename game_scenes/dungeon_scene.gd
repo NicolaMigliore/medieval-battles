@@ -26,8 +26,6 @@ var _visited_room_coords: Array[Vector2i]
 var _prop_enemy_encounter = preload("res://dungeons/props/enemy_encounter.tscn")
 var _prop_treasure_encounter = preload("res://dungeons/props/treasure_encounter.tscn")
 
-var _current_encounter: EnemyEncounter
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -67,9 +65,6 @@ func on_scene_entered(init_props: Dictionary) -> void:
 
 	# Configure minimap
 	call_deferred("_config_minimap")
-
-	# Config dialogues
-	_connect_dialogue_signals()
 
 	_follow_camera.current = true
 
@@ -144,14 +139,20 @@ func _populate_room(room: Room) -> void:
 			var party: Array[CombatantDefinition] = [
 				enemy_1,
 			]
-			enemy_encounter.party = party
 
-			# Configure encounter sprite
-			var enemy_sprite = preload("res://entities/minion/minion-1.png")
-			enemy_encounter.set_NPC_sprite(enemy_sprite)
+			var encounter_def: EncounterDefinition = EncounterDefinition.new(
+				party[0].actor_name,
+				party[0].portrait,
+				preload("res://dialogues/dungeon_battle_begin.dialogue"),
+				"start",
+				party
+			)
+			
+			enemy_encounter.set_encounter_definition(encounter_def)
 
-			# Config encounter actionables
-			enemy_encounter.triggered_enemy_encounter.connect(_on_enemy_encounter_triggered.bind(enemy_encounter, "minion_1"))
+			# Connect signals
+			enemy_encounter.triggered_enemy_encounter.connect(_on_enemy_encounter_triggered)
+			enemy_encounter.begin_battle.connect(_on_begin_battle)
 
 	# Set Mission Objective
 	var room_has_objective: bool = _dungeon.has_content(room.room_bitmask, Dungeon.Contents.MISSION_OBJECTIVE)
@@ -164,7 +165,10 @@ func _populate_room(room: Room) -> void:
 	if room_has_treasure:
 		var treasure_encounter: TreasureEncounter = _prop_treasure_encounter.instantiate()
 		room.spawn_treasure_encounter(treasure_encounter)
-		treasure_encounter.set_treasure_item({"name" = "Golden Cup"})
+		treasure_encounter.set_treasure_definition(TreasureDefinition.new(
+			{"item_name" = "Golden Cup"},
+			preload("res://dialogues/dungeon_treasure_found.dialogue"),
+		))
 
 
 func _spawn_objective_boss(room: Room) -> void:
@@ -181,21 +185,19 @@ func _spawn_objective_boss(room: Room) -> void:
 		BattleData.base_characters["minion_3"].duplicate(),
 		BattleData.base_characters["minion_4"].duplicate(),
 	]
-	boss_encounter.party = party
 
-	# Configure encounter sprite
-	var boss_sprite = preload("res://entities/berserker/berserker-4.png")
-	boss_encounter.set_NPC_sprite(boss_sprite)
-	
-	# Config encounter actionables
-	boss_encounter.triggered_enemy_encounter.connect(func(actionable: Actionable):
-		_current_encounter = boss_encounter
-		_player.set_mode(Character.Mode.IN_DIALOGUE)
-		if _follow_camera:
-			_follow_camera.start_dialog_focus(actionable)
-
-		DialogueState.tmp_battle_actor_name = "berserker_4"
+	var encounter_def: EncounterDefinition = EncounterDefinition.new(
+		"Boss",
+		party[0].portrait,
+		preload("res://dialogues/dungeon_battle_begin.dialogue"),
+		"boss_start",
+		party
 	)
+	boss_encounter.set_encounter_definition(encounter_def)
+	
+	# Connect signals
+	boss_encounter.triggered_enemy_encounter.connect(_on_enemy_encounter_triggered)
+	boss_encounter.begin_battle.connect(_on_begin_battle)
 
 #endregion
 
@@ -227,66 +229,43 @@ func _world_pos_to_dungeon_coords(global_pos: Vector3) -> Vector2i:
 
 
 #region Encounters
-func _on_enemy_encounter_triggered(actionable: Actionable, encounter: EnemyEncounter, dialogue_actor_name:String = "Enemy") -> void:
-	_current_encounter = encounter
+func _on_enemy_encounter_triggered(actionable: Actionable) -> void:
 	_player.set_mode(Character.Mode.IN_DIALOGUE)
 	if _follow_camera:
 		_follow_camera.start_dialog_focus(actionable)
 
-	DialogueState.tmp_battle_actor_name = dialogue_actor_name
-
 #endregion
 
 
-#region Dialogue Signals
-func _connect_dialogue_signals() -> void:
-	# Begin a battle
-	DialogueState.begin_battle.connect(_on_begin_battle)
-
-	# Take treasure item
-	DialogueState.take_treasure.connect(_on_take_treasure)
-
-
-func _on_begin_battle() -> void:
+#region Battle Setup
+func _on_begin_battle(encounter: EnemyEncounter, encounter_def: EncounterDefinition) -> void:
 	# Configure combatants
 	# TODO: Manage the current player party
 	BattleData.clear_allies()
 	BattleData.add_to_allies(BattleData.base_characters["warrior_1"].duplicate())
 
 	BattleData.clear_enemies()
-	var enemy_party: Array[CombatantDefinition] = _current_encounter.party
+	var enemy_party: Array[CombatantDefinition] = encounter_def.party
 	for enemy in enemy_party:
 		BattleData.add_to_enemies(enemy)
 
 	_follow_camera.current = false
 	_ui.hide()
 
+	# Remove encounter from map
+	encounter.queue_free()
+
+	# Push battle scene
 	requested_push_scene.emit("battle",
 	{
 		on_victory = func():
 			print("Battle was won")
-			DialogueState.tmp_battle_actor_name = null
 			requested_pop_scene.emit()
-			_current_encounter.queue_free()
 			,
 		on_defeat = func():
 			print("battle was lost")
-			DialogueState.tmp_battle_actor_name = null
 			requested_pop_scene.emit()
 			requested_switch_scene.emit("tavern")
-			_current_encounter.queue_free()
 	})
 
-
-func _on_take_treasure(treasure_item, treasure_encounter:TreasureEncounter) -> void:
-	# TODO: Add item to party inventory
-	print("treasure_item: %s" % str(treasure_item))
-
-	treasure_encounter.disable()
-	pass
-
 #endregion
-
-
-# func _start_dialog() -> void:
-
